@@ -23,14 +23,51 @@ avoir au moins 2 fichiers pour le jeu final
 ********
 lister les tâches à faire:
 
--
--
--
--
--
--
--
--
+- 2 niveaux de tutos
+- 18 niveaux
+
+
+- "option se mettre au défis"
+- dessins de voitures
+- dessins du décors
+- dessins de camoins
+- définir une police d'écriture
+- assets de boutons
+- musique
+- sons pour animer le jeu
+
+- rendu esthétique du déplacement des voitures
+
+- menu "acceuil"
+- menu "niveaux"
+
+- bouton "partager le jeu"
+- intégrer des étoiles
+
+- écran de fin de niveau
+- écran de fin 
+- implémenter un compteur de coups
+- rendu visuel des étoiles
+
+- design spécial pour la voiture à sortir
+
+- coder les déplacements d'une voiture
+- coder la création d'une matrice
+- s'aider des niveaux qui existent déjà
+- coder le solveur
+
+- jeu de mot pour le titre du jeu
+
+- intéger une base de données pour "conserver l'état du jeu"
+- scoreboard bidon
+
+- différent mode de jeu - "classic, puzzle, chrono"
+- intégrer des animations en début de mode de jeu
+        chrono --> voleur
+        puzzle --> essence qui descend
+
+- intégrer un shop, des skins
+
 
 
 ********
