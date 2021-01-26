@@ -42,7 +42,7 @@ lister les tâches à faire:
 - menu "niveaux"
 
 - bouton "partager le jeu"
-- intégrer des étoiles
+- bouton "partager le jeu"
 
 - écran de fin de niveau
 - écran de fin 
