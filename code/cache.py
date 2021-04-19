@@ -13,7 +13,7 @@ def lecteur():
             data.readline(200)
         return data.readline(200)
 
-matrice=[[1,1,1]]
+
 
 def enregistreur(matrice):
     contenu=""
@@ -22,11 +22,8 @@ def enregistreur(matrice):
     with open(path,'r') as data:
         contenu=data.readlines()
     num_lines = sum(1 for line in open(path))
-    print(contenu)
     contenu=contenu[:num_lines-1]
-    print(contenu)
     contenu+=matrice
-    print(contenu)
     with open(path,'w') as data:
         while num_lines!=0:
 
@@ -37,7 +34,78 @@ def enregistreur(matrice):
             contenu=contenu[1:]
             num_lines-=1
             
-            
-enregistreur(matrice)
+matrice=[[0,0,0,4,4,12],
+         [0,0,0,0,3,12],
+         [1,1,0,0,3,12],
+         [0,0,9,11,11,11],
+         [2,0,9,0,0,0],
+         [2,0,9,10,10,10]]
+pos=[1,1]
+print(matrice[pos[0]][pos[1]])
 
+
+
+def deplacement(matrice,pos):
+    if pos[1]>=6 or pos[0]>=6 or matrice[pos[0]][pos[1]]==0:
+        return matrice
+    
+    def position(M,val):
+        XY=[]
+        if val != [0][0]:       
+            for i in range(len(M)):
+                for j in range (len(M[0])):
+                    if M[i][j] == val:
+                        XY.append([i,j])
+            return XY
+        
+    def sens(position):
+        if position[0][0]==position[1][0]:
+            return "horiz"
+        else:
+            return "verti"
+    
+    def verif(sens,coordoClick,position):
+        avant=False
+        mouv = False
+        if coordoClick== position[0]:
+            avant = True
+        
+        if (sens=="verti" and avant ==True):
+            try :
+                mouv = (matrice[coordoClick[0]][coordoClick[1]-1] == 0)
+            except IndexError:
+                return mouv
+            
+        elif (sens=="verti" and avant ==False):
+            try :
+                mouv = matrice[position[len(position)-1][0]][position[len(position)-1][1]+1] ==0
+            except IndexError:
+                return mouv
+            
+        elif (sens=="horiz" and avant ==True):
+            try:
+                mouv = matrice[coordoClick[0]-1][coordoClick[1]] ==0
+            except IndexError:
+                return mouv
+            
+        elif (sens=="horiz" and avant ==False):
+            try:
+                mouv = matrice[position[len(position)][0]][position[len(position)-1][1]] ==0
+            except IndexError:
+                return mouv
+        return mouv
+        #fin
+    
+    a=position(matrice,matrice[pos[0]][pos[1]])
+    b=sens(a)
+    
+    c=verif(b,pos,a)
+    
+    print(a)
+    print(b)
+    print(c)
+    
+    return "ok"
+    
+print(deplacement(matrice,pos))
 print("fin")

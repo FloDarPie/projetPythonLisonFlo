@@ -1,3 +1,4 @@
+
 import numpy as np
 
 #générer une matrice 6x6 qui est pleine de voiture
@@ -55,14 +56,16 @@ def verif(sens,coordoClick,position):
     if (sens=="verti" and avant ==True):
         try :
             mouv = matrix[coordoClick[0]][coordoClick[1]-1] ==0
-        except IndexError:
             return mouv
+        except IndexError:
+            pass
         
     elif (sens=="verti" and avant ==False):
         try :
             mouv = matrix[position[len(position)-1][0]][position[len(position)-1][1]+1] ==0
-        except IndexError:
             return mouv
+        except IndexError:
+            
         
     elif (sens=="verti" and avant ==True):
         try:
@@ -86,4 +89,15 @@ print("mouv",verif(test2,coordoClick,position(matrix,click)))
 
 #effectuer le déplacement
 
+from tkinter import *
 
+def f(event):
+    t=event.keysym
+    print("Touche pressée :", t)
+
+
+root = Tk()
+
+root.bind("<Key>", f)
+
+root.mainloop()
