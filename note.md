@@ -100,7 +100,7 @@ lister les tâches à faire:
 
 
 #=======================
-Le fichier data sera composé de 200 niveaux -> ligne 2 à 201
+Le fichier data sera composé de X niveaux -> ligne 2 à X+1
 La ligne 1 pour connaitre où le joueur se trouve
 
-La ligne 202 est utilisé pour mémoriser le niveau généré aléatoirement.
+La ligne X+2 est utilisé pour mémoriser le niveau généré aléatoirement.
