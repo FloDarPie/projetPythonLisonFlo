@@ -27,7 +27,7 @@ canv=Canvas(fen, width=LARG, height=HAUT, background="gray")
 canv.pack(padx=10, pady=10)
 
 #sortie du parking
-canv.create_line((LARG,2*(LARG/6)),(LARG,3*(LARG/6)), fill="red", width=9)
+canv.create_line((LARG,2*(LARG/6)),(LARG,3*(LARG/6)), fill="red", width=12)
 
 #ajouter image background
 parking=PhotoImage(file=path+"images/parking_fond.png")
@@ -47,7 +47,6 @@ for i in range (n):
     for j in range (n2):
         if L[j]==1 and comp==0:
             comp+=1
-            print(i,j)
             voitureBouge=canv.create_rectangle(j*AUTRE,i*AUTRE,j*AUTRE+2*AUTRE,i*AUTRE+AUTRE,fill="magenta")
 
 
@@ -61,7 +60,23 @@ def position(M,val):
                     XY.append([i,j])
         return XY
 
-print(position(M,1))
+
+def excep(M,i,j):
+    XY=position(M,M[i][j])
+    #ajouter image
+    voitures2=PhotoImage(file=path+"image_gif/voitureJaune.gif")
+    centre2=(400,00)
+    canv.create_image(centre2, image=voitures2)
+    if XY[0][0]==XY[1][0]:
+        voitures=PhotoImage(file=path+"image_gif/voitureBleueHor.gif")
+        centre1=((AUTRE*XY[0][0]+AUTRE*((XY[-1][0])+1))/2,(AUTRE*XY[0][1]+AUTRE*((XY[-1][1])+1))/2)
+        canv.create_image(centre1, image=voitures)
+        print(((AUTRE*XY[0][0]+AUTRE*((XY[-1][0])+1))/2,(AUTRE*XY[0][1]+AUTRE*((XY[-1][1])+1))/2))
+    else:
+        voitures2=PhotoImage(file=path+"image_gif/voitureBleue.gif")
+        centre2=((AUTRE*XY[0][0]+AUTRE*((XY[-1][0])+1))/2,(AUTRE*XY[0][1]+AUTRE*((XY[-1][1])+1))/2)
+        canv.create_image(centre2, image=voitures2)
+        print("hello")
 
 #placer les voitures/camions de la matrice
 def affichage(M) :
@@ -72,12 +87,12 @@ def affichage(M) :
                 try:
                     L[M[i][j]]==1
                 except:
-                    L[M[i][j]]=1                
-                    XY=position(M,M[i][j])
-                    print(XY[0][0])
+                    L[M[i][j]]=1
+                    excep(M,i,j)
+                    '''
                     canv.create_rectangle(AUTRE*XY[0][0],AUTRE*XY[0][1],AUTRE*((XY[-1][0])+1),AUTRE*((XY[-1][1])+1),fill="red")
                     canv.create_rectangle(AUTRE*XY[0][0],AUTRE*XY[0][1],AUTRE*((XY[-1][0])+1),AUTRE*((XY[-1][1])+1))
-
+                    '''
     
 affichage(M)
 
@@ -85,6 +100,12 @@ affichage(M)
 #RECTANGLE : canv.create_rectangle(x,y,x1,y1,fill="magenta")
 #ENLEVER RECTANGLE : 
 
+voitures2=PhotoImage(file=path+"images/images modif/voitureRouge.png")
+centre2=(400,400)
+canv.create_image(centre2, image=voitures2)
+
 fen.mainloop()
 
 fen.protocol("WM_DELETE_WINDOW",fen.destroy())
+
+
