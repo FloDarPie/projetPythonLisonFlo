@@ -88,11 +88,9 @@ def affichage(M) :
                     L[M[i][j]]==1
                 except:
                     L[M[i][j]]=1
-                    excep(M,i,j)
-                    '''
                     canv.create_rectangle(AUTRE*XY[0][0],AUTRE*XY[0][1],AUTRE*((XY[-1][0])+1),AUTRE*((XY[-1][1])+1),fill="red")
                     canv.create_rectangle(AUTRE*XY[0][0],AUTRE*XY[0][1],AUTRE*((XY[-1][0])+1),AUTRE*((XY[-1][1])+1))
-                    '''
+                    
     
 affichage(M)
 
@@ -100,9 +98,6 @@ affichage(M)
 #RECTANGLE : canv.create_rectangle(x,y,x1,y1,fill="magenta")
 #ENLEVER RECTANGLE : 
 
-voitures2=PhotoImage(file=path+"images/images modif/voitureRouge.png")
-centre2=(400,400)
-canv.create_image(centre2, image=voitures2)
 
 fen.mainloop()
 

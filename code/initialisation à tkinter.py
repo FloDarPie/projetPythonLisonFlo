@@ -36,3 +36,7 @@ def quitter():
 root.protocol("WM_DELETE_WINDOW", quitter)
 
 root.mainloop()
+
+
+fen.protocol("WM_DELETE_WINDOW", fen.destroy())
+

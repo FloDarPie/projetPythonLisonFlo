@@ -33,15 +33,8 @@ def enregistreur(matrice):
                 data.write(str(contenu[0]))
             contenu=contenu[1:]
             num_lines-=1
-            
-matrice=[[0,0,0, 4, 4,12],
-         [0,0,0, 0, 3,12],
-         [1,1,0, 0, 3,12],
-         [0,0,9,11,11,11],
-         [2,0,9, 0, 0, 0],
-         [2,0,9,10,10,10]]
-pos=[0,5]
-print(matrice[pos[0]][pos[1]])
+
+
 
 
 
@@ -64,51 +57,82 @@ def deplacement(matrice,pos):
         else:
             return "verti"
     
-    def verif(sens,coordoClick,position):
+    def bouge(sens,coordoClick,position):
         avant=False
         mouv = False
         if coordoClick== position[0]:
-            avant = True
-        print("avant",avant)
-        
+            avant = True        
+        #contrôle si le mouvement est possible et altération de la matrice
         if (sens=="verti" and avant ==True):
             try :
-                mouv = (matrice[coordoClick[0]-1][coordoClick[1]] == 0)
+                print("=========")
+                mouv = matrice[coordoClick[0]-1][coordoClick[1]] == 0
+                
+                matrice[coordoClick[0]-1][coordoClick[1]] =matrice[coordoClick[0]][coordoClick[1]]
+                matrice[position[-1][0]][position[-1][1]] = 0
             except IndexError:
-                return mouv
-            
+                return matrice
+           
         elif (sens=="verti" and avant ==False):
             try :
-                mouv = matrice[position[-2][0]][position[-1][1]] ==0
+                mouv = matrice[position[-2][0]][position[-1][1]] == 0
+                
+                matrice[position[-2][0]][position[-1][1]] = matrice[position[-1][0]][position[-1][1]]
+                matrice[position[0][0]][position[0][1]] = 0
             except IndexError:
-                return mouv
-            
+                return matrice
+     
         elif (sens=="horiz" and avant ==True):
             try:
-                mouv = matrice[coordoClick[0]][coordoClick[1]-1] ==0
+                mouv = matrice[coordoClick[0]][coordoClick[1]-1] == 0
+                
+                matrice[coordoClick[0]][coordoClick[1]-1] = matrice[position[0][0]][position[0][1]]
+                matrice[position[-1][0]][position[-1][1]] = 0
+                
             except IndexError:
-                return mouv
+                return matrice
             
         elif (sens=="horiz" and avant ==False):
             try:
-                mouv = matrice[position[-1][0]][position[-1][1]+1] ==0
+                mouv = matrice[position[-1][0]][position[-1][1]+1] == 0
+                
+                matrice[position[-1][0]][position[-1][1]+1] = matrice[position[-1][0]][position[-1][1]]
+                matrice[position[0][0]][position[0][1]] = 0
             except IndexError:
-                return mouv
-        return mouv
-        #fin
-    
+                return matrice
+        return matrice
+
     a=position(matrice,matrice[pos[0]][pos[1]])
     b=sens(a)
-    c=verif(b,pos,a)
+    c=bouge(b,pos,a)
+    '''
+    la première ligne sert de contrôle d'une éventuelle erreur d'entrée lors d'un click
     
-    print(a,b,"mouvement possible ?",c)
+    -position
+        renvoie la liste des éléments de la voiture sur laquelle on a cliqué
     
-    if c:
-        pass #matrice[a[-1][0]][a[-1][1] = 0
+    -sens
+        avoir l'orientation
+    
+    -bouge
+        construit en 2 temps
+            -> premièrement où la variable "mouv" était renvoyé, ie test si la case "devant" est libre
+            -> enfin, on a ajouté le déplacement
+    
+    Pour que cela marche : 
+        -une matrice de niveau       => matrice
+        -coordonnées du click souris => pos
         
-        
-    
-    return "ok"
-    
+    (pensez à mettre les coordonnées en: int
+                                         //6)
+    '''
+    return matrice
+'''            
+matrice=[[0,0,0, 4, 4,12],[0,0,0, 0, 3,12],[1,1,0, 0, 3,12],[0,0,9,11,11,11],[2,0,9, 0, 0, 0],[2,0,9,10,10,10]]
+print(matrice)
+pos=[0,1]
+print(matrice[pos[0]][pos[1]])
 print(deplacement(matrice,pos))
-print("fin")
+'''
+
+
