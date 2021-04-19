@@ -13,18 +13,31 @@ def lecteur():
             data.readline(200)
         return data.readline(200)
 
-matrice=[[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]]
+matrice=[[1,1,1]]
 
 def enregistreur(matrice):
     contenu=""
+    compteur=0
+    balise=1
     with open(path,'r') as data:
-        contenu=data.read()
+        contenu=data.readlines()
+    num_lines = sum(1 for line in open(path))
     print(contenu)
-    contenu=contenu[2000:]
-    contenu+=str(matrice)
+    contenu=contenu[:num_lines-1]
+    print(contenu)
+    contenu+=matrice
+    print(contenu)
     with open(path,'w') as data:
-        data.write(contenu)
-    
+        while num_lines!=0:
+
+            if num_lines==1:
+                data.write(str(contenu))
+            else:
+                data.write(str(contenu[0]))
+            contenu=contenu[1:]
+            num_lines-=1
+            
+            
 enregistreur(matrice)
 
 print("fin")
