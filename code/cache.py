@@ -34,13 +34,13 @@ def enregistreur(matrice):
             contenu=contenu[1:]
             num_lines-=1
             
-matrice=[[0,0,0,4,4,12],
-         [0,0,0,0,3,12],
-         [1,1,0,0,3,12],
+matrice=[[0,0,0, 4, 4,12],
+         [0,0,0, 0, 3,12],
+         [1,1,0, 0, 3,12],
          [0,0,9,11,11,11],
-         [2,0,9,0,0,0],
+         [2,0,9, 0, 0, 0],
          [2,0,9,10,10,10]]
-pos=[1,1]
+pos=[0,5]
 print(matrice[pos[0]][pos[1]])
 
 
@@ -51,9 +51,9 @@ def deplacement(matrice,pos):
     
     def position(M,val):
         XY=[]
-        if val != [0][0]:       
-            for i in range(len(M)):
-                for j in range (len(M[0])):
+        if val != 0: #[0][0]:       
+            for j in range(len(M)):
+                for i in range (len(M[0])):
                     if M[i][j] == val:
                         XY.append([i,j])
             return XY
@@ -69,28 +69,29 @@ def deplacement(matrice,pos):
         mouv = False
         if coordoClick== position[0]:
             avant = True
+        print("avant",avant)
         
         if (sens=="verti" and avant ==True):
             try :
-                mouv = (matrice[coordoClick[0]][coordoClick[1]-1] == 0)
+                mouv = (matrice[coordoClick[0]-1][coordoClick[1]] == 0)
             except IndexError:
                 return mouv
             
         elif (sens=="verti" and avant ==False):
             try :
-                mouv = matrice[position[len(position)-1][0]][position[len(position)-1][1]+1] ==0
+                mouv = matrice[position[-2][0]][position[-1][1]] ==0
             except IndexError:
                 return mouv
             
         elif (sens=="horiz" and avant ==True):
             try:
-                mouv = matrice[coordoClick[0]-1][coordoClick[1]] ==0
+                mouv = matrice[coordoClick[0]][coordoClick[1]-1] ==0
             except IndexError:
                 return mouv
             
         elif (sens=="horiz" and avant ==False):
             try:
-                mouv = matrice[position[len(position)][0]][position[len(position)-1][1]] ==0
+                mouv = matrice[position[-1][0]][position[-1][1]+1] ==0
             except IndexError:
                 return mouv
         return mouv
@@ -98,12 +99,14 @@ def deplacement(matrice,pos):
     
     a=position(matrice,matrice[pos[0]][pos[1]])
     b=sens(a)
-    
     c=verif(b,pos,a)
     
-    print(a)
-    print(b)
-    print(c)
+    print(a,b,"mouvement possible ?",c)
+    
+    if c:
+        pass #matrice[a[-1][0]][a[-1][1] = 0
+        
+        
     
     return "ok"
     
