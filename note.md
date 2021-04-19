@@ -90,3 +90,17 @@ lister les tâches à faire:
 8ème étape ==> les dessins
 
 9ème étape ==> rendu du devoir
+
+##############################################################
+##############################################################
+1 -> voiture à libérer
+
+2_8 -> voiture
+9_13 -> camions
+
+
+#=======================
+Le fichier data sera composé de 200 niveaux -> ligne 2 à 201
+La ligne 1 pour connaitre où le joueur se trouve
+
+La ligne 202 est utilisé pour mémoriser le niveau généré aléatoirement.
