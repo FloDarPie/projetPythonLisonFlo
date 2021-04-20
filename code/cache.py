@@ -25,12 +25,6 @@ def lecteur():
         return data.readline(200).rstrip("\n")
     
 
-def change_niv(niv):
-    with open(path,'r') as data:
-        contenu=data.readlines()
-    with open(path,'w') as data:
-        pass
-
 
 def enregistreur(matrice):
     contenu=""
@@ -59,16 +53,17 @@ def victoire(matrice):
             niv=int(data.readline(2),base=10)
         with open(path,'r') as data:
             contenu=data.readlines()
-        if niv==23:
-            return "victory"
+
         num_lines = sum(1 for line in open(path))
         
         niv+=1
+        if niv==22:
+            return "vic"
         niv=str(niv)
         if len(niv)==1:
             niv="0"+niv+"\n"
-        contenu=list(niv)+contenu[2:]
-        
+        contenu=[niv]+contenu[1:]
+
         with open(path,'w') as data:
             while num_lines!=0:
                 if num_lines==1:
@@ -78,12 +73,14 @@ def victoire(matrice):
                 contenu=contenu[1:]
                 num_lines-=1
         
+        return True
+
 
 def deplacement(matrice,pos):
     #valeur=matrice[pos[0]][pos[1]]
     if pos[1]>=6 or pos[0]>=6 or matrice[pos[0]][pos[1]]==0:
         return matrice#,valeur
-    
+
     def position(M,val):
         XY=[]
         if val != 0: #[0][0]:       
@@ -91,7 +88,7 @@ def deplacement(matrice,pos):
                 for j in range (len(M[0])):
                     if M[i][j] == val:
                         XY.append([i,j])
-            return XY
+            return XY      
 
     def sens(position):
         if position[0][0]==position[1][0]:

@@ -1,4 +1,5 @@
 from tkinter import *
+import tkinter.font as font
 import random
 from cache import *
 import os
@@ -46,9 +47,8 @@ path+="/assets/"
 
 
 
-#PARAMETRES
+#PARAMETRES_FENETRE_TAILLE
 COTE=100
-
 NB_COL=6
 NB_LIG=6
 
@@ -58,27 +58,34 @@ HAUT=NB_LIG*COTE
 AUTRE=LARG/6
 DIM=LARG
 
+#PARAMETRES_FONCTIONS
+comp=0
+n=len (M)
+n2=len(M[0])
+
+VOITUREB=0
+RECT=0
+RECT2=0
+
+x=color().rstrip("\n")
+
+posi=[]
+liste_voiture=[]
+
+#PARAMETRES_FENETRE
 fen=Tk()
-fen .title("Parking")
-canv=Canvas(fen, width=LARG, height=HAUT, background="gray")
-canv.pack()
+fen.title("Parking")
+canv=Canvas(fen, width=LARG, height=HAUT)
+canv.pack(side=LEFT)
 
 #ajouter image background
 parking=PhotoImage(file=path+"images/parking_fond.png")
-
-#sortie du parking
-SORTIE=canv.create_line((LARG+5,2*(LARG/6)),(LARG+5,3*(LARG/6)), fill="red", width=12)
-
 #affiche background par rapport à son centre
 centre=(DIM/2,DIM/2)
 canv.create_image(centre, image=parking)
 
-comp=0
-
-n=len(M)
-n2=len(M[0])
-x=color().rstrip("\n")
-
+#sortie du parking
+SORTIE=canv.create_line((LARG+5,2*(LARG/6)),(LARG+5,3*(LARG/6)), fill="red", width=12)
 
 #récupérer la position de la voiture entière
 def position(M,val):
@@ -92,17 +99,6 @@ def position(M,val):
 
 
 
-comp=0
-n=len (M)
-n2=len(M[0])
-
-VOITUREB=0
-RECT=0
-RECT2=0
-
-N=[]
-#colors=['black', 'red', 'green', 'blue', 'cyan', 'yellow']
-#coul=random.randrange(len(colors))
 
 #placer les voitures/camions rectangulaires de la matrice
 def affichage(M) :
@@ -113,6 +109,7 @@ def affichage(M) :
             if M[i][j] !=0:
                 if M[i][j]==1:
                     VOITUREB=canv.create_rectangle(j*AUTRE,i*AUTRE,j*AUTRE+AUTRE,i*AUTRE+AUTRE,fill="black")
+                    liste_voiture.append(VOITUREB)
                 else:
                     XY=position(M,M[i][j])
                     try:
@@ -121,40 +118,58 @@ def affichage(M) :
                         L[M[i][j]]=1
                         RECT=canv.create_rectangle(AUTRE*XY[0][0],AUTRE*XY[0][1],AUTRE*((XY[-1][0])+1),AUTRE*((XY[-1][1])+1),fill=x)
                         RECT2=canv.create_rectangle(AUTRE*XY[0][0],AUTRE*XY[0][1],AUTRE*((XY[-1][0])+1),AUTRE*((XY[-1][1])+1))
-                        
-
-affichage(M)         
-
-def genererFen():
-    canv.create_image(centre, image=parking)
-    canv.create_line((LARG+5,2*(LARG/6)),(LARG+5,3*(LARG/6)), fill="red", width=12)
+                        liste_voiture.append(RECT)
+                        liste_voiture.append(RECT2)
+def effacer(N):
+    for i in N:
+        canv.delete(i)      
 
 
+def victory():
+    global canv
+    if M[2][5]==1:
+        canv.create_rectangle(0,0,LARG,HAUT,fill='green3')
+        canv.create_text(LARG//2,HAUT//2,text="VICTOIRE !",fill='white',font="Arial 50 roman")
 
 def clic(event):
-    global M,truc,RECT,RECT2,VOITUREB,centre,parking
-    canv.delete("all")
+    global M,liste_voiture
     a=(event.x,event.y)
     M=deplacement(M,[int(a[1])//100,int(a[0])//100])
-    genererFen()
+    effacer(liste_voiture)
     affichage(M)
     enregistreur(M)
     a=victoire(M)
     if "vic"==a:
+        #
         print("la fin")
     if a:
-        # à gérer
-        print("victoire")
+        victory()
         
-        
+#GESTION DES BOUTONS
+def recommencer():
+    pass
+
+def quitter():
+    fen.destroy()
+
+#LANCEMENT DES FONCTIONS
+f=font.Font(size=15)
+
+btn2=Button(fen,activebackground='IndianRed3', text="Quitter",height=3,width=15,command=quitter)
+btn2['font']=f
+btn2.pack(side=BOTTOM,padx=10, pady=50)
+
+btn=Button(fen,activebackground='lightBlue1', text="Recommencer",height=3,width=15,command=recommencer)
+btn['font']=f
+btn.pack(side=BOTTOM,padx=10, pady=10)
+
+victoire(M)
+
+affichage(M) 
 
 canv.bind("<Button-1>", clic)
-#RECTANGLE : canv.create_rectangle(x,y,x1,y1,fill="magenta")
-#ENLEVER RECTANGLE : 
-
 
 fen.mainloop()
-
 
 fen.protocol("WM_DELETE_WINDOW",fen.destroy())
 
