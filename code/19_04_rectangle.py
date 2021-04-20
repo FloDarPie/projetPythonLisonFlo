@@ -2,6 +2,7 @@ from tkinter import *
 from cache import *
 import os
 
+
 #voiture de 2 à 8 et camion de 9 à 13
 M=[[0,0,0,4,4,12]
 ,[0,0,0,0,3,12]
@@ -70,6 +71,9 @@ def position(M,val):
                     XY.append([i,j])
         return XY
 
+RECT=0
+RECT2=0
+
 
 #placer les voitures/camions rectangulaires de la matrice
 def affichage(M) :
@@ -82,8 +86,8 @@ def affichage(M) :
                     L[M[i][j]]==1
                 except:
                     L[M[i][j]]=1
-                    canv.create_rectangle(AUTRE*XY[0][0],AUTRE*XY[0][1],AUTRE*((XY[-1][0])+1),AUTRE*((XY[-1][1])+1),fill="red")
-                    canv.create_rectangle(AUTRE*XY[0][0],AUTRE*XY[0][1],AUTRE*((XY[-1][0])+1),AUTRE*((XY[-1][1])+1))
+                    RECT=canv.create_rectangle(AUTRE*XY[0][0],AUTRE*XY[0][1],AUTRE*((XY[-1][0])+1),AUTRE*((XY[-1][1])+1),fill=random.choice(colors))
+                    RECT2=canv.create_rectangle(AUTRE*XY[0][0],AUTRE*XY[0][1],AUTRE*((XY[-1][0])+1),AUTRE*((XY[-1][1])+1))
 
 affichage(M)         
 
@@ -91,10 +95,17 @@ truc=[]
 posi=[]
 def clic(event):
     global posi,M,truc
+    canv.delete(RECT,RECT2)
     a=(event.x,event.y)
     
     posi=[int(a[0])//100,int(a[1])//100]
-    M=(deplacement(M,posi))
+    M=([[3,3,0,0,0,12],
+    [9,0,0,10,0,12],
+    [9,1,1,10,0,12],
+    [9,0,0,10,0,0],
+    [2,0,0,0,5,5],
+    [2,0,11,11,11,0]])
+    
     affichage(M)
     truc.append(posi)
     print(truc)
