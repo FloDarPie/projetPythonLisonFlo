@@ -14,18 +14,6 @@ def lecteur():
             data.readline(200)
         return data.readline(200)
     
-def color():
-    chemin=os.getcwd()
-    chemin=chemin[:-4]
-    chemin+="couleurs.txt"
-    alea=random.randrange(0,479)
-    with open(chemin,'r') as data:
-        contenu=data.readlines()
-    return contenu[alea]
-    
-
-
-print(color())
 
 def change_niv(niv):
     with open(path,'r') as data:
