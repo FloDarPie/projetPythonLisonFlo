@@ -55,7 +55,6 @@ def enregistreur(matrice):
 
 def victoire(matrice):
     if matrice[2][5]==1:
-        print("salut")
         with open(path,'r') as data:
             niv=int(data.readline(2),base=10)
         with open(path,'r') as data:
@@ -67,7 +66,7 @@ def victoire(matrice):
         niv+=1
         niv=str(niv)
         if len(niv)==1:
-            niv="0"+niv
+            niv="0"+niv+"\n"
         contenu=list(niv)+contenu[2:]
         
         with open(path,'w') as data:
