@@ -20,7 +20,7 @@ def color():
 def lecteur():
     with open(path,'r') as data:
         num=int(data.readline(2),base=10)
-        for i in range(num-1):
+        for i in range(num):
             data.readline(200)
         return data.readline(200).rstrip("\n")
     
@@ -39,11 +39,12 @@ def enregistreur(matrice):
     with open(path,'r') as data:
         contenu=data.readlines()
     num_lines = sum(1 for line in open(path))
+    
     contenu=contenu[:num_lines-1]
     contenu+=matrice
+    
     with open(path,'w') as data:
         while num_lines!=0:
-
             if num_lines==1:
                 data.write(str(contenu))
             else:
@@ -51,6 +52,33 @@ def enregistreur(matrice):
             contenu=contenu[1:]
             num_lines-=1
 
+
+def victoire(matrice):
+    if matrice[2][5]==1:
+        print("salut")
+        with open(path,'r') as data:
+            niv=int(data.readline(2),base=10)
+        with open(path,'r') as data:
+            contenu=data.readlines()
+        if niv==23:
+            return "victory"
+        num_lines = sum(1 for line in open(path))
+        
+        niv+=1
+        niv=str(niv)
+        if len(niv)==1:
+            niv="0"+niv
+        contenu=list(niv)+contenu[2:]
+        
+        with open(path,'w') as data:
+            while num_lines!=0:
+                if num_lines==1:
+                    data.write(str(contenu))
+                else:
+                    data.write(str(contenu[0]))
+                contenu=contenu[1:]
+                num_lines-=1
+        
 
 def deplacement(matrice,pos):
     #valeur=matrice[pos[0]][pos[1]]

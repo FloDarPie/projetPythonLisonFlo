@@ -12,27 +12,31 @@ def niveau():
     niv=[]
     ligne=[]
     val=0
+    M=M[1:]
     while M != "":
         if len(ligne)==6:
             niv.append(ligne)
             ligne=[]
             
-        chiffre=1
-        if M[0]=="," or M[0]=="[" or M[0]=="]":
+        try:
+            a=int(M[0],base=10)
+            try:
+                b=int(M[1],base=10)
+                c=M[0]+M[1]
+                ligne.append(c)
+                M=M[2:]
+            except:
+                ligne.append(a)
+                M=M[1:]
+        except:
+            chiffre=1
             M=M[1:]
-        
-        if int(M[0],base=10)>=0:
-            chifre+=1
-            val+=M[0]
-        if M[1]=="," or M[1]=="]":
-            ligne.append(val)
-            val=0
-            M=M[1:]
-        print(val,ligne)
-        return niv
+
+    return niv
     
     print(type([[0,2,3,3,4,4],[0,2,0,0,5,5],[1,1,0,0,11,6],[9,10,10,10,11,6],[9,0,0,0,11,7],[9,0,0,0,0,7]]))
     print(list(M))
+
 M=niveau()
 
 path=os.getcwd()
@@ -131,29 +135,16 @@ def clic(event):
     M=deplacement(M,[int(a[1])//100,int(a[0])//100])
     genererFen()
     affichage(M)
+    enregistreur(M)
+    victoire(M)
 
-'''
-
-def clic(event):
-    global posi,M,truc,RECT,RECT2,VOITUREB,centre,parking
-    a=(event.x,event.y)
-    posi=[int(a[1])//100,int(a[0])//100]
-    L=deplacement(M,posi)
-    new_posi=L[1].pop(posi)
-    canv.move(a,new_posi)
-    genererFen()
-    affichage(L[0])
-    truc.append(posi)
-    print(truc)
-
-
-'''
 canv.bind("<Button-1>", clic)
 #RECTANGLE : canv.create_rectangle(x,y,x1,y1,fill="magenta")
 #ENLEVER RECTANGLE : 
 
 
 fen.mainloop()
+
 
 fen.protocol("WM_DELETE_WINDOW",fen.destroy())
 
