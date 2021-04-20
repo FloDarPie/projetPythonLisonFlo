@@ -38,7 +38,15 @@ VOITUREB=0
 RECT=0
 RECT2=0
 
-x=color().rstrip("\n")
+
+text1="OBJECTIF : faites sortir la voiture de police du parking sans créer d'accidents."
+text2="REGLES DU JEU : faites avancer ou reculer les véhicules afin de libérer la voie à la voiture de police. Essayez d'y parvenir en le moins de coup possible !"
+text3="Si vous êtes bloqués, appuyez sur le solveur pour avoir la solution."
+text4="Pour quitter le jeu, appuyez sur le bouton quitter."
+text5="Attention ! Pour passer au niveau suivant, il faut terminer le niveau en cours."
+text6="Bonne chance !"
+
+textintro="Cliquer à l'avant de la voiture pour l'avancer et à l'arrière pour la reculer"
 
 posi=[]
 N=[]
@@ -70,7 +78,8 @@ def position(M,val):
 
 #placer les voitures/camions rectangulaires de la matrice
 def affichage(M) :
-    global n2,comp,RECT,RECT2,VOITUREB,x
+    global n2,comp,RECT,RECT2,VOITUREB
+    x=color().rstrip("\n")
     L={}
     for i in range(n):
         for j in range(n2):
@@ -92,7 +101,8 @@ def effacer(N):
     for i in N:
         canv.delete(i)
 
-def victoire(M):
+
+def victory(M):
     global canv
     if M[2][5]==1:
         canv.create_rectangle(0,0,LARG,HAUT,fill='green3')
@@ -106,7 +116,7 @@ def clic(event):
     posi=[int(a[1])//100,int(a[0])//100]
     M1=deplacement(M1,posi) 
     affichage(M1)
-    victoire(M1)
+    victory(M1)
 
 #GESTION DES BOUTONS
 def recommencer():
@@ -115,18 +125,51 @@ def recommencer():
 def quitter():
     fen.destroy()
 
+def solveur(): 
+    global canv2,f,fen
+    POPUP = Toplevel()
+    x=fen.winfo_x()
+    y=fen.winfo_y()
+
+    POPUP.geometry("+%d+%d" % (x+100,y+200))
+
+    
+    POPUP.title('Désolé...(ou pas)')
+    POPUP.minsize(height=100,width=300)
+    Button(POPUP, text='En cours de production...',activebackground='SteelBlue4',height=3,width=30,font=f,command=POPUP.destroy).pack(anchor=NW,padx=10, pady=10)
+    POPUP.transient(fen)
+    POPUP.grab_set()
+    fen.wait_window(POPUP)
+
+
+def fermer():
+    pass
+'''
+class Bouton:
+    def __init__(self,window,color,text,height,width,command):
+        self.w=window
+        self.c=color
+        self.t=text
+        self.h=height
+        self.w=width
+        self.co=command
+        self.tricks=[]
+
+    def add_trick(self, trick):
+        self.tricks.append
+'''
+
+
 #LANCEMENT DES FONCTIONS
 f=font.Font(size=15)
 
-btn2=Button(fen,activebackground='IndianRed3', text="Quitter",height=3,width=15,command=quitter)
-btn2['font']=f
-btn2.pack(side=BOTTOM,padx=10, pady=50)
+btn2=Button(fen,activebackground='IndianRed3', text="Quitter",height=3,width=15,command=quitter,font=f).pack(side=BOTTOM,padx=10, pady=10)
 
-btn=Button(fen,activebackground='lightBlue1', text="Recommencer",height=3,width=15,command=recommencer)
-btn['font']=f
-btn.pack(side=BOTTOM,padx=10, pady=10)
+btn=Button(fen,activebackground='lightBlue1', text="Recommencer",height=3,width=15,command=recommencer,font=f).pack(side=BOTTOM,padx=10, pady=10)
 
-victoire(M1)
+btn3=Button(fen,activebackground='green', text="Solveur",height=3,width=15,command=solveur,font=f).pack(side=BOTTOM,padx=10, pady=10)
+
+victory(M1)
 
 affichage(M1) 
 
