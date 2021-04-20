@@ -35,7 +35,7 @@ DIM=LARG
 fen=Tk()
 fen .title("Parking")
 canv=Canvas(fen, width=LARG, height=HAUT, background="gray")
-canv.pack(padx=100, pady=100)
+canv.pack()
 
 #ajouter image background
 parking=PhotoImage(file=path+"images/parking_fond.png")
@@ -92,7 +92,8 @@ def affichage(M) :
                         L[M[i][j]]=1
                         RECT=canv.create_rectangle(AUTRE*XY[0][0],AUTRE*XY[0][1],AUTRE*((XY[-1][0])+1),AUTRE*((XY[-1][1])+1),fill=x)
                         RECT2=canv.create_rectangle(AUTRE*XY[0][0],AUTRE*XY[0][1],AUTRE*((XY[-1][0])+1),AUTRE*((XY[-1][1])+1))
-                        
+                        N.append(RECT)
+                        N.append(RECT2)
 
 affichage(M)         
 
@@ -104,7 +105,7 @@ def genererFen():
 truc=[]
 posi=[]
 
-'''
+
 def clic(event):
     global posi,M,truc,RECT,RECT2,VOITUREB,centre,parking
     canv.delete("all")
@@ -113,23 +114,11 @@ def clic(event):
     posi=[int(a[1])//100,int(a[0])//100]
     M=deplacement(M,posi)
     genererFen()
-    affichage(M)
+    affichage(M[0])
     truc.append(posi)
     print(truc)
 
-'''
 
-def clic(event):
-    global posi,M,truc,RECT,RECT2,VOITUREB,centre,parking
-    a=(event.x,event.y)
-    posi=[int(a[1])//100,int(a[0])//100]
-    L=deplacement(M,posi)
-    new_posi=L[1].pop(posi)
-    canv.move(a,new_posi)
-    genererFen()
-    affichage(L[0])
-    truc.append(posi)
-    print(truc)
 canv.bind("<Button-1>", clic)
 
 
