@@ -35,13 +35,13 @@ DIM=LARG
 fen=Tk()
 fen .title("Parking")
 canv=Canvas(fen, width=LARG, height=HAUT, background="gray")
-canv.pack(padx=10, pady=10)
-
-#sortie du parking
-canv.create_line((LARG,2*(LARG/6)),(LARG,3*(LARG/6)), fill="red", width=12)
+canv.pack(padx=100, pady=100)
 
 #ajouter image background
 parking=PhotoImage(file=path+"images/parking_fond.png")
+
+#sortie du parking
+SORTIE=canv.create_line((LARG+5,2*(LARG/6)),(LARG+5,3*(LARG/6)), fill="red", width=12)
 
 #affiche background par rapport à son centre
 centre=(DIM/2,DIM/2)
@@ -50,7 +50,7 @@ canv.create_image(centre, image=parking)
 comp=0
 n=len (M)
 n2=len(M[0])
-
+x=color().rstrip("\n")
 
 
 #récupérer la position de la voiture entière
@@ -67,58 +67,67 @@ comp=0
 n=len (M)
 n2=len(M[0])
 
-def voitureP():
-    global comp
-    for k in range (n):
-        N=M[k]
-        n2=len (N)
-        for p in range (n2):
-            if N[p]==1 and comp==0:
-                comp+=1
-                canv.create_rectangle(p*AUTRE,k*AUTRE,p*AUTRE+2*AUTRE,k*AUTRE+AUTRE,fill="black")
-
+VOITUREB=0
 RECT=0
 RECT2=0
 
+N=[]
 #colors=['black', 'red', 'green', 'blue', 'cyan', 'yellow']
 #coul=random.randrange(len(colors))
 
 #placer les voitures/camions rectangulaires de la matrice
 def affichage(M) :
-    global n2,comp,RECT,RECT2
+    global n2,comp,RECT,RECT2,VOITUREB,x
     L={}
     for i in range(n):
         for j in range(n2):
             if M[i][j] !=0:
                 if M[i][j]==1:
-                    voitureP()
+                    VOITUREB=canv.create_rectangle(j*AUTRE,i*AUTRE,j*AUTRE+AUTRE,i*AUTRE+AUTRE,fill="black")
                 else:
                     XY=position(M,M[i][j])
                     try:
                         L[M[i][j]]==1
                     except:
                         L[M[i][j]]=1
-                        RECT=canv.create_rectangle(AUTRE*XY[0][0],AUTRE*XY[0][1],AUTRE*((XY[-1][0])+1),AUTRE*((XY[-1][1])+1),fill=color().rstrip("\n"))
+                        RECT=canv.create_rectangle(AUTRE*XY[0][0],AUTRE*XY[0][1],AUTRE*((XY[-1][0])+1),AUTRE*((XY[-1][1])+1),fill=x)
                         RECT2=canv.create_rectangle(AUTRE*XY[0][0],AUTRE*XY[0][1],AUTRE*((XY[-1][0])+1),AUTRE*((XY[-1][1])+1))
+                        
 
 affichage(M)         
 
+def genererFen():
+    canv.create_image(centre, image=parking)
+    canv.create_line((LARG+5,2*(LARG/6)),(LARG+5,3*(LARG/6)), fill="red", width=12)
+
+
 truc=[]
 posi=[]
+
+'''
 def clic(event):
-    global posi,M,truc,RECT,RECT2
-    canv.delete(RECT,RECT2)
+    global posi,M,truc,RECT,RECT2,VOITUREB,centre,parking
+    canv.delete("all")
     a=(event.x,event.y)
     
-    posi=[int(a[0])//100,int(a[1])//100]
-    M=([[3,3,0,0,0,12],
-    [9,0,0,10,0,12],
-    [9,1,1,10,0,12],
-    [9,0,0,10,0,0],
-    [2,0,0,0,5,5],
-    [2,0,11,11,11,0]])
-    
+    posi=[int(a[1])//100,int(a[0])//100]
+    M=deplacement(M,posi)
+    genererFen()
     affichage(M)
+    truc.append(posi)
+    print(truc)
+
+'''
+
+def clic(event):
+    global posi,M,truc,RECT,RECT2,VOITUREB,centre,parking
+    a=(event.x,event.y)
+    posi=[int(a[1])//100,int(a[0])//100]
+    L=deplacement(M,posi)
+    new_posi=L[1].pop(posi)
+    canv.move(a,new_posi)
+    genererFen()
+    affichage(L[0])
     truc.append(posi)
     print(truc)
 canv.bind("<Button-1>", clic)
