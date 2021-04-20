@@ -1,28 +1,25 @@
 from tkinter import *
+import tkinter.font as font
 import random
 from cache import *
 import os
 
 
 #voiture de 2 à 8 et camion de 9 à 13
-M=[[0,0,0,4,4,12]
-,[0,0,0,0,3,12]
-,[0,0,1,1,3,12]
-,[0,0,9,11,11,11]
-,[2,0,9,0,0,0]
-,[2,0,9,10,10,10]]
-
+M1=[[0,0,0,0,0,0]
+,[0,0,0,0,0,0]
+,[0,1,1,0,0,0]
+,[0,0,0,0,0,0]
+,[0,0,0,0,0,0]
+,[0,0,0,0,0,0]]
 
 path=os.getcwd()
 path=path[:-4]
 chemin=path+"/data/couleurs.txt"
 path+="/assets/"
 
-
-
-#PARAMETRES
+#PARAMETRES_FENETRE_TAILLE
 COTE=100
-
 NB_COL=6
 NB_LIG=6
 
@@ -32,26 +29,34 @@ HAUT=NB_LIG*COTE
 AUTRE=LARG/6
 DIM=LARG
 
+#PARAMETRES_FONCTIONS
+comp=0
+n=len (M1)
+n2=len(M1[0])
+
+VOITUREB=0
+RECT=0
+RECT2=0
+
+x=color().rstrip("\n")
+
+posi=[]
+N=[]
+
+#PARAMETRES_FENETRE
 fen=Tk()
-fen .title("Parking")
-canv=Canvas(fen, width=LARG, height=HAUT, background="gray")
-canv.pack()
+fen.title("Parking")
+canv=Canvas(fen, width=LARG, height=HAUT)
+canv.pack(side=LEFT)
 
 #ajouter image background
 parking=PhotoImage(file=path+"images/parking_fond.png")
-
-#sortie du parking
-SORTIE=canv.create_line((LARG+5,2*(LARG/6)),(LARG+5,3*(LARG/6)), fill="red", width=12)
-
 #affiche background par rapport à son centre
 centre=(DIM/2,DIM/2)
 canv.create_image(centre, image=parking)
 
-comp=0
-n=len (M)
-n2=len(M[0])
-x=color().rstrip("\n")
-
+#sortie du parking
+SORTIE=canv.create_line((LARG+5,2*(LARG/6)),(LARG+5,3*(LARG/6)), fill="red", width=12)
 
 #récupérer la position de la voiture entière
 def position(M,val):
@@ -63,18 +68,6 @@ def position(M,val):
                     XY.append([i,j])
         return XY
 
-comp=0
-n=len (M)
-n2=len(M[0])
-
-VOITUREB=0
-RECT=0
-RECT2=0
-
-N=[]
-#colors=['black', 'red', 'green', 'blue', 'cyan', 'yellow']
-#coul=random.randrange(len(colors))
-
 #placer les voitures/camions rectangulaires de la matrice
 def affichage(M) :
     global n2,comp,RECT,RECT2,VOITUREB,x
@@ -84,8 +77,9 @@ def affichage(M) :
             if M[i][j] !=0:
                 if M[i][j]==1:
                     VOITUREB=canv.create_rectangle(j*AUTRE,i*AUTRE,j*AUTRE+AUTRE,i*AUTRE+AUTRE,fill="black")
+                    N.append(VOITUREB)
                 else:
-                    XY=position(M,M[i][j])
+                    XY=position(M1,M1[i][j])
                     try:
                         L[M[i][j]]==1
                     except:
@@ -94,38 +88,49 @@ def affichage(M) :
                         RECT2=canv.create_rectangle(AUTRE*XY[0][0],AUTRE*XY[0][1],AUTRE*((XY[-1][0])+1),AUTRE*((XY[-1][1])+1))
                         N.append(RECT)
                         N.append(RECT2)
+def effacer(N):
+    for i in N:
+        canv.delete(i)
 
-affichage(M)         
-
-def genererFen():
-    canv.create_image(centre, image=parking)
-    canv.create_line((LARG+5,2*(LARG/6)),(LARG+5,3*(LARG/6)), fill="red", width=12)
-
-
-truc=[]
-posi=[]
-
+def victoire(M):
+    global canv
+    if M[2][5]==1:
+        canv.create_rectangle(0,0,LARG,HAUT,fill='green3')
+        canv.create_text(LARG//2,HAUT//2,text="VICTOIRE !",fill='white',font="Arial 50 roman")
+         
 
 def clic(event):
-    global posi,M,truc,RECT,RECT2,VOITUREB,centre,parking
-    canv.delete("all")
+    global posi,M1,N
     a=(event.x,event.y)
-    
+    effacer(N)
     posi=[int(a[1])//100,int(a[0])//100]
-    M=deplacement(M,posi)
-    genererFen()
-    affichage(M[0])
-    truc.append(posi)
-    print(truc)
+    M1=deplacement(M1,posi) 
+    affichage(M1)
+    victoire(M1)
 
+#GESTION DES BOUTONS
+def recommencer():
+    pass
+
+def quitter():
+    fen.destroy()
+
+#LANCEMENT DES FONCTIONS
+f=font.Font(size=15)
+
+btn2=Button(fen,activebackground='IndianRed3', text="Quitter",height=3,width=15,command=quitter)
+btn2['font']=f
+btn2.pack(side=BOTTOM,padx=10, pady=50)
+
+btn=Button(fen,activebackground='lightBlue1', text="Recommencer",height=3,width=15,command=recommencer)
+btn['font']=f
+btn.pack(side=BOTTOM,padx=10, pady=10)
+
+victoire(M1)
+
+affichage(M1) 
 
 canv.bind("<Button-1>", clic)
-
-
-
-#RECTANGLE : canv.create_rectangle(x,y,x1,y1,fill="magenta")
-#ENLEVER RECTANGLE : 
-
 
 fen.mainloop()
 
