@@ -1,4 +1,5 @@
 from tkinter import *
+import random
 from cache import *
 import os
 
@@ -13,11 +14,11 @@ M=[[0,0,0,4,4,12]
 
 
 path=os.getcwd()
-print(path)
 path=path[:-4]
+chemin=path+"/data/couleurs.txt"
 path+="/assets/"
 
-print(path)
+
 
 #PARAMETRES
 COTE=100
@@ -49,15 +50,6 @@ canv.create_image(centre, image=parking)
 comp=0
 n=len (M)
 n2=len(M[0])
-#Placer la voiture qui sort
-
-for i in range (n):
-    L=M[i]
-    n2=len (L)
-    for j in range (n2):
-        if L[j]==1 and comp==0:
-            comp+=1
-            voitureBouge=canv.create_rectangle(j*AUTRE,i*AUTRE,j*AUTRE+2*AUTRE,i*AUTRE+AUTRE,fill="magenta")
 
 
 
@@ -71,30 +63,50 @@ def position(M,val):
                     XY.append([i,j])
         return XY
 
+comp=0
+n=len (M)
+n2=len(M[0])
+
+def voitureP():
+    global comp
+    for k in range (n):
+        N=M[k]
+        n2=len (N)
+        for p in range (n2):
+            if N[p]==1 and comp==0:
+                comp+=1
+                canv.create_rectangle(p*AUTRE,k*AUTRE,p*AUTRE+2*AUTRE,k*AUTRE+AUTRE,fill="black")
+
 RECT=0
 RECT2=0
 
+#colors=['black', 'red', 'green', 'blue', 'cyan', 'yellow']
+#coul=random.randrange(len(colors))
 
 #placer les voitures/camions rectangulaires de la matrice
 def affichage(M) :
+    global n2,comp,RECT,RECT2
     L={}
     for i in range(n):
         for j in range(n2):
-            if M[i][j] !=0 and M[i][j]!=1:
-                XY=position(M,M[i][j])
-                try:
-                    L[M[i][j]]==1
-                except:
-                    L[M[i][j]]=1
-                    RECT=canv.create_rectangle(AUTRE*XY[0][0],AUTRE*XY[0][1],AUTRE*((XY[-1][0])+1),AUTRE*((XY[-1][1])+1),fill=random.choice(colors))
-                    RECT2=canv.create_rectangle(AUTRE*XY[0][0],AUTRE*XY[0][1],AUTRE*((XY[-1][0])+1),AUTRE*((XY[-1][1])+1))
+            if M[i][j] !=0:
+                if M[i][j]==1:
+                    voitureP()
+                else:
+                    XY=position(M,M[i][j])
+                    try:
+                        L[M[i][j]]==1
+                    except:
+                        L[M[i][j]]=1
+                        RECT=canv.create_rectangle(AUTRE*XY[0][0],AUTRE*XY[0][1],AUTRE*((XY[-1][0])+1),AUTRE*((XY[-1][1])+1),fill=color().rstrip("\n"))
+                        RECT2=canv.create_rectangle(AUTRE*XY[0][0],AUTRE*XY[0][1],AUTRE*((XY[-1][0])+1),AUTRE*((XY[-1][1])+1))
 
 affichage(M)         
 
 truc=[]
 posi=[]
 def clic(event):
-    global posi,M,truc
+    global posi,M,truc,RECT,RECT2
     canv.delete(RECT,RECT2)
     a=(event.x,event.y)
     

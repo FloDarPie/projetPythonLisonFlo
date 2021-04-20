@@ -42,7 +42,15 @@ def enregistreur(matrice):
             num_lines-=1
 
 
-
+def color():
+    path=os.getcwd()
+    path=path[:-4]
+    chemin=path+"/data/couleurs.txt"
+    alea=random.randrange(0,382)
+    with open(chemin,'r') as data:
+        contenu=data.readlines()
+    a= contenu[alea]
+    return a
 
 
 def deplacement(matrice,pos):
