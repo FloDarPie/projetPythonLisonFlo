@@ -66,11 +66,11 @@ canv.create_image(centre, image=parking)
 
 
 #tentative de Flo pour rajouter le logo avant qu'il aille au dodo
-canv2=Canvas(fen, width=LARG-100, height=HAUT-100)
-canv2.pack(side=RIGHT)
-joli=PhotoImage(file=path+"images/logo_rushHour.png")
+canv2=Canvas(fen, width=LARG/2.5+50, height=HAUT/2.5)
+canv2.pack()
+joli=PhotoImage(file=path+"images/logo_rushHour_corner.png")
 #affiche background par rapport à son centre
-centre2=(DIM/2,DIM/2)
+centre2=(DIM/4,DIM/4)
 canv2.create_image(centre2, image=joli)
 
 #sortie du parking
@@ -178,6 +178,7 @@ class Bouton:
 
 #LANCEMENT DES FONCTIONS
 f=font.Font(size=15)
+
 
 btn2=Button(fen,activebackground='IndianRed3', text="Quitter",height=3,width=15,command=quitter,font=f).pack(side=BOTTOM,padx=10, pady=10)
 
