@@ -6,6 +6,16 @@ path=os.getcwd()
 path=path[:-4]
 path+="data/data.txt"
 
+def color():
+    path=os.getcwd()
+    path=path[:-4]
+    chemin=path+"/data/couleurs.txt"
+    alea=random.randrange(0,382)
+    with open(chemin,'r') as data:
+        contenu=data.readlines()
+    a= contenu[alea]
+    return a
+
 
 def lecteur():
     with open(path,'r') as data:
@@ -42,17 +52,6 @@ def enregistreur(matrice):
             num_lines-=1
 
 
-def color():
-    path=os.getcwd()
-    path=path[:-4]
-    chemin=path+"/data/couleurs.txt"
-    alea=random.randrange(0,382)
-    with open(chemin,'r') as data:
-        contenu=data.readlines()
-    a= contenu[alea]
-    return a
-
-
 def deplacement(matrice,pos):
     if pos[1]>=6 or pos[0]>=6 or matrice[pos[0]][pos[1]]==0:
         return matrice
@@ -76,23 +75,24 @@ def deplacement(matrice,pos):
         avant=False
         mouv = False
         if coordoClick== position[0]:
-            avant = True        
+            avant = True
+
         #contrôle si le mouvement est possible et altération de la matrice
         if (sens=="verti" and avant ==True):
             try :
                 mouv = matrice[coordoClick[0]-1][coordoClick[1]] == 0
-                
-                matrice[coordoClick[0]-1][coordoClick[1]] =matrice[coordoClick[0]][coordoClick[1]]
-                matrice[position[-1][0]][position[-1][1]] = 0
+                if mouv:
+                    matrice[coordoClick[0]-1][coordoClick[1]] =matrice[coordoClick[0]][coordoClick[1]]
+                    matrice[position[-1][0]][position[-1][1]] = 0
             except IndexError:
                 return matrice
            
         elif (sens=="verti" and avant ==False):
             try :
                 mouv = matrice[position[-2][0]][position[-1][1]] == 0
-                
-                matrice[position[-2][0]][position[-1][1]] = matrice[position[-1][0]][position[-1][1]]
-                matrice[position[0][0]][position[0][1]] = 0
+                if mouv:
+                    matrice[position[-2][0]][position[-1][1]] = matrice[position[-1][0]][position[-1][1]]
+                    matrice[position[0][0]][position[0][1]] = 0
             except IndexError:
                 return matrice
      
@@ -100,26 +100,28 @@ def deplacement(matrice,pos):
             try:
                 mouv = matrice[coordoClick[0]][coordoClick[1]-1] == 0
                 
-                matrice[coordoClick[0]][coordoClick[1]-1] = matrice[position[0][0]][position[0][1]]
-                matrice[position[-1][0]][position[-1][1]] = 0
-                
+                if mouv:
+                    matrice[coordoClick[0]][coordoClick[1]-1] = matrice[position[0][0]][position[0][1]]
+                    matrice[position[-1][0]][position[-1][1]] = 0
+                    
             except IndexError:
                 return matrice
             
         elif (sens=="horiz" and avant ==False):
             try:
                 mouv = matrice[position[-1][0]][position[-1][1]+1] == 0
-                
-                matrice[position[-1][0]][position[-1][1]+1] = matrice[position[-1][0]][position[-1][1]]
-                matrice[position[0][0]][position[0][1]] = 0
+                if mouv:
+                    matrice[position[-1][0]][position[-1][1]+1] = matrice[position[-1][0]][position[-1][1]]
+                    matrice[position[0][0]][position[0][1]] = 0
             except IndexError:
                 return matrice
+        
         return matrice
 
     a=position(matrice,matrice[pos[0]][pos[1]])
     
     print(a,pos)
-    if pos[0]==a[1][0] and pos[1]==a[1][1]: #contrôle du click, savoir si c'est au milieu de la voiture
+    if pos[0]==a[1][0] and pos[1]==a[1][1] and len(a)==3: #contrôle du click, savoir si c'est au milieu de la voiture
         return matrice
     
     
@@ -155,7 +157,7 @@ print(matrice[pos[0]][pos[1]])
 print(deplacement(matrice,pos))
 '''
 M=[[0,0,0,4,4,12],[0,0,0,0,3,12],[0,1,1,0,3,12],[0,0,9,11,11,11],[2,0,9,0,0,0],[2,0,9,10,10,10]]
-L=[[2,2], [3, 2], [2, 2], [3, 3]]
+L=[[2,2],[2,2],[2,1], [3, 2], [2, 2], [3, 3]]
 
 
 def affiche(M):
