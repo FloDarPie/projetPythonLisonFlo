@@ -1,4 +1,5 @@
 import os
+import random
 
 path=os.getcwd()
 
@@ -12,6 +13,26 @@ def lecteur():
         for i in range(num-1):
             data.readline(200)
         return data.readline(200)
+    
+def color():
+    global path
+    path=path[:-8]
+    path+="couleurs.txt"
+    alea=random.randrange(0,479)
+    with open(path,'r') as data:
+        contenu=data.readlines()
+    return contenu[alea]
+    
+
+
+print(color())
+
+def change_niv(niv):
+    with open(path,'r') as data:
+        contenu=data.readlines()
+    with open(path,'w') as data:
+        pass
+
 
 def enregistreur(matrice):
     contenu=""
@@ -43,13 +64,12 @@ def deplacement(matrice,pos):
     def position(M,val):
         XY=[]
         if val != 0: #[0][0]:       
-            for j in range(len(M)):
-                for i in range (len(M[0])):
-                    if M[j][i] == val:
+            for i in range(len(M)):
+                for j in range (len(M[0])):
+                    if M[i][j] == val:
                         XY.append([i,j])
-            print(XY)
             return XY
-        
+
     def sens(position):
         if position[0][0]==position[1][0]:
             return "horiz"
@@ -101,6 +121,12 @@ def deplacement(matrice,pos):
         return matrice
 
     a=position(matrice,matrice[pos[0]][pos[1]])
+    
+    print(a,pos)
+    if pos[0]==a[1][0] and pos[1]==a[1][1]: #contrôle du click, savoir si c'est au milieu de la voiture
+        return matrice
+    
+    
     b=sens(a)
     c=bouge(b,pos,a)
     '''
@@ -132,5 +158,15 @@ pos=[0,1]
 print(matrice[pos[0]][pos[1]])
 print(deplacement(matrice,pos))
 '''
+M=[[0,0,0,4,4,12],[0,0,0,0,3,12],[0,1,1,0,3,12],[0,0,9,11,11,11],[2,0,9,0,0,0],[2,0,9,10,10,10]]
+L=[[2,2], [3, 2], [2, 2], [3, 3]]
 
 
+def affiche(M):
+    for i in range(6):
+        print(M[i])
+    print()
+affiche(M)
+for i in L:
+    print(i)
+    affiche(deplacement(M,i))
