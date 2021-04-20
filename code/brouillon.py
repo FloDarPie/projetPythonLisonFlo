@@ -80,15 +80,9 @@ canv.pack(side=LEFT)
 
 #ajouter image background
 parking=PhotoImage(file=path+"images/parking_fond.png")
-logo=PhotoImage(file=path+"images/logo_rushHour2.png")
 #affiche background par rapport à son centre
 centre=(DIM/2,DIM/2)
 canv.create_image(centre, image=parking)
-
-#affiche logo par rapport à son centre
-centre2=(DIM/10,DIM+DIM/10)
-canv.create_image(centre2, image=logo)
-
 
 #sortie du parking
 SORTIE=canv.create_line((LARG+5,2*(LARG/6)),(LARG+5,3*(LARG/6)), fill="red", width=12)
