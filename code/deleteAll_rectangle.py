@@ -101,21 +101,14 @@ def genererFen():
     canv.create_line((LARG+5,2*(LARG/6)),(LARG+5,3*(LARG/6)), fill="red", width=12)
 
 
-truc=[]
-posi=[]
 
-'''
 def clic(event):
-    global posi,M,truc,RECT,RECT2,VOITUREB,centre,parking
+    global M,truc,RECT,RECT2,VOITUREB,centre,parking
     canv.delete("all")
     a=(event.x,event.y)
-    
-    posi=[int(a[1])//100,int(a[0])//100]
-    M=deplacement(M,posi)
+    M=deplacement(M,[int(a[1])//100,int(a[0])//100])
     genererFen()
     affichage(M)
-    truc.append(posi)
-    print(truc)
 
 '''
 
@@ -130,10 +123,10 @@ def clic(event):
     affichage(L[0])
     truc.append(posi)
     print(truc)
+
+
+'''
 canv.bind("<Button-1>", clic)
-
-
-
 #RECTANGLE : canv.create_rectangle(x,y,x1,y1,fill="magenta")
 #ENLEVER RECTANGLE : 
 
