@@ -59,6 +59,7 @@ canv.pack(side=LEFT)
 
 #ajouter image background
 parking=PhotoImage(file=path+"images/parking_fond.png")
+logo=PhotoImage(file=path+"images/logo_rushHour2.png")
 #affiche background par rapport à son centre
 centre=(DIM/2,DIM/2)
 canv.create_image(centre, image=parking)
@@ -126,7 +127,7 @@ def quitter():
     fen.destroy()
 
 def solveur(): 
-    global canv2,f,fen
+    global f,fen,logo
     POPUP = Toplevel()
     x=fen.winfo_x()
     y=fen.winfo_y()
@@ -139,6 +140,12 @@ def solveur():
     Button(POPUP, text='En cours de production...',activebackground='SteelBlue4',height=3,width=30,font=f,command=POPUP.destroy).pack(anchor=NW,padx=10, pady=10)
     POPUP.transient(fen)
     POPUP.grab_set()
+
+    canvas=Canvas(POPUP,width=100,height=56)
+    canvas.pack()
+    canvas.create_image(50,28,image=logo)
+
+
     fen.wait_window(POPUP)
 
 
