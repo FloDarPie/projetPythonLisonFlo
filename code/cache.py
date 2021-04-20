@@ -53,8 +53,9 @@ def enregistreur(matrice):
 
 
 def deplacement(matrice,pos):
+    valeur=matrice[pos[0]][pos[1]]
     if pos[1]>=6 or pos[0]>=6 or matrice[pos[0]][pos[1]]==0:
-        return matrice
+        return matrice,valeur
     
     def position(M,val):
         XY=[]
@@ -85,7 +86,7 @@ def deplacement(matrice,pos):
                     matrice[coordoClick[0]-1][coordoClick[1]] =matrice[coordoClick[0]][coordoClick[1]]
                     matrice[position[-1][0]][position[-1][1]] = 0
             except IndexError:
-                return matrice
+                return matrice,valeur
            
         elif (sens=="verti" and avant ==False):
             try :
@@ -96,7 +97,7 @@ def deplacement(matrice,pos):
                     matrice[position[-1][0]+1][position[-1][1]] = matrice[position[-1][0]][position[-1][1]]
                     matrice[position[0][0]][position[0][1]] = 0
             except IndexError:
-                return matrice
+                return matrice,valeur
      
         elif (sens=="horiz" and avant ==True):
             try:
@@ -107,7 +108,7 @@ def deplacement(matrice,pos):
                     matrice[position[-1][0]][position[-1][1]] = 0
                     
             except IndexError:
-                return matrice
+                return matrice,valeur
             
         elif (sens=="horiz" and avant ==False):
             try:
@@ -116,18 +117,15 @@ def deplacement(matrice,pos):
                     matrice[position[-1][0]][position[-1][1]+1] = matrice[position[-1][0]][position[-1][1]]
                     matrice[position[0][0]][position[0][1]] = 0
             except IndexError:
-                return matrice
+                return matrice,valeur
         
-        return matrice
-    valeur=matrice[pos[0]][pos[1]]
     a=position(matrice,valeur)
     
 
     if pos[0]==a[1][0] and pos[1]==a[1][1] and len(a)==3: #contrôle du click, savoir si c'est au milieu de la voiture
-        new_position=position(matrice,valeur)
-        return matrice,new_position
+        return matrice,valeur
     
-    
+    new_position=position(matrice,valeur)
     b=sens(a)
     c=bouge(b,pos,a)
     '''
@@ -151,7 +149,7 @@ def deplacement(matrice,pos):
     (pensez à mettre les coordonnées en: int
                                          //6)
     '''
-    return matrice
+    return matrice,new_position
 '''            
 matrice=[[0,0,0, 4, 4,12],[0,0,0, 0, 3,12],[1,1,0, 0, 3,12],[0,0,9,11,11,11],[2,0,9, 0, 0, 0],[2,0,9,10,10,10]]
 print(matrice)
