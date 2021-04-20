@@ -10,7 +10,7 @@ def color():
     path=os.getcwd()
     path=path[:-4]
     chemin=path+"/data/couleurs.txt"
-    alea=random.randrange(0,381)
+    alea=random.randrange(0,368)
     with open(chemin,'r') as data:
         contenu=data.readlines()
     a= contenu[alea]
@@ -92,7 +92,6 @@ def deplacement(matrice,pos):
             try :
                 mouv = matrice[position[-1][0]+1][position[-1][1]] == 0
                 
-                print(mouv,matrice[position[-2][0]][position[-1][1]])
                 if mouv:
                     matrice[position[-1][0]+1][position[-1][1]] = matrice[position[-1][0]][position[-1][1]]
                     matrice[position[0][0]][position[0][1]] = 0

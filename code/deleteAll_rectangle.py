@@ -5,7 +5,35 @@ import os
 
 
 #voiture de 2 à 8 et camion de 9 à 13
-M=lecteur()
+
+
+def niveau():
+    M=lecteur()
+    niv=[]
+    ligne=[]
+    val=0
+    while M != "":
+        if len(ligne)==6:
+            niv.append(ligne)
+            ligne=[]
+            
+        chiffre=1
+        if M[0]=="," or M[0]=="[" or M[0]=="]":
+            M=M[1:]
+        
+        if int(M[0],base=10)>=0:
+            chifre+=1
+            val+=M[0]
+        if M[1]=="," or M[1]=="]":
+            ligne.append(val)
+            val=0
+            M=M[1:]
+        print(val,ligne)
+        return niv
+    
+    print(type([[0,2,3,3,4,4],[0,2,0,0,5,5],[1,1,0,0,11,6],[9,10,10,10,11,6],[9,0,0,0,11,7],[9,0,0,0,0,7]]))
+    print(list(M))
+M=niveau()
 
 path=os.getcwd()
 path=path[:-4]
@@ -29,7 +57,7 @@ DIM=LARG
 fen=Tk()
 fen .title("Parking")
 canv=Canvas(fen, width=LARG, height=HAUT, background="gray")
-canv.pack(padx=100, pady=100)
+canv.pack()
 
 #ajouter image background
 parking=PhotoImage(file=path+"images/parking_fond.png")
@@ -42,7 +70,7 @@ centre=(DIM/2,DIM/2)
 canv.create_image(centre, image=parking)
 
 comp=0
-n=len (M)
+n=len(M)
 n2=len(M[0])
 x=color().rstrip("\n")
 
