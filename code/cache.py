@@ -45,8 +45,9 @@ def deplacement(matrice,pos):
         if val != 0: #[0][0]:       
             for j in range(len(M)):
                 for i in range (len(M[0])):
-                    if M[i][j] == val:
+                    if M[j][i] == val:
                         XY.append([i,j])
+            print(XY)
             return XY
         
     def sens(position):
@@ -63,7 +64,6 @@ def deplacement(matrice,pos):
         #contrôle si le mouvement est possible et altération de la matrice
         if (sens=="verti" and avant ==True):
             try :
-                print("=========")
                 mouv = matrice[coordoClick[0]-1][coordoClick[1]] == 0
                 
                 matrice[coordoClick[0]-1][coordoClick[1]] =matrice[coordoClick[0]][coordoClick[1]]
