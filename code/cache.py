@@ -22,7 +22,7 @@ def lecteur():
         num=int(data.readline(2),base=10)
         for i in range(num-1):
             data.readline(200)
-        return data.readline(200)
+        return data.readline(200).rstrip("\n")
     
 
 def change_niv(niv):
@@ -76,7 +76,7 @@ def deplacement(matrice,pos):
         mouv = False
         if coordoClick== position[0]:
             avant = True
-        print(sens,avant)
+       
         #contrôle si le mouvement est possible et altération de la matrice
         if (sens=="verti" and avant ==True):
             try :
@@ -119,12 +119,13 @@ def deplacement(matrice,pos):
                 return matrice
         
         return matrice
-
-    a=position(matrice,matrice[pos[0]][pos[1]])
+    valeur=matrice[pos[0]][pos[1]]
+    a=position(matrice,valeur)
     
-    print(a,pos)
+
     if pos[0]==a[1][0] and pos[1]==a[1][1] and len(a)==3: #contrôle du click, savoir si c'est au milieu de la voiture
-        return matrice
+        new_position=position(matrice,valeur)
+        return matrice,new_position
     
     
     b=sens(a)
@@ -160,7 +161,6 @@ print(deplacement(matrice,pos))
 
 M=[[0,0,0,4,4,12],[0,0,0,0,3,12],[0,1,1,0,3,12],[0,0,9,11,11,11],[2,0,9,0,0,0],[2,0,9,10,10,10]]
 L=[[4, 0], [4, 0]]#, [2, 4], [4, 0], [4, 0], [4, 0], [4, 0], [3, 0], [3, 0], [4, 0], [3, 0], [3, 0], [4, 0], [5, 0]] #, [3, 0], [2, 2], [0, 3], [0, 2], [0, 2], [0, 3], [0, 3], [0, 2], [0, 1], [0, 1], [0, 2], [0, 3], [3, 0], [3, 0], [3, 0], [3, 0], [3, 0], [4, 0], [3, 0], [4, 0]]
-
 
 def affiche(M):
     for i in range(6):
