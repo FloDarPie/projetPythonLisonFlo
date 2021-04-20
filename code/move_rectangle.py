@@ -64,6 +64,15 @@ logo=PhotoImage(file=path+"images/logo_rushHour2.png")
 centre=(DIM/2,DIM/2)
 canv.create_image(centre, image=parking)
 
+
+#tentative de Flo pour rajouter le logo avant qu'il aille au dodo
+canv2=Canvas(fen, width=LARG-100, height=HAUT-100)
+canv2.pack(side=RIGHT)
+joli=PhotoImage(file=path+"images/logo_rushHour.png")
+#affiche background par rapport à son centre
+centre2=(DIM/2,DIM/2)
+canv2.create_image(centre2, image=joli)
+
 #sortie du parking
 SORTIE=canv.create_line((LARG+5,2*(LARG/6)),(LARG+5,3*(LARG/6)), fill="red", width=12)
 
