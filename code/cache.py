@@ -15,11 +15,11 @@ def lecteur():
         return data.readline(200)
     
 def color():
-    global path
-    path=path[:-8]
-    path+="couleurs.txt"
+    chemin=os.getcwd()
+    chemin=chemin[:-4]
+    chemin+="couleurs.txt"
     alea=random.randrange(0,479)
-    with open(path,'r') as data:
+    with open(chemin,'r') as data:
         contenu=data.readlines()
     return contenu[alea]
     
