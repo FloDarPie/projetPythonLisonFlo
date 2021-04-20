@@ -18,12 +18,6 @@ aliceblue
 lavender
 lavenderblush
 mistyrose
-darkslategray
-dimgray
-slategray
-lightslategray
-gray
-lightgrey
 midnightblue
 navy
 cornflowerblue
@@ -173,10 +167,6 @@ LightSkyBlue1
 LightSkyBlue2
 LightSkyBlue3
 LightSkyBlue4
-SlateGray1
-SlateGray2
-SlateGray3
-SlateGray4
 LightSteelBlue1
 LightSteelBlue2
 LightSteelBlue3
@@ -203,10 +193,6 @@ turquoise4
 cyan2
 cyan3
 cyan4
-DarkSlateGray1
-DarkSlateGray2
-DarkSlateGray3
-DarkSlateGray4
 aquamarine2
 aquamarine4
 DarkSeaGreen1
