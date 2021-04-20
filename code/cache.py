@@ -13,8 +13,6 @@ def lecteur():
             data.readline(200)
         return data.readline(200)
 
-
-
 def enregistreur(matrice):
     contenu=""
     compteur=0
