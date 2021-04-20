@@ -89,11 +89,11 @@ def deplacement(matrice,pos):
            
         elif (sens=="verti" and avant ==False):
             try :
-                mouv = matrice[position[-2][0]][position[-1][1]] == 0
+                mouv = matrice[position[-1][0]+1][position[-1][1]] == 0
                 
                 print(mouv,matrice[position[-2][0]][position[-1][1]])
                 if mouv:
-                    matrice[position[-2][0]][position[-1][1]] = matrice[position[-1][0]][position[-1][1]]
+                    matrice[position[-1][0]+1][position[-1][1]] = matrice[position[-1][0]][position[-1][1]]
                     matrice[position[0][0]][position[0][1]] = 0
             except IndexError:
                 return matrice
@@ -157,11 +157,11 @@ print(matrice)
 pos=[0,1]
 print(matrice[pos[0]][pos[1]])
 print(deplacement(matrice,pos))
-'''
+
 M=[[0,0,0,4,4,12],[0,0,0,0,3,12],[0,1,1,0,3,12],[0,0,9,11,11,11],[2,0,9,0,0,0],[2,0,9,10,10,10]]
 L=[[4, 0], [4, 0]]#, [2, 4], [4, 0], [4, 0], [4, 0], [4, 0], [3, 0], [3, 0], [4, 0], [3, 0], [3, 0], [4, 0], [5, 0]] #, [3, 0], [2, 2], [0, 3], [0, 2], [0, 2], [0, 3], [0, 3], [0, 2], [0, 1], [0, 1], [0, 2], [0, 3], [3, 0], [3, 0], [3, 0], [3, 0], [3, 0], [4, 0], [3, 0], [4, 0]]
 
-'''
+
 def affiche(M):
     for i in range(6):
         print(M[i])
