@@ -3,6 +3,7 @@ import tkinter.font as font
 import random
 from cache import *
 from os import getcwd
+from copy import deepcopy
 
 
 #voiture de 2 à 8 et camion de 9 à 13
@@ -158,10 +159,9 @@ def clic(event):
         
 #GESTION DES BOUTONS
 def recommencer():
-    print("j'essaye de recommencer")
-    print(niveau)
+    global matrice_niveau
     affichage(niveau)
-    matrice_niveau=niveau.copy()
+    matrice_niveau=deepcopy(niveau)
 
 def quitter():
     fen.destroy()
