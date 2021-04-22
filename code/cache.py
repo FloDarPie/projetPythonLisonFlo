@@ -62,6 +62,9 @@ def victoire(matrice):
         niv=str(niv)
         if len(niv)==1:
             niv="0"+niv+"\n"
+        else:
+            niv+="\n"
+
         contenu=[niv]+contenu[1:]
 
         with open(path,'w') as data:
@@ -106,7 +109,10 @@ def deplacement(matrice,pos):
         if (sens=="verti" and avant ==True):
             try :
                 mouv = matrice[coordoClick[0]-1][coordoClick[1]] == 0
-                if mouv:
+                #pb avec [coordoClick[0]-1]-> retourne [-1]
+                #print(mouv,sens,coordoClick,coordoClick[0]-1,matrice[coordoClick[0]-1][coordoClick[1]])
+                if mouv and (coordoClick[0]-1!=-1):
+                    
                     matrice[coordoClick[0]-1][coordoClick[1]] =matrice[coordoClick[0]][coordoClick[1]]
                     matrice[position[-1][0]][position[-1][1]] = 0
             except IndexError:
@@ -115,7 +121,7 @@ def deplacement(matrice,pos):
         elif (sens=="verti" and avant ==False):
             try :
                 mouv = matrice[position[-1][0]+1][position[-1][1]] == 0
-                
+                #print(mouv,sens,avant)
                 if mouv:
                     matrice[position[-1][0]+1][position[-1][1]] = matrice[position[-1][0]][position[-1][1]]
                     matrice[position[0][0]][position[0][1]] = 0
@@ -125,8 +131,9 @@ def deplacement(matrice,pos):
         elif (sens=="horiz" and avant ==True):
             try:
                 mouv = matrice[coordoClick[0]][coordoClick[1]-1] == 0
-                
-                if mouv:
+                #pb avec [coordoClick[1]-1]-> retourne [-1]
+                #print(mouv,sens,avant)
+                if mouv and (coordoClick[1]-1!=-1):
                     matrice[coordoClick[0]][coordoClick[1]-1] = matrice[position[0][0]][position[0][1]]
                     matrice[position[-1][0]][position[-1][1]] = 0
                     
@@ -136,6 +143,7 @@ def deplacement(matrice,pos):
         elif (sens=="horiz" and avant ==False):
             try:
                 mouv = matrice[position[-1][0]][position[-1][1]+1] == 0
+                #print(mouv,sens,avant)
                 if mouv:
                     matrice[position[-1][0]][position[-1][1]+1] = matrice[position[-1][0]][position[-1][1]]
                     matrice[position[0][0]][position[0][1]] = 0
