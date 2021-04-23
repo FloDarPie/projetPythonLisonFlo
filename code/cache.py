@@ -67,7 +67,10 @@ def ecriture(num_lines,contenu,ancien_niv):
             if num_lines==1:
                 data.write(str(contenu))
             elif cpt==ancien_niv+1:
-                data.write("F"+contenu[0])
+                if contenu[0][0]=="F":
+                    data.write(contenu[0])
+                else:
+                    data.write("F"+contenu[0])
             else:
                 data.write(contenu[0])
             contenu=contenu[1:]
