@@ -1,5 +1,6 @@
 import os
 import random
+from copy import deepcopy
 
 path=os.getcwd()
 
@@ -16,10 +17,22 @@ def color():
     a= contenu[alea]
     return a
 
+def niv_aléatoire():
+    with open(path,'r') as data:
+        num=int(data.readline(2),base=10)
+        for i in range(random.randrange(1,20)):
+            data.readline(200)
+        return data.readline(200).rstrip("\n")
+    
+
+
+
 
 def lecteur():
     with open(path,'r') as data:
         num=int(data.readline(2),base=10)
+        if num==21:
+            return niv_aléatoire()
         for i in range(num):
             data.readline(200)
         return data.readline(200).rstrip("\n")
@@ -47,10 +60,33 @@ def enregistreur(matrice):
             num_lines-=1
 
 
+def ecriture(num_lines,contenu,ancien_niv):
+    with open(path,'w') as data:
+        cpt=1
+        while num_lines!=0:
+            if num_lines==1:
+                data.write(str(contenu))
+            elif cpt==ancien_niv+1:
+                data.write("F"+contenu[0])
+            else:
+                data.write(contenu[0])
+            contenu=contenu[1:]
+            num_lines-=1
+            cpt+=1
+
+def augmente_niv(niv):
+        niv=str(niv)
+        if len(niv)==1:
+            niv="0"+niv+"\n"
+        else:
+            niv+="\n"
+        return niv
+
 def victoire(matrice):
     if matrice[2][5]==1:
         with open(path,'r') as data:
             niv=int(data.readline(2),base=10)
+            ancien_niv=deepcopy(niv)
         with open(path,'r') as data:
             contenu=data.readlines()
 
@@ -59,23 +95,35 @@ def victoire(matrice):
         niv+=1
         if niv==22:
             return "vic"
+        if niv==21:
+            niv=augmente_niv(niv)
+            contenu=[niv]+contenu[1:]
+            ecriture(num_lines,contenu,ancien_niv)
+            return "vic"
+        '''
         niv=str(niv)
         if len(niv)==1:
             niv="0"+niv+"\n"
         else:
             niv+="\n"
-
+        '''
+        niv=augmente_niv(niv)
         contenu=[niv]+contenu[1:]
-
+        '''
         with open(path,'w') as data:
+            cpt=1
             while num_lines!=0:
                 if num_lines==1:
                     data.write(str(contenu))
+                elif cpt==ancien_niv+1:
+                    data.write("F"+contenu[0])
                 else:
-                    data.write(str(contenu[0]))
+                    data.write(contenu[0])
                 contenu=contenu[1:]
                 num_lines-=1
-        
+                cpt+=1
+        '''
+        ecriture(num_lines,contenu,ancien_niv)
         return True
 
 

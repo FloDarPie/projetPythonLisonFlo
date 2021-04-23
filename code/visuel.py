@@ -152,21 +152,22 @@ def clic(event):
     enregistreur(matrice_niveau)
     a=victoire(matrice_niveau)
     if "vic"==a:
-        #
+        #mettre un POPUP avec les expliquations et faire apparaitre un bouton "aléatoire"
         print("la fin")
     if a:
         victory()
         
 #GESTION DES BOUTONS
 def recommencer():
-    global matrice_niveau
+    global matrice_niveau,x
+    x=color().rstrip("\n")
     affichage(niveau)
     matrice_niveau=deepcopy(niveau)
 
 def quitter():
     fen.destroy()
     
-def solveur(): 
+def choix_niveau(): 
     global f,fen,logo
     POPUP = Toplevel()
     x=fen.winfo_x()
@@ -175,7 +176,7 @@ def solveur():
     POPUP.geometry("+%d+%d" % (x+100,y+200))
 
     
-    POPUP.title('Désolé...(ou pas)')
+    POPUP.title('Choisis un niveau ')
     POPUP.minsize(height=100,width=300)
     Button(POPUP, text='En cours de production...',activebackground='SteelBlue4',height=3,width=30,font=f,command=POPUP.destroy).pack(anchor=NW,padx=10, pady=10)
     POPUP.transient(fen)
@@ -195,7 +196,7 @@ btn2=Button(fen,activebackground='IndianRed3', text="Quitter",height=3,width=15,
 
 btn=Button(fen,activebackground='lightBlue1', text="Recommencer",height=3,width=15,command=recommencer,font=f).pack(side=BOTTOM,padx=10, pady=10)
 
-btn3=Button(fen,activebackground='green', text="Solveur",height=3,width=15,command=solveur,font=f).pack(side=BOTTOM,padx=10, pady=10)
+btn3=Button(fen,activebackground='green', text="Niveaux",height=3,width=15,command=choix_niveau,font=f).pack(side=BOTTOM,padx=10, pady=10)
 
 victoire(matrice_niveau)
 
