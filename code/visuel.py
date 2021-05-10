@@ -39,6 +39,7 @@ def niveau():
     print(type([[0,2,3,3,4,4],[0,2,0,0,5,5],[1,1,0,0,11,6],[9,10,10,10,11,6],[9,0,0,0,11,7],[9,0,0,0,0,7]]))
     print(list(M))
 
+
 matrice_niveau=niveau()
 niveau=niveau()
 
@@ -62,7 +63,7 @@ DIM=LARG
 
 #PARAMETRES_FONCTIONS
 comp=0
-n=len (matrice_niveau)
+n=len(matrice_niveau)
 n2=len(matrice_niveau[0])
 
 VOITUREB=0
@@ -116,7 +117,7 @@ def effacer(N):
         canv.delete(i)   
 #placer les voitures/camions rectangulaires de la matrice
 def affichage(M) :
-    global n2,comp,RECT,RECT2,VOITUREB,x,liste_voiture
+    global n2,comp,RECT,RECT2,VOITUREB,x,liste_voiture,matrice_niveau
     L={}
     effacer(liste_voiture)
     for i in range(n):
@@ -137,11 +138,41 @@ def affichage(M) :
                         liste_voiture.append(RECT2)
    
 
+def message_fin():
+    global f,fen,logo
+    POPUP = Toplevel()
+    x=fen.winfo_x()
+    y=fen.winfo_y()
+
+    POPUP.geometry("+%d+%d" % (x,y))
+
+    def termine():
+        global matrice_niveau,niveau
+        POPUP.destroy
+        matrice_niveau=niveau()
+        print (niveau)
+
+    
+    POPUP.title('Bien joué !')
+    POPUP.minsize(height=100,width=300)
+    Button(POPUP, text='Jouer à un niveau aléatoire',activebackground='Green',height=3,width=30,font=f,command=termine()).pack(anchor=NW,padx=10, pady=10)
+    POPUP.transient(fen)
+    POPUP.grab_set()
+
+    canvas=Canvas(POPUP,width=100,height=56)
+    canvas.pack()
+    canvas.create_image(50,28,image=logo)
+
+
+    fen.wait_window(POPUP)
+
 
 def victory():
-    global canv
+    global canv,matrice_niveau
+    canv.delete("all")
     canv.create_rectangle(0,0,LARG,HAUT,fill='green3')
     canv.create_text(LARG//2,HAUT//2,text="VICTOIRE !",fill='white',font="Arial 50 roman")
+    message_fin()
     
 
 def clic(event):
@@ -159,7 +190,8 @@ def clic(event):
         
 #GESTION DES BOUTONS
 def recommencer():
-    global matrice_niveau,x
+    global matrice_niveau,x,niveau
+
     x=color().rstrip("\n")
     affichage(niveau)
     matrice_niveau=deepcopy(niveau)
@@ -170,10 +202,10 @@ def quitter():
 def choix_niveau(): 
     global f,fen,logo
     POPUP = Toplevel()
-    x=fen.winfo_x()
-    y=fen.winfo_y()
+    x=fen.winfo_x()+100
+    y=fen.winfo_y()+200
 
-    POPUP.geometry("+%d+%d" % (x+100,y+200))
+    POPUP.geometry("+%d+%d" % (x,y))
 
     
     POPUP.title('Choisis un niveau ')
