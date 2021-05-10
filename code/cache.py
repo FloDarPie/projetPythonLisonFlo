@@ -23,10 +23,37 @@ def niv_aléatoire():
         for i in range(random.randrange(1,20)):
             data.readline(200)
         return data.readline(200).rstrip("\n")
-    
+ 
+ #convertie une chaîne de string en matrice de niveau
+def niveau():
+    M=lecteur()
+    niv=[]
+    ligne=[]
+    val=0
+    M=M[1:]
+    while M != "":
+        if len(ligne)==6:
+            niv.append(ligne)
+            ligne=[]
+            
+        try:
+            a=int(M[0],base=10)
+            try:
+                b=int(M[1],base=10)
+                c=M[0]+M[1]
+                ligne.append(c)
+                M=M[2:]
+            except:
+                ligne.append(a)
+                M=M[1:]
+        except:
+            chiffre=1
+            M=M[1:]
 
-
-
+    return niv
+ 
+ 
+ 
 
 def lecteur():
     with open(path,'r') as data:
@@ -37,9 +64,17 @@ def lecteur():
             data.readline(200)
         return data.readline(200).rstrip("\n")
     
+def lecture_ligne(niveau):
+    with open(path,'r') as data:
+        for i in range(niveau+1):
+            data.readline(200)
+        return data.readline(200).rstrip("\n")
+    
+    
 
 
 def enregistreur(matrice):
+    print(type(matrice))
     contenu=""
     compteur=0
     balise=1
