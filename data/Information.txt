@@ -1,9 +1,8 @@
+OBJECTIF : faites sortir la voiture de police du parking sans créer d'accidents.
+REGLES DU JEU : faites avancer ou reculer les véhicules afin de libérer la voie à la voiture de police. Essayez d'y parvenir en le moins de coup possible !
+Si vous êtes bloqués, appuyez sur le solveur pour avoir la solution.
+Pour quitter le jeu, appuyez sur le bouton quitter.
+Attention ! Pour passer au niveau suivant, il faut terminer le niveau en cours.
+Bonne chance !
 
-text1="OBJECTIF : faites sortir la voiture de police du parking sans créer d'accidents."
-text2="REGLES DU JEU : faites avancer ou reculer les véhicules afin de libérer la voie à la voiture de police. Essayez d'y parvenir en le moins de coup possible !"
-text3="Si vous êtes bloqués, appuyez sur le solveur pour avoir la solution."
-text4="Pour quitter le jeu, appuyez sur le bouton quitter."
-text5="Attention ! Pour passer au niveau suivant, il faut terminer le niveau en cours."
-text6="Bonne chance !"
-
-textintro="Cliquer à l'avant de la voiture pour l'avancer et à l'arrière pour la reculer" 
+Cliquer à l'avant de la voiture pour l'avancer et à l'arrière pour la reculer 
