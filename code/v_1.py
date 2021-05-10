@@ -41,20 +41,23 @@ class Partie(tk.Tk):
         
         
         self.bouton_quitter = tk.Button(self, text="Quitter",activebackground='IndianRed3',height=3,width=15,command=self.quitter,font=f).pack(side=tk.BOTTOM,padx=10, pady=10)
-        self.bouton_niveau = tk.Button(self, text="Choix du niveau",activebackground='green',height=3,width=15,command=self.niveau,font=f).pack(side=tk.BOTTOM_RIGHT,padx=10, pady=10)
+        self.bouton_niveau = tk.Button(self, text="Choix du niveau",activebackground='green',height=3,width=15,command=self.niveau,font=f).pack(side=tk.RIGHT,padx=10, pady=10)
         self.canv.pack()
     
-    #s'enfuir de l'appli
+    #s'enfuir de l'appliQuitter
     def quitter(self):
         self.quit()
 
     def niveau(self):
-        new_fenetre = tk.Toplevel()
+        self.new_fenetre = tk.Toplevel()
         
-        centre = (300,300)
+        centre = 300
+        new_fenetre.tk.geometry("+%d+%d" % (centre+100,centre+200))
+        new_fenetre.title('Sélection du niveau')
         
-        
-        
+        self.bouton_quitter = tk.Button(self, text="Retour",activebackground='IndianRed3',height=3,width=15,command=self.quitter,font=f).pack(side=tk.BOTTOM,padx=10, pady=10)
+        self.wait_window(new_fenetre)
+        '''
         POPUP = tk.Toplevel()
         x=tk.winfo_x()
         y=tk.winfo_y()
@@ -71,9 +74,9 @@ class Partie(tk.Tk):
         canvas=tk.Canvas(POPUP,width=100,height=56)
         canvas.pack()
         canvas.create_image(50,28,image=self.logo)
+        '''
 
-
-        self.wait_window(POPUP)
+        
 
 
 
