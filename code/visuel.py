@@ -268,27 +268,72 @@ def diff():
         coul="red"
         return "difficile"
 
-def choix_niveau(): 
-    global f,fen,logo
+def grille():
+    global comp
+    root = Tk()
+    frame = Frame(root)
+    frame.grid()
+    root.title("Choisis ton niveau")  
+    root.minsize(LARG//2,HAUT//2)    
+
+
+    grid = Frame(frame)  
+    grid.grid(sticky=N+S+E+W, column=0, row=7, columnspan=2)
+
+    comp=1
+    for x in range(5):
+        for y in range(4):
+            btn = Button(grid,text=str(comp),height=5,width=10,command=choix_niveau(comp))
+            comp+=1
+            btn.grid(column=x, row=y)
+
+    root.mainloop()
+
+def tutoriel():
     POPUP = Toplevel()
+    f=font.Font(size=15)
     x=fen.winfo_x()+100
     y=fen.winfo_y()+200
 
     POPUP.geometry("+%d+%d" % (x,y))
-
-    
-    POPUP.title('Choisis un niveau ')
+    POPUP.title('TUTORIEL')
     POPUP.minsize(height=100,width=300)
-    Button(POPUP, text='En cours de production...',activebackground='SteelBlue4',height=3,width=30,font=f,command=POPUP.destroy).pack(anchor=NW,padx=10, pady=10)
+    texte=Label(POPUP, text = "BUT DU JEU : faire sortir, par la porte de droite, la voiture noire du parking.\nCOMMENT JOUER : cliquer sur l'avant de la voiture pour la faire avancer et sur l'arrière pour la faire reculer.\nFranchissez les 20 niveaux pour gagner ! Bonne chance !")
+    texte.config(font =("Courier", 14))
+    texte.pack()
+    Button(POPUP, text="J'ai compris",background="white",activebackground='Green',height=3,width=30,font=f,command=POPUP.destroy).pack(padx=10, pady=10)
     POPUP.transient(fen)
     POPUP.grab_set()
 
     canvas=Canvas(POPUP,width=100,height=56)
     canvas.pack()
-    canvas.create_image(50,28,image=logo)
-
 
     fen.wait_window(POPUP)
+
+'''
+def nouv_niveau():
+    POPUP.destroy
+    path2=os.getcwd()
+    path2=path2[:-4]
+    path2+="data/data.txt"
+    with open(path2,'r') as data:
+        num=int(data.readline(2),base=10)
+        return num+1
+'''
+
+def choix_niveau(comp):
+    pass
+'''
+    path2=os.getcwd()
+    path2=path2[:-4]
+    path2+="data/data.txt"
+    with open(path2,'r') as data:
+        num=int(data.readline(2),base=10)
+        num=comp
+    root.destroy()
+'''
+
+
 
 #-------------LANCEMENT DES FONCTIONS-------------
 f=font.Font(size=15)
@@ -309,7 +354,7 @@ Button(fen,activebackground='IndianRed3', text="Quitter",height=3,width=15,comma
 
 Button(fen,activebackground='lightBlue1', text="Recommencer",height=3,width=15,command=recommencer,font=f).pack(side=BOTTOM,padx=10, pady=10)
 
-Button(fen,activebackground='green', text="Niveaux",height=3,width=15,command=choix_niveau,font=f).pack(side=BOTTOM,padx=10, pady=10)
+Button(fen,activebackground='green', text="Niveaux",height=3,width=15,command=grille,font=f).pack(side=BOTTOM,padx=10, pady=10)
 
 #TEXTE NIVEAU
 texte=Label(fen, text = "Niveau : "+str(numero()))
@@ -318,6 +363,8 @@ texte.config(font =("Courier", 14))
 texte2.config(background=coul,font =("Courier", 14))
 texte.pack()
 texte2.pack()
+
+tutoriel()
 
 victoire(matrice_niveau)
 
