@@ -43,8 +43,6 @@ class Popup(Frame):
     def __init__(self, parent, *args, **kwargs):
         Frame.__init__(self, parent, *args, **kwargs)
 
-        ### Not sure if this below part is correct
-        ### Must it rather be set from the init parameter?
         self.textbox_text = ''
 
         self.text_widget = tk.Menu(self, tearoff=0, relief='sunken')
