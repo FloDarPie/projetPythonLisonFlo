@@ -1,28 +1,13 @@
-import tkinter as tk
+from tkinter import *
 
-app = tk.Tk() 
+def hide_me(event):
+    event.widget.pack_forget()
 
-labelWidth = tk.Label(app,
-                    text = "Width Ratio")
-labelWidth.grid(column=0, row=0, ipadx=5, pady=5, sticky=tk.W+tk.N)
-
-labelHeight = tk.Label(app,
-                    text = "Height Ratio")
-labelHeight.grid(column=0, row=1, ipadx=5, pady=5, sticky=tk.W+tk.S)
-
-
-entryWidth = tk.Entry(app, width=20)
-entryHeight = tk.Entry(app, width=20)
-
-entryWidth.grid(column=1, row=0, padx=10, pady=5, sticky=tk.N)
-entryHeight.grid(column=1, row=1, padx=10, pady=5, sticky=tk.S)
-
-
-resultButton = tk.Button(app, text = 'Get Result')
-resultButton.grid(column=0, row=2, pady=10, sticky=tk.W)
-
-
-
-
-
-app.mainloop()
+root = Tk()
+btn=Button(root, text="Click")
+btn.bind('<Button-1>', hide_me)
+btn.pack()
+btn2=Button(root, text="Click too")
+btn2.bind('<Button-1>', hide_me)
+btn2.pack()
+root.mainloop()

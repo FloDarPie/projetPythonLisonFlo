@@ -196,7 +196,7 @@ def victory():
     
 
 def clic(event):
-    global matrice_niveau,liste_voiture,p
+    global matrice_niveau,liste_voiture,p3
     a=(event.x,event.y)
     matrice_niveau=deplacement(matrice_niveau,[int(a[1])//100,int(a[0])//100])
     affichage(matrice_niveau)
