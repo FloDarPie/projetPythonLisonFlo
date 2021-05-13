@@ -7,6 +7,12 @@ path=os.getcwd()
 path=path[:-4]
 path+="data/data.txt"
 
+#renvoie le niveau en cours
+def numero():
+    with open(path,'r') as data:
+        num=int(data.readline(2),base=10)
+        return num
+
 #prend une couleur de manière aléatoire du fichier COULEUR
 def color():
     path=os.getcwd()
@@ -17,6 +23,48 @@ def color():
         contenu=data.readlines()
     a= contenu[alea]
     return a
+
+#renvoie le scoring depuis la base de donnée des scores
+def score(numero):
+    with open(path[:-8]+"score.txt",'r') as data:
+        for i in range(numero):
+            data.readline(7)
+        score= data.readline(7).rstrip("\n")
+    print(score)
+    return [score[:-3],score[3:]]
+
+def information_niveau():
+        
+    a = numero()
+    print(a)
+    
+    if a==1:
+        coul = "turquoise1"
+        classification = "tuto"
+    if a > 1 :
+        coul = "SeaGreen1"
+        classification =  "très facile"
+    if a > 6:
+        coul = "green"
+        classification =  "facile"
+    if a > 12:
+        coul = "orange"
+        classification =  "moyen"
+    if a>17:
+        coul = "red"
+        classification =  "difficile"
+
+    chiffre = score(a)
+    print(chiffre)
+    '''
+    meilleur_score = chiffre[0]
+    score_joueur = chiffre[1]
+    '''
+    if chiffre[1]=="XX":
+        return [chiffre[0], "Non établi",coul,classification,str(a)]
+    
+    return [chiffre[0], chiffre[1],coul,classification,str(a)]
+
 
 #renvoie un niveau aléatoire de la base de donnée
 def niv_aléatoire():
@@ -55,12 +103,29 @@ def niveau():
     return niv
  
  
- #renvoie le niveau en cours
-def numero():
-    with open(path,'r') as data:
-        num=int(data.readline(2),base=10)
-        return num
 
+
+
+#mise à jour de la base de donnée des scores
+def enregistre_score(ligne,score):
+    if score > 99:
+        score = "X"
+    elif score <10:
+        score = "0"+str(score)
+    else:
+        score=str(score)
+    with open(path[:-8]+"score.txt",'w') as data:
+        contenu = data.readlines()
+    with open(path[:-8]+"score.txt",'r') as data:
+        for i in range(ligne):
+            if i==ligne:
+                data.write(contenu[0][:-3]+score)
+            else:
+                data.write(contenu[0])
+            contenu=contenu[1:]
+        while contenu !="":
+            data.write(contenu[0])
+            contenu=contenu[1:] 
 
 #lit le niveau et le renvoie sous forme de STRING
 def lecteur():
@@ -169,10 +234,20 @@ def reinitialise():
             elif cpt==21:
                 data.write("X")
             else:
-                data.write(contenu[0][1:])
+                if contenu[0][0]=="F":
+                    data.write(contenu[0][1:])
+                else:
+                    data.write(contenu[0])
                 contenu=contenu[1:]
             cpt+=1
-    print("fin réinitialisation")
+    with open(path[:-8]+"score.txt",'r') as data:
+        score = data.readlines()
+    
+    with open(path[:-8]+"score.txt",'w') as data:
+        while score !="":
+            data.write(str(score[0][:-3])+"XX\n")
+            score=score[1:]
+    #print("fin réinitialisation")
             
 
 

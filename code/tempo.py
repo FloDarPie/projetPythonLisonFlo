@@ -1,2 +1,5 @@
-from cache import *
-print(score(1))
+a = "03/0310/0610/XX10/XX10/XX10/XX10/XX10/XX10/XX10/XX10/XX10/XX10/XX10/XX10/XX10/XX10/XX10/XX10/XX10/XX"
+
+while a != "":
+    print(a[0:3])
+    a=a[1:]

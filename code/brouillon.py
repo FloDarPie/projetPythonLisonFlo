@@ -1,37 +1,41 @@
-from tkinter import *
-import tkinter.font as tkFont
+import tkinter as tk     ## Python 3.x
 
-from tkinter import font
+from functools import partial
 
-root = Tk()
-root.title('Font Families')
-fonts=list(font.families())
-fonts.sort()
+class TestStop():
+    def __init__(self, master):
+        self.master=master
+        self.this_num=tk.IntVar()
+        tk.Label(master, textvariable=self.this_num,
+                 bg="blue").grid(sticky="nsew")
+        tk.Button(self.master, text="Quit",
+                  bg="orange", command=self.master.quit).grid(row=1)
+        self.ctr=0
+        self.test_stop()
 
-def populate(frame):
-    '''Put in the fonts'''
-    listnumber = 1
-    for item in fonts:
-        label = "listlabel" + str(listnumber)
-        label = Label(frame,text=item,font=(item, 16)).pack()
-        listnumber += 1
+    def button_continue(self, top):
+        """ button click event
+        """
+        print("button continue")
+        top.destroy()
+        self.test_stop()
 
-def onFrameConfigure(canvas):
-    '''Reset the scroll region to encompass the inner frame'''
-    canvas.configure(scrollregion=canvas.bbox("all"))
+    def test_stop(self):
+        self.ctr += 1
+        self.this_num.set(self.ctr)
 
-canvas = Canvas(root, borderwidth=0, background="#ffffff")
-frame = Frame(canvas, background="#ffffff")
-vsb = Scrollbar(root, orient="vertical", command=canvas.yview)
-canvas.configure(yscrollcommand=vsb.set)
+        ## limit it for testing
+        if self.ctr < 10:
+            if self.ctr==5:  ## event=some condition is met 
+                top=tk.Toplevel(self.master)
+                tk.Button(top, text="Continue", bg="lightblue",
+                      command=partial(self.button_continue, top)).grid(row=1)
+            else:  ## event=condition is not met
+                ## wait one second so you can see the numbers going up
+                self.master.after(1000, self.test_stop)
+        else:
+            self.master.quit()  ## event=all data exhausted
 
-vsb.pack(side="right", fill="y")
-canvas.pack(side="left", fill="both", expand=True)
-canvas.create_window((4,4), window=frame, anchor="nw")
-
-frame.bind("<Configure>", lambda event, canvas=canvas: onFrameConfigure(canvas))
-
-populate(frame)
-
-root.mainloop()
-
+master=tk.Tk()
+TestStop(master)
+master.mainloop()

@@ -10,10 +10,20 @@ class Partie(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
         self.size = 600
-        
-        #instanciation du niveau en cours
-        self.niveau = niveau()
-        self.niveau_courant = deepcopy(self.niveau)
+              
+        #paramètre utilisé pour la gestion des voitures
+        self.comp=0
+        self.n=6
+        #self.n2=len(6)
+
+        self.VOITUREB=0
+        self.RECT=0
+        self.RECT2=0
+
+        self.x=color().rstrip("\n")
+
+        self.posi=[]
+        self.liste_voiture=[]
         
         #chemin pour les infos
         path=os.getcwd()
@@ -59,19 +69,29 @@ class Partie(tk.Tk):
         
     #le jeu en lui même
     def fenetre(self):
-
+    
+        #instanciation du niveau en cours
+        self.niveau = niveau()
+        self.niveau_courant = deepcopy(self.niveau)
+        self.information = information_niveau()
+        
+        
         
         #création de l'espace de jeu et positionnement des boutons
         self.canv = tk.Canvas(self,bg="black",height=self.size+100,width=self.size+300)
-        
-        
-        self.information_niveau()
-        
+              
         self.canv.create_image((self.size/2,self.size/2),image=self.parking)
-        self.canv.create_image((self.size/2,600),image=self.bordureBas)#en bas
-        self.canv.create_image((600,self.size/2),image=self.bordureDroite)#droite
+        self.canv.create_image((self.size/2,600+5),image=self.bordureBas)#en bas
+        self.canv.create_image((600+5,self.size/2),image=self.bordureDroite)#droite
         self.canv.create_image((755,87.5),image=self.logoAngle)
         self.canv.create_image((607,250), image=self.sortie)#sortie
+        
+        
+        
+        
+        self.canv.create_rectangle(605,605,930,720,fill=self.information[2])
+        self.message = tk.Button(self, text="NIVEAU " + self.information[4] + " : " + self.information[3] + "\nMeilleur score possible :  "+self.information[0]+"\n\nScore du joueur : "+self.information[1], justify=tk.LEFT, bd = 0, font=8, bg = self.information[2], activebackground = self.information[2], highlightthickness = 0, fg = "black").place(x = 610, y = 608) #on appelle ça une arnaque :)
+        
         self.canv.grid(column=0, row=0, ipadx=5, ipady=5, sticky=tk.E+tk.N)
 
         #taille police
@@ -92,6 +112,12 @@ class Partie(tk.Tk):
         
         self.bouton_solveur = tk.Button(self, text="Solveur", activebackground='goldenrod2', height=2, width=10, command=self.solveur, font=5).place(x=10, y = 627)
         #############################################################################################
+        
+        
+        self.affichage(self.niveau)
+        
+        
+        
     
     #s'enfuir de l'appli
     def quitter(self):
@@ -106,8 +132,9 @@ class Partie(tk.Tk):
     
     #relance le niveau
     def recommencer(self):
-        print("recommencer")
-        pass
+        self.x=color().rstrip("\n")
+        self.affichage(self.niveau_courant)
+        #print("recommencer")
 
     def avant(self):
         print("avance")
@@ -136,33 +163,13 @@ class Partie(tk.Tk):
         
         #fonction de freeze qui marche pas       
         self.wait_window(popup)
+              
+            
+    #changer le pointeur du fichier data + relance fenetre
+    def change_niveau(self,numero):
+        change_niveau(numero)
+        self.fenetre()
         
-    def information_niveau(self):
-        self.canevas = tk.Canvas(self, height=self.size+100, width=self.size+300)
-         
-        a = numero()
-         
-        
-        if a==1:
-            coul = "turquoise 1"
-            classification = "tuto"
-        elif a > 1 :
-            coul = "SeaGreen1"
-            classification =  "très facile"
-        elif a > 6:
-            coul = "green"
-            classification =  "facile"
-        elif a > 12:
-            coul = "orange"
-            classification =  "moyen"
-        elif a>18:
-            coul = "red"
-            classification =  "difficile"
-        
-        chiffre = score(a)
-        meilleur_score = chiffre[0]
-        score_joueur = chiffre[1]
-    
     #reglage des niveaux
     def choix_niveau(self):
         popup = tk.Toplevel()
@@ -172,6 +179,17 @@ class Partie(tk.Tk):
         popup.geometry("+%d+%d" % (centre,centre))
         popup.title('Sélection du niveau')
         
+        
+        for i in range(20):
+            ligne = lecture_ligne(i)
+            if ligne[0]=="F":
+                tk.Button(popup, text="Niveau : "+str(i+1), bg = "darkgoldenrod", activebackground=self.information[2], height = 2, width=10, command=lambda:[popup.destroy(),self.change_niveau(i)], font=f).pack(padx=5, pady=5)
+            else:
+                tk.Button(popup, text="Niveau : "+str(i), bg = "black", activebackground="black", height = 2, width=10, command=lambda:[popup.destroy(),self.change_niveau(i)], font=f).pack(padx=5, pady=5)
+            if i%5==0:
+                popup.pack(side=tk.LEFT)
+        
+        
         popup.bouton_quitter = tk.Button(popup, text="Retour",activebackground='LightSalmon2',height=3,width=15,command=popup.destroy,font=f).pack(side=tk.BOTTOM,padx=10, pady=10)
         
         #fonction de freeze qui marche pas
@@ -179,7 +197,31 @@ class Partie(tk.Tk):
  
 
         
-
+    def affichage(self,matrice) :
+        
+        def effacer(N):
+            for i in N:
+                self.canv.delete(i) 
+        
+        AUTRE=100
+        L={}
+        effacer(self.liste_voiture)
+        for i in range(self.n):
+            for j in range(self.n):
+                if matrice[i][j]!=0:
+                    if matrice[i][j]==1:
+                        VOITUREB=self.canv.create_rectangle(j*AUTRE,i*AUTRE,j*AUTRE+AUTRE,i*AUTRE+AUTRE,fill="black")
+                        self.liste_voiture.append(VOITUREB)
+                    else:
+                        XY=position(matrice,matrice[i][j])
+                        try:
+                            L[matrice[i][j]]==1
+                        except:
+                            L[matrice[i][j]]=1
+                            RECT=self.canv.create_rectangle(AUTRE*XY[0][0], AUTRE*XY[0][1], AUTRE*((XY[-1][0])+1), AUTRE*((XY[-1][1])+1),fill=self.x)
+                            RECT2=self.canv.create_rectangle(AUTRE*XY[0][0], AUTRE*XY[0][1], AUTRE*((XY[-1][0])+1), AUTRE*((XY[-1][1])+1))
+                            self.liste_voiture.append(RECT)
+                            self.liste_voiture.append(RECT2)
 
 
 
