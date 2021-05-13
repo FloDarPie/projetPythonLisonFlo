@@ -140,7 +140,6 @@ def affichage(M) :
    
 
 class Pile:
-    
 	def __init__(self):
 		self.valeurs = []
 

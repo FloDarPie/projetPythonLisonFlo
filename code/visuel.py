@@ -212,11 +212,10 @@ def clic(event):
 #GESTION DES BOUTONS
 def recommencer():
     global matrice_niveau,x,niveau
-
     x=color().rstrip("\n")
     affichage(niveau)
     matrice_niveau=deepcopy(niveau)
-
+    
 def quitter():
     fen.destroy()
 
@@ -253,7 +252,7 @@ def numero():
 def diff():
     global coul
     if numero()==1:
-        coul="turquoise 1"
+        coul="turquoise1"
         return "tuto"
     elif numero()>1 and numero()<6:
         coul="SeaGreen1"

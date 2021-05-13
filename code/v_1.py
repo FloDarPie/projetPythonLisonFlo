@@ -11,7 +11,9 @@ class Partie(tk.Tk):
         tk.Tk.__init__(self)
         self.size = 600
         
-
+        #instanciation du niveau en cours
+        self.niveau = niveau()
+        self.niveau_courant = deepcopy(self.niveau)
         
         #chemin pour les infos
         path=os.getcwd()
@@ -24,9 +26,16 @@ class Partie(tk.Tk):
         self.bordureBas=tk.PhotoImage(file=self.pathAsset+"images/bas.png")
         self.bordureDroite=tk.PhotoImage(file=self.pathAsset+"images/droite.png")
         self.sortie=tk.PhotoImage(file=self.pathAsset+"images/sortie.png")
+        
+        self.retour=tk.PhotoImage(file=self.pathAsset+"images/retour.png")
+        self.avance=tk.PhotoImage(file=self.pathAsset+"images/avancer.png")
+
+        self.iconphoto(True,tk.PhotoImage(file=self.pathAsset+"images/icone.png"))
+
 
         self.color=color().rstrip("\n")
         self.menu()
+        #self.fenetre()
         
     #le démarrage du jeu
     def menu(self):      
@@ -44,7 +53,8 @@ class Partie(tk.Tk):
         #lance le jeu
         self.bouton_jouer = tk.Button(self, text="Jouer", activebackground='SeaGreen1', height=3, width=15, command=lambda:[ self.fenetre(), self.canvas.delete(), self.bouton_quitter.delete(), self.bouton_reinitialise.delete(), self.bouton_jouer.delete()], font=f).place(x = 330, y = 400)
 
-        self.canvas.grid(column=0, row=0, ipadx=5, pady=5, sticky=tk.E+tk.N)
+        self.canvas.grid(column=0, row=0, ipadx=5, ipady=5, sticky=tk.E+tk.N)
+        
         
         
     #le jeu en lui même
@@ -55,25 +65,33 @@ class Partie(tk.Tk):
         self.canv = tk.Canvas(self,bg="black",height=self.size+100,width=self.size+300)
         
         
-        
+        self.information_niveau()
         
         self.canv.create_image((self.size/2,self.size/2),image=self.parking)
         self.canv.create_image((self.size/2,600),image=self.bordureBas)#en bas
         self.canv.create_image((600,self.size/2),image=self.bordureDroite)#droite
         self.canv.create_image((755,87.5),image=self.logoAngle)
         self.canv.create_image((607,250), image=self.sortie)#sortie
-        self.canv.grid(column=0, row=0, ipadx=5, pady=5, sticky=tk.E+tk.N)
+        self.canv.grid(column=0, row=0, ipadx=5, ipady=5, sticky=tk.E+tk.N)
 
         #taille police
         f=font.Font(size=15)
         
         #les boutons
-        self.bouton_retour_menu = tk.Button(self, text="Quitter", activebackground='IndianRed3', height=3, width=15, command=self.retour_menu, font=f).place(x = 660, y = 200)
+        self.bouton_retour_menu = tk.Button(self, text="Quitter", activebackground='HotPink2', height=3, width=15, command=self.retour_menu, font=f).place(x = 660, y = 200)
         
-        self.bouton_niveau = tk.Button(self, text="Choix du niveau", activebackground='green', height=3, width=15, command=self.niveau, font=f).place(x=660, y = 350)
+        self.bouton_niveau = tk.Button(self, text="Choix du niveau", activebackground='green', height=3, width=15, command=self.choix_niveau, font=f).place(x=660, y = 350)
         
-        self.bouton_recommencer = tk.Button(self, text="Recommencer", activebackground='PaleVioletRed2', height=3, width=15, command=self.recommencer, font=f).place(x=660, y = 500)
-
+        self.bouton_recommencer = tk.Button(self, text="Recommencer", activebackground='orchid2', height=3, width=15, command=self.recommencer, font=f).place(x=660, y = 500)
+        
+        #retourImage=self.retour.subsample(1,1) #aucune idée de à quo ça sert
+        self.bouton_retour = tk.Button(self, height=50, width=80, image=self.retour, command=self.arriere, font=f).place(x=200, y = 630)
+        
+        #avanceImage=self.avance.subsample(1,1)
+        self.bouton_avancer = tk.Button(self, height=50, width=80, image=self.avance, command=self.avant, font=f).place(x=500, y = 630)
+        
+        self.bouton_solveur = tk.Button(self, text="Solveur", activebackground='goldenrod2', height=2, width=10, command=self.solveur, font=5).place(x=10, y = 627)
+        #############################################################################################
     
     #s'enfuir de l'appli
     def quitter(self):
@@ -82,21 +100,71 @@ class Partie(tk.Tk):
     def retour_menu(self):
         self.menu()
 
-    
+    #lance une partie //mettre le niveau courant en paramètre ?
     def jouer(self):
         self.fenetre()
     
     #relance le niveau
     def recommencer(self):
+        print("recommencer")
+        pass
+
+    def avant(self):
+        print("avance")
+        pass
+    
+    def arriere(self):
+        print("retour")
+        pass
+    
+    def solveur(self):
+        print("solveur")
         pass
     
     #remet la progression à zéro
     def renitialiser(self):
-        pass
+        popup = tk.Toplevel()
+        popup.resizable(False,False)
+        f=font.Font(size=15)
+        centre = 300
+        popup.geometry("+%d+%d" % (centre,centre))
+        popup.title('Réinitialisation')
+        
+        popup.bouton_raviser = tk.Button(popup, text="Je me ravise",activebackground='SpringGreen3',height=3,width=15,command=popup.destroy,font=f).pack(side=tk.BOTTOM,padx=10, pady=10)
+        
+        popup.bouton_valide = tk.Button(popup, text="Je remet le jeu à zéro", activebackground='firebrick1', height=5, width=30, command=lambda:[popup.destroy(),reinitialise()], font=f).pack(side=tk.TOP,padx=10, pady=10)
+        
+        #fonction de freeze qui marche pas       
+        self.wait_window(popup)
+        
+    def information_niveau(self):
+        self.canevas = tk.Canvas(self, height=self.size+100, width=self.size+300)
+         
+        a = numero()
+         
+        
+        if a==1:
+            coul = "turquoise 1"
+            classification = "tuto"
+        elif a > 1 :
+            coul = "SeaGreen1"
+            classification =  "très facile"
+        elif a > 6:
+            coul = "green"
+            classification =  "facile"
+        elif a > 12:
+            coul = "orange"
+            classification =  "moyen"
+        elif a>18:
+            coul = "red"
+            classification =  "difficile"
+        
+        chiffre = score(a)
+        meilleur_score = chiffre[0]
+        score_joueur = chiffre[1]
     
     #reglage des niveaux
-    def niveau(self):
-
+    def choix_niveau(self):
         popup = tk.Toplevel()
         popup.resizable(False,False)
         f=font.Font(size=15)
@@ -104,10 +172,10 @@ class Partie(tk.Tk):
         popup.geometry("+%d+%d" % (centre,centre))
         popup.title('Sélection du niveau')
         
-        popup.bouton_quitter = tk.Button(popup, text="Retour",activebackground='IndianRed3',height=3,width=15,command=popup.destroy,font=f).pack(side=tk.BOTTOM,padx=10, pady=10)
+        popup.bouton_quitter = tk.Button(popup, text="Retour",activebackground='LightSalmon2',height=3,width=15,command=popup.destroy,font=f).pack(side=tk.BOTTOM,padx=10, pady=10)
         
         #fonction de freeze qui marche pas
-        #self.wait_window(popup)
+        self.wait_window(popup)
  
 
         
@@ -119,7 +187,6 @@ class Partie(tk.Tk):
 
 if __name__ == "__main__":
     app = Partie()
-
     app.title("Rush Hour")
     app.resizable(False,False)
     app.mainloop()

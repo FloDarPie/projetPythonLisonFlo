@@ -1,71 +1,37 @@
-import tkinter as tk
-from tkinter import Tk, ttk, Frame, FALSE, Text, Button, \
-    Scrollbar, Entry, END, INSERT
+from tkinter import *
+import tkinter.font as tkFont
 
+from tkinter import font
 
+root = Tk()
+root.title('Font Families')
+fonts=list(font.families())
+fonts.sort()
 
-class MyTestApp(Frame):
+def populate(frame):
+    '''Put in the fonts'''
+    listnumber = 1
+    for item in fonts:
+        label = "listlabel" + str(listnumber)
+        label = Label(frame,text=item,font=(item, 16)).pack()
+        listnumber += 1
 
-    def __init__(self, parent, *args, **kwargs):
-        Frame.__init__(self, parent, *args, **kwargs)
-        self.root = parent
-        self.root.title('MY Test App')
-        self.grid(column=0, row=0, sticky='nsew', padx=12, pady=5)
+def onFrameConfigure(canvas):
+    '''Reset the scroll region to encompass the inner frame'''
+    canvas.configure(scrollregion=canvas.bbox("all"))
 
-        self.data_textbox = Text(self, borderwidth=2, relief='sunken')
-        self.data_textbox.config(height=30, width=80)
-        self.data_textbox.grid(row=1, column=0, sticky="new")
-        self.exit_btn = ttk.Button(self, text='Exit', command=self.on_exit)
-        self.exit_btn.grid(row=2, column=0, sticky='W', pady=15)
+canvas = Canvas(root, borderwidth=0, background="#ffffff")
+frame = Frame(canvas, background="#ffffff")
+vsb = Scrollbar(root, orient="vertical", command=canvas.yview)
+canvas.configure(yscrollcommand=vsb.set)
 
-        ## Not sure if im doing the below part correct
-        ## Instantiate my popup class
-        self.popup = Popup(parent)
-        ## Assign self.popup.textbox_text to self.data_textbox
-        self.popup.textbox_text = self.data_textbox
-        # Add imported popup menu and bind to textbox widget
-        self.data_textbox.bind("<Button-3>", self.popup.text_popup)
+vsb.pack(side="right", fill="y")
+canvas.pack(side="left", fill="both", expand=True)
+canvas.create_window((4,4), window=frame, anchor="nw")
 
-    # Exit the program. Linked to the Exit Button
-    def on_exit(self):
-        self.root.destroy()
+frame.bind("<Configure>", lambda event, canvas=canvas: onFrameConfigure(canvas))
 
+populate(frame)
 
-def main():
-    root = Tk()
-    MyTestApp(root)
-    root.mainloop()
+root.mainloop()
 
-
-
-
-class Popup(Frame):
-    def __init__(self, parent, *args, **kwargs):
-        Frame.__init__(self, parent, *args, **kwargs)
-
-        self.textbox_text = ''
-
-        self.text_widget = tk.Menu(self, tearoff=0, relief='sunken')
-        self.text_widget.add_command(label="Copy", command=self.text_copy)
-        self.text_widget.add_separator()
-        self.text_widget.add_command(label="Paste", command=self.text_paste)
-        self.text_widget.add_separator()
-        self.text_widget.add_command(label="Clear", command=self.text_clear)
-
-
-    def text_popup(self, event):
-        self.text_widget.post(event.x_root, event.y_root)
-
-    def text_copy(self, event=None):
-        self.clipboard_clear()
-        text = self.textbox_text.get("sel.first", "sel.last")
-        self.clipboard_append(text)
-
-    def text_paste(self):
-        self.textbox_text.insert(INSERT, self.clipboard_get())
-
-    def text_clear(self):
-        self.textbox_text.delete(1.0, END)
-        
-if __name__ == '__main__':
-    main()

@@ -7,6 +7,7 @@ path=os.getcwd()
 path=path[:-4]
 path+="data/data.txt"
 
+#prend une couleur de manière aléatoire du fichier COULEUR
 def color():
     path=os.getcwd()
     path=path[:-4]
@@ -17,6 +18,7 @@ def color():
     a= contenu[alea]
     return a
 
+#renvoie un niveau aléatoire de la base de donnée
 def niv_aléatoire():
     with open(path,'r') as data:
         num=int(data.readline(2),base=10)
@@ -53,8 +55,29 @@ def niveau():
     return niv
  
  
- 
+ #renvoie le niveau en cours
+def numero():
+    with open(path,'r') as data:
+        num=int(data.readline(2),base=10)
+        return num
 
+#renvoie le scoring depuis la base de donnée des scores
+def score(numero):
+    with open(path[:-8]+"score.txt",'r') as data:
+        for i in range(numero):
+            data.readline(7)
+        score= data.readline(7).rstrip("\n")
+    
+    return [score[:-3],score[3:]]
+
+def enregistre_score(ligne,score):
+    with open(path[:-8]+"score.txt",'w') as data:
+        contenu = data.readlines()
+    with open(path[:-8]+"score.txt",'r') as data:
+        for i in range(numero):
+            pass
+
+#lit le niveau et le renvoie sous forme de STRING
 def lecteur():
     with open(path,'r') as data:
         num=int(data.readline(2),base=10)
@@ -63,7 +86,9 @@ def lecteur():
         for i in range(num):
             data.readline(200)
         return data.readline(200).rstrip("\n")
-    
+
+
+#lit une ligne en particulier //INUTILISÉ
 def lecture_ligne(niveau):
     with open(path,'r') as data:
         for i in range(niveau+1):
@@ -72,9 +97,9 @@ def lecture_ligne(niveau):
     
     
 
-
+#enregistre le dernier mouvement sur la dernière ligne du fichier
 def enregistreur(matrice):
-    print(type(matrice))
+    #print(type(matrice))
     contenu=""
     compteur=0
     balise=1
@@ -94,7 +119,7 @@ def enregistreur(matrice):
             contenu=contenu[1:]
             num_lines-=1
 
-
+#enregistre lorsque le niveau est complété
 def ecriture(num_lines,contenu,ancien_niv):
     with open(path,'w') as data:
         cpt=1
@@ -112,6 +137,7 @@ def ecriture(num_lines,contenu,ancien_niv):
             num_lines-=1
             cpt+=1
 
+#change le niveau en respectant les codes du fichier
 def augmente_niv(niv):
         niv=str(niv)
         if len(niv)==1:
@@ -120,6 +146,7 @@ def augmente_niv(niv):
             niv+="\n"
         return niv
 
+#lorsqu'un niveau est termine, applique les changements nécessaires
 def victoire(matrice):
     if matrice[2][5]==1:
         with open(path,'r') as data:
@@ -138,33 +165,37 @@ def victoire(matrice):
             contenu=[niv]+contenu[1:]
             ecriture(num_lines,contenu,ancien_niv)
             return "vic"
-        '''
-        niv=str(niv)
-        if len(niv)==1:
-            niv="0"+niv+"\n"
-        else:
-            niv+="\n"
-        '''
+
         niv=augmente_niv(niv)
         contenu=[niv]+contenu[1:]
-        '''
-        with open(path,'w') as data:
-            cpt=1
-            while num_lines!=0:
-                if num_lines==1:
-                    data.write(str(contenu))
-                elif cpt==ancien_niv+1:
-                    data.write("F"+contenu[0])
-                else:
-                    data.write(contenu[0])
-                contenu=contenu[1:]
-                num_lines-=1
-                cpt+=1
-        '''
+
         ecriture(num_lines,contenu,ancien_niv)
         return True
 
+def reinitialise():
+    with open(path,'r') as data:
+        contenu=data.readlines()
+    cpt=1
+    contenu=contenu[1:]
+    with open(path,'w') as data:
+        while cpt!=22:
+            if cpt==1:
+                data.write("01\n")
+            elif cpt==21:
+                data.write("X")
+            else:
+                if contenu[0][0]=="F":
+                    data.write(contenu[0][1:])
+                else:
+                    data.write(contenu[0])
+                contenu=contenu[1:]
+            cpt+=1
+    #print("fin réinitialisation")
+            
 
+
+
+#gestion de la matrice du niveau, renvoie une matrice 
 def deplacement(matrice,pos):
     #valeur=matrice[pos[0]][pos[1]]
     if pos[1]>=6 or pos[0]>=6 or matrice[pos[0]][pos[1]]==0:
@@ -267,25 +298,7 @@ def deplacement(matrice,pos):
                                          //6)
     '''
     return matrice#,new_position
-'''            
-matrice=[[0,0,0, 4, 4,12],[0,0,0, 0, 3,12],[1,1,0, 0, 3,12],[0,0,9,11,11,11],[2,0,9, 0, 0, 0],[2,0,9,10,10,10]]
-print(matrice)
-pos=[0,1]
-print(matrice[pos[0]][pos[1]])
-print(deplacement(matrice,pos))
 
-M=[[0,0,0,4,4,12],[0,0,0,0,3,12],[0,1,1,0,3,12],[0,0,9,11,11,11],[2,0,9,0,0,0],[2,0,9,10,10,10]]
-L=[[4, 0], [4, 0]]#, [2, 4], [4, 0], [4, 0], [4, 0], [4, 0], [3, 0], [3, 0], [4, 0], [3, 0], [3, 0], [4, 0], [5, 0]] #, [3, 0], [2, 2], [0, 3], [0, 2], [0, 2], [0, 3], [0, 3], [0, 2], [0, 1], [0, 1], [0, 2], [0, 3], [3, 0], [3, 0], [3, 0], [3, 0], [3, 0], [4, 0], [3, 0], [4, 0]]
-
-def affiche(M):
-    for i in range(6):
-        print(M[i])
-    print()
-affiche(M)
-for i in L:
-    print(i)
-    affiche(deplacement(M,i))
-'''
 
 
 
