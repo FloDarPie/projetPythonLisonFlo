@@ -54,7 +54,7 @@ class Partie(tk.Tk):
 
         self.iconphoto(True,tk.PhotoImage(file=self.pathAsset+"images/icone.png"))
 
-
+        #self.la_fin()
         #lancement du jeu
         self.menu()
         #self.fenetre()
@@ -120,11 +120,11 @@ class Partie(tk.Tk):
         f=font.Font(size=15)
         
         #les boutons
-        self.bouton_retour_menu = tk.Button(self, text="Quitter", activebackground='HotPink2', height=3, width=15, command=self.retour_menu, font=f).place(x = 660, y = 200)
+        self.bouton_retour_menu = tk.Button(self, text="Quitter", activebackground='IndianRed3', height=3, width=15, command=self.retour_menu, font=f).place(x = 660, y = 200)
         
         self.bouton_niveau = tk.Button(self, text="Choix du niveau", activebackground='green', height=3, width=15, command=self.choix_niveau, font=f).place(x=660, y = 350)
         
-        self.bouton_recommencer = tk.Button(self, text="Recommencer", activebackground='orchid2', height=3, width=15, command=self.recommencer, font=f).place(x=660, y = 500)
+        self.bouton_recommencer = tk.Button(self, text="Recommencer", activebackground='steelblue', height=3, width=15, command=self.recommencer, font=f).place(x=660, y = 500)
         
         #retourImage=self.retour.subsample(1,1) #aucune idée de à quo ça sert
         self.bouton_retour = tk.Button(self, height=50, width=80, image=self.retour, command=self.arriere, font=f).place(x=200, y = 630)
@@ -198,15 +198,25 @@ class Partie(tk.Tk):
             self.update_nb_coup()
     
     def solveur(self):
-        print("solveur")
-        pass
+        popup = tk.Toplevel()
+        popup.resizable(False,False)
+        f=font.Font(size=15)
+        centre = 150
+        popup.geometry("+%d+%d" % (centre,centre))
+        popup.title('Solveur')
+        
+        canvas=tk.Canvas(popup,width=300, height=200, bg = "black")
+        canvas.grid(column=0, row=0, ipadx=0, ipady=0, sticky=tk.E+tk.N)
+        canvas.create_text(410,500,text="Participe toi aussi au développement du jeu :", justify = tk.CENTER, fill='white', font="Arial 25 roman bold")
+        tk.Button(popup, text="Payer pour activer le solveur", activebackground='LightSalmon2', height=2, width=12, command=popup.destroy, font=f).place(x = 335, y =545)
+        self.wait_window(popup)
     
     #remet la progression à zéro
     def renitialiser(self):
         popup = tk.Toplevel()
         popup.resizable(False,False)
         f=font.Font(size=15)
-        centre = 300
+        centre = 150
         popup.geometry("+%d+%d" % (centre,centre))
         popup.title('Réinitialisation')
         
@@ -228,7 +238,7 @@ class Partie(tk.Tk):
         popup = tk.Toplevel()
         popup.resizable(False,False)
         f=font.Font(size=15)
-        centre = 300
+        centre = 150
         popup.geometry("+%d+%d" % (centre,centre))
         popup.title('Choix du niveau')
         
@@ -429,8 +439,8 @@ class Partie(tk.Tk):
         canvas.create_image(210,120, image=tuto1)
         canvas.grid(column=0, row=0, ipadx=5, ipady=5, sticky=tk.E+tk.N)
         canvas.create_text(200,265,text="BUT DU JEU :\nfaire sortir la voiture noire du parking.", fill='white', font="Arial 12 roman bold", justify = tk.CENTER)
-        popup.bouton_suivre = tk.Button(popup, text="J'ai compris", activebackground='LightSalmon2', height=2, width=12, command=lambda:[popup.destroy(), self.tutoriel2()], font=f).place(x = 240, y =300)
-        tk.Button(popup, text="Passe moi ça",activebackground='LightSalmon2',height=2,width=12,command=popup.destroy,font=f).place(x = 10, y =300)
+        popup.bouton_suivre = tk.Button(popup, text="J'ai compris", activebackground='mintcream', height=2, width=12, command=lambda:[popup.destroy(), self.tutoriel2()], font=f).place(x = 240, y =300)
+        tk.Button(popup, text="Passe moi ça",activebackground='lavender',height=2,width=12,command=popup.destroy,font=f).place(x = 10, y =300)
         self.wait_window(popup)
     
     def tutoriel2(self):
@@ -445,8 +455,8 @@ class Partie(tk.Tk):
         canvas.create_image(210,120, image=tuto2)
         canvas.grid(column=0, row=0, ipadx=5, ipady=5, sticky=tk.E+tk.N)
         canvas.create_text(200,265,text="Clique sur une extrémité des véhicules pour\nles déplacer en avant/arrière.",fill='white',font="Arial 12 roman bold", justify=tk.CENTER)
-        popup.bouton_suivre = tk.Button(popup, text="Ok", activebackground='LightSalmon2', height=2, width=12, command=lambda:[popup.destroy(), self.tutoriel3()], font=f).place(x = 240, y =300)
-        tk.Button(popup, text="Je veux jouer",activebackground='LightSalmon2',height=2,width=12,command=popup.destroy,font=f).place(x = 10, y =300)
+        popup.bouton_suivre = tk.Button(popup, text="Ok", activebackground='mintcream', height=2, width=12, command=lambda:[popup.destroy(), self.tutoriel3()], font=f).place(x = 240, y =300)
+        tk.Button(popup, text="Je veux jouer",activebackground='lavender',height=2,width=12,command=popup.destroy,font=f).place(x = 10, y =300)
         self.wait_window(popup)
         
     def tutoriel3(self):
@@ -462,7 +472,7 @@ class Partie(tk.Tk):
         canvas.create_image(210,120, image=tuto3)
         canvas.grid(column=0, row=0, ipadx=5, ipady=5, sticky=tk.E+tk.N)
         canvas.create_text(200,265,text="Tu peux activer l'aide à tous moments. \nN'hésite pas à l'utiliser :) !", justify = tk.CENTER, fill='white', font="Arial 12 roman bold")
-        tk.Button(popup, text="C'est parti !",activebackground='LightSalmon2',height=2,width=12,command=popup.destroy,font=f).place(x = 120, y =300)
+        tk.Button(popup, text="C'est parti !",activebackground='mintcream',height=2,width=12,command=popup.destroy,font=f).place(x = 120, y =300)
         self.wait_window(popup)
         
     def affichage(self,matrice) :
@@ -502,7 +512,6 @@ class Partie(tk.Tk):
         self.canv.grid(column=0, row=0, ipadx=5, ipady=5, sticky=tk.E+tk.N)
 
     def clic(self,event):
-        
         a=(event.x,event.y)
         
         #gestion retour avancer
@@ -525,7 +534,7 @@ class Partie(tk.Tk):
         
         if "vic"==a:
             #mettre un POPUP avec les expliquations et faire apparaitre un bouton "aléatoire"
-            print("la fin")
+            self.la_fin()
         if a:
             #print("validation victoire")
             self.victory()
@@ -551,7 +560,24 @@ class Partie(tk.Tk):
         self.canv.delete(self.text_victoire)
         self.fenetre()
         
+    def la_fin(self):
+        popup = tk.Toplevel()
+        popup.resizable(False,False)
+        f=font.Font(size=15)
+        centre = 150
+        popup.geometry("+%d+%d" % (centre,centre))
+        popup.title('Bien joué !')
         
+        canvas=tk.Canvas(popup,width=820, height=620, bg = "black")
+        fin = tk.PhotoImage(file=self.pathAsset+"images/la_fin.png")
+        canvas.create_image(410,230, image=fin)
+        canvas.grid(column=0, row=0, ipadx=0, ipady=0, sticky=tk.E+tk.N)
+        canvas.create_text(410,500,text="Désormais les niveaux sont piochés aléatoirement\nBonne chance.", justify = tk.CENTER, fill='white', font="Arial 25 roman bold")
+        tk.Button(popup, text="Goooo !!",activebackground='aquamarine',height=2,width=12,command=popup.destroy,font=f).place(x = 335, y =545)
+        self.wait_window(popup)
+    
+    
+    
 if __name__ == "__main__":
     app = Partie()
     app.title("Rush Hour")
