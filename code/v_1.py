@@ -36,6 +36,8 @@ class Partie(tk.Tk):
         self.temps=00.00
         self.controleur_temps=False
         
+        self.compteur_cacher = 0
+        
         #chemin pour les infos==========================================================
         path=os.getcwd()
         path=path[:-4]
@@ -56,8 +58,8 @@ class Partie(tk.Tk):
 
         #self.la_fin()
         #lancement du jeu
-        #self.menu()
-        self.fenetre()
+        self.menu()
+        #self.fenetre()
         #self.choix_niveau()
         
     #le démarrage du jeu
@@ -67,7 +69,7 @@ class Partie(tk.Tk):
         
         self.canvas = tk.Canvas(self,bg="black",height=self.size+100,width=self.size+300)
         self.canvas.create_image((450,250),image=self.logo)
-
+        
         #réinitialise
         self.bouton_reinitialise = tk.Button(self, text="Réinitialiser", activebackground='sienna2', height=1, width=15, command=self.renitialiser, font=f).place(x = 330, y = 580)
         #quitte le jeu
@@ -101,7 +103,7 @@ class Partie(tk.Tk):
         f=font.Font(size=15)
         if self.information[4]!="21":
             self.canv.create_rectangle(605,605,930,720,fill=self.information[2])
-            self.message = tk.Button(self, text="NIVEAU " + self.information[4] + " : " + self.information[3] + "\nMeilleur score possible :  "+self.information[0]+"\n\nScore du joueur : "+self.information[1], justify=tk.LEFT, bd = 0, font=8, bg = self.information[2], activebackground = self.information[2], highlightthickness = 0, fg = "black").place(x = 610, y = 606) #on appelle ça une arnaque :)
+            self.message = tk.Button(self, text="NIVEAU " + self.information[4] + " : " + self.information[3] + "\nMeilleur score possible :  "+self.information[0]+"\n\nScore du joueur : "+self.information[1], justify=tk.LEFT, bd = 0, font=8, bg = self.information[2], activebackground = self.information[2], highlightthickness = 0,command= self.cache, fg = "black").place(x = 610, y = 606) #on appelle ça une arnaque :)
             self.canv.create_rectangle(295,625,490,690,fill=self.information[2])
             
             
@@ -168,7 +170,6 @@ class Partie(tk.Tk):
          self.controleur_temps = not self.controleur_temps
     '''
     def atteindre_la_fin(self):
-
         return fin_atteinte()
     
     
@@ -225,10 +226,11 @@ class Partie(tk.Tk):
         centre = 150
         popup.geometry("+%d+%d" % (centre,centre))
         popup.title('Solveur')
-        
+        don = tk.PhotoImage(file=self.pathAsset+"images/don.png")
         canvas=tk.Canvas(popup,width=650, height=350, bg = "black")
         canvas.grid(column=0, row=0, ipadx=0, ipady=0, sticky=tk.E+tk.N)
-        canvas.create_text(325,100,text="Participe toi aussi au développement du jeu :", justify = tk.CENTER, fill='white', font="Arial 20 roman bold")
+        canvas.create_image(325,150,image=don)
+        canvas.create_text(325,30,text="Participe toi aussi au développement du jeu :", justify = tk.CENTER, fill='white', font="Arial 20 roman bold")
         tk.Button(popup, text="Payer pour activer le solveur", activebackground='IndianRed3', height=2, width=25, command=popup.destroy, font=f).place(x = 170, y = 270)
         self.wait_window(popup)
     
@@ -526,6 +528,29 @@ class Partie(tk.Tk):
                             self.liste_voiture.append(RECT)
                             self.liste_voiture.append(RECT2)
 
+    def cache(self):
+        self.compteur_cacher+=1
+        if self.compteur_cacher==8:
+                
+            popup = tk.Toplevel()
+            popup.resizable(False,False)
+            f=font.Font(size=15)
+            centre = 150
+            popup.geometry("+%d+%d" % (centre,centre))
+            popup.title('Heeuu')
+            chat = tk.PhotoImage(file=self.pathAsset+"images/cacher.png")
+            canvas=tk.Canvas(popup,width=500, height=460, bg = "black")
+            canvas.grid(column=0, row=0, ipadx=0, ipady=0, sticky=tk.E+tk.N)
+            canvas.create_image(240,200,image=chat)
+            
+            tk.Button(popup, text="Ho Ho Ho", activebackground='IndianRed3', height=2, width=15, command=popup.destroy, font=f).place(x = 150, y = 400)
+            
+            self.compteur_cacher=0
+            
+            self.wait_window(popup)
+            
+            
+        
     
     def update_nb_coup(self):
         self.canv.delete(self.nombre_coup)

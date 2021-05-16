@@ -142,16 +142,22 @@ def niveau():
 
 #mise à jour de la base de donnée des scores
 def enregistre_score(ligne,score):
+
     if score > 99:
-        score = "X"
+        score = "XX"
     elif score <10:
-        score = "0"+str(score)
+        score = "0"+str(score)+"\n"
     else:
         score=str(score)
+
     with open(path[:-8]+"score.txt",'r') as data:
         contenu = data.readlines()
+    print(contenu)
     with open(path[:-8]+"score.txt",'w') as data:
-        for i in range(int(ligne,base=10)):
+        ligne = int(ligne,base=10)
+        
+        for i in range(ligne):
+            print(i,ligne,type(ligne))
             if i==ligne:
                 data.write(contenu[0][:-3]+score)
             else:
