@@ -56,8 +56,8 @@ class Partie(tk.Tk):
 
         #self.la_fin()
         #lancement du jeu
-        self.menu()
-        #self.fenetre()
+        #self.menu()
+        self.fenetre()
         #self.choix_niveau()
         
     #le démarrage du jeu
@@ -97,17 +97,42 @@ class Partie(tk.Tk):
         self.canv.create_image((755,87.5),image=self.logoAngle)
         self.canv.create_image((607,250), image=self.sortie)#sortie
         
-        
+        #taille police
+        f=font.Font(size=15)
         if self.information[4]!="21":
             self.canv.create_rectangle(605,605,930,720,fill=self.information[2])
             self.message = tk.Button(self, text="NIVEAU " + self.information[4] + " : " + self.information[3] + "\nMeilleur score possible :  "+self.information[0]+"\n\nScore du joueur : "+self.information[1], justify=tk.LEFT, bd = 0, font=8, bg = self.information[2], activebackground = self.information[2], highlightthickness = 0, fg = "black").place(x = 610, y = 606) #on appelle ça une arnaque :)
             self.canv.create_rectangle(295,625,490,690,fill=self.information[2])
             
+            
+            
         else:
             self.canv.create_rectangle(605,605,930,720,fill="cornflowerblue")
-            self.message = tk.Button(self, text="NIVEAU -ALÉATOIRE-" + "\nMeilleur score possible : XXXXX"+"\n\n Temps écoulés : "+str(self.temps), justify=tk.LEFT, bd = 0, font=8, bg = "cornflowerblue", activebackground = "cornflowerblue", highlightthickness = 0, fg = "black").place(x = 610, y = 606)
+            self.message = tk.Button(self, text="NIVEAU -ALÉATOIRE-" + "\nMeilleur score possible : XXXXX"+"\n\n Temps écoulé : "+str(self.temps), justify=tk.LEFT, bd = 0, font=8, bg = "cornflowerblue", activebackground = "cornflowerblue", highlightthickness = 0, fg = "black").place(x = 610, y = 606)
             self.canv.create_rectangle(295,625,490,690,fill="cornflowerblue")
             self.controleur_temps=True
+            
+            
+        if self.atteindre_la_fin():
+            
+            #les boutons
+            self.bouton_retour_menu = tk.Button(self, text="Quitter", activebackground='IndianRed3', height=3, width=15, command=self.retour_menu, font=f).place(x = 660, y = 178)
+            
+            self.bouton_niveau = tk.Button(self, text="Choix du niveau", activebackground='green', height=3, width=15, command=self.choix_niveau, font=f).place(x=660, y = 286)
+            
+            self.bouton_retour_menu = tk.Button(self, text="Aléatoire", activebackground='cornflowerblue', height=3, width=15, command=self.fenetre, font=f).place(x = 660, y = 392)
+            
+            self.bouton_recommencer = tk.Button(self, text="Recommencer", activebackground='steelblue', height=3, width=15, command=self.recommencer, font=f).place(x=660, y = 500)
+        else:
+            
+            #les boutons
+            self.bouton_retour_menu = tk.Button(self, text="Quitter", activebackground='IndianRed3', height=3, width=15, command=self.retour_menu, font=f).place(x = 660, y = 200)
+            
+            self.bouton_niveau = tk.Button(self, text="Choix du niveau", activebackground='green', height=3, width=15, command=self.choix_niveau, font=f).place(x=660, y = 350)
+            
+            self.bouton_recommencer = tk.Button(self, text="Recommencer", activebackground='steelblue', height=3, width=15, command=self.recommencer, font=f).place(x=660, y = 500)
+            
+            
             #self.timer()
            
             
@@ -116,15 +141,6 @@ class Partie(tk.Tk):
         
         self.canv.grid(column=0, row=0, ipadx=5, ipady=5, sticky=tk.E+tk.N)
 
-        #taille police
-        f=font.Font(size=15)
-        
-        #les boutons
-        self.bouton_retour_menu = tk.Button(self, text="Quitter", activebackground='IndianRed3', height=3, width=15, command=self.retour_menu, font=f).place(x = 660, y = 200)
-        
-        self.bouton_niveau = tk.Button(self, text="Choix du niveau", activebackground='green', height=3, width=15, command=self.choix_niveau, font=f).place(x=660, y = 350)
-        
-        self.bouton_recommencer = tk.Button(self, text="Recommencer", activebackground='steelblue', height=3, width=15, command=self.recommencer, font=f).place(x=660, y = 500)
         
         #retourImage=self.retour.subsample(1,1) #aucune idée de à quo ça sert
         self.bouton_retour = tk.Button(self, height=50, width=80, image=self.retour, command=self.arriere, font=f).place(x=200, y = 630)
@@ -151,6 +167,11 @@ class Partie(tk.Tk):
          
          self.controleur_temps = not self.controleur_temps
     '''
+    def atteindre_la_fin(self):
+
+        return fin_atteinte()
+    
+    
     
     #s'enfuir de l'appli
     def quitter(self):
@@ -205,10 +226,10 @@ class Partie(tk.Tk):
         popup.geometry("+%d+%d" % (centre,centre))
         popup.title('Solveur')
         
-        canvas=tk.Canvas(popup,width=300, height=200, bg = "black")
+        canvas=tk.Canvas(popup,width=650, height=350, bg = "black")
         canvas.grid(column=0, row=0, ipadx=0, ipady=0, sticky=tk.E+tk.N)
-        canvas.create_text(410,500,text="Participe toi aussi au développement du jeu :", justify = tk.CENTER, fill='white', font="Arial 25 roman bold")
-        tk.Button(popup, text="Payer pour activer le solveur", activebackground='LightSalmon2', height=2, width=12, command=popup.destroy, font=f).place(x = 335, y =545)
+        canvas.create_text(325,100,text="Participe toi aussi au développement du jeu :", justify = tk.CENTER, fill='white', font="Arial 20 roman bold")
+        tk.Button(popup, text="Payer pour activer le solveur", activebackground='IndianRed3', height=2, width=25, command=popup.destroy, font=f).place(x = 170, y = 270)
         self.wait_window(popup)
     
     #remet la progression à zéro
@@ -535,6 +556,7 @@ class Partie(tk.Tk):
         if "vic"==a:
             #mettre un POPUP avec les expliquations et faire apparaitre un bouton "aléatoire"
             self.la_fin()
+            ecrire_fin()
         if a:
             #print("validation victoire")
             self.victory()

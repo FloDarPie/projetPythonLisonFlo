@@ -181,6 +181,15 @@ def lecture_ligne(niveau):
             data.readline(200)
         return data.readline(200).rstrip("\n")
     
+def fin_atteinte():
+    with open(path[:-8]+"la_fin.txt",'r') as data:
+        contenu = data.readlines()
+    return "oui" == contenu[0].rstrip("\n")
+
+def ecrire_fin():
+    with open(path[:-8]+"la_fin.txt",'w') as data:
+        data.write("oui")
+
     
 
 #enregistre le dernier mouvement sur la dernière ligne du fichier
@@ -294,9 +303,14 @@ def reinitialise():
         score = data.readlines()
     
     with open(path[:-8]+"score.txt",'w') as data:
-        while score !="":
+        while score !=[]:
             data.write(str(score[0][:-3])+"XX\n")
             score=score[1:]
+            
+    with open(path[:-8]+"la_fin.txt",'r') as data:
+        contenu = data.readlines()
+    with open(path[:-8]+"la_fin.txt",'w') as data:
+        data.write("non")
     #print("fin réinitialisation")
             
 #renvoie la liste des positions sur laquelle la voiture a été cliqué
