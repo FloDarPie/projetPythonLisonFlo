@@ -30,13 +30,13 @@ def score(numero):
         for i in range(numero):
             data.readline(7)
         score= data.readline(7).rstrip("\n")
-    print(score)
+    #print(score)
     return [score[:-3],score[3:]]
 
 def information_niveau():
         
     a = numero()
-    print(a)
+    #print(a)
     
     if a==1:
         coul = "turquoise1"
@@ -44,18 +44,18 @@ def information_niveau():
     if a > 1 :
         coul = "SeaGreen1"
         classification =  "très facile"
-    if a > 6:
+    if a > 4:
         coul = "green"
         classification =  "facile"
-    if a > 12:
+    if a > 9:
         coul = "orange"
         classification =  "moyen"
-    if a>17:
+    if a>15:
         coul = "red"
         classification =  "difficile"
 
     chiffre = score(a)
-    print(chiffre)
+    #print(chiffre)
     '''
     meilleur_score = chiffre[0]
     score_joueur = chiffre[1]
@@ -65,6 +65,39 @@ def information_niveau():
     
     return [chiffre[0], chiffre[1],coul,classification,str(a)]
 
+
+def information_niveau_precis(a):
+        
+
+    #print(a)
+    coul="white"
+    classification="Easy peasy"
+    if a==1:
+        coul = "turquoise1"
+        classification = "tuto"
+    if a > 1 :
+        coul = "SeaGreen1"
+        classification =  "très facile"
+    if a > 4:
+        coul = "green"
+        classification =  "facile"
+    if a > 8:
+        coul = "orange"
+        classification =  "moyen"
+    if a>15:
+        coul = "red"
+        classification =  "difficile"
+
+    chiffre = score(a)
+    #print(chiffre)
+    '''
+    meilleur_score = chiffre[0]
+    score_joueur = chiffre[1]
+    '''
+    if chiffre[1]=="XX":
+        return [chiffre[0], "Non établi",coul,classification,str(a)]
+    
+    return [chiffre[0], chiffre[1],coul,classification,str(a)]
 
 #renvoie un niveau aléatoire de la base de donnée
 def niv_aléatoire():
@@ -115,16 +148,16 @@ def enregistre_score(ligne,score):
         score = "0"+str(score)
     else:
         score=str(score)
-    with open(path[:-8]+"score.txt",'w') as data:
-        contenu = data.readlines()
     with open(path[:-8]+"score.txt",'r') as data:
-        for i in range(ligne):
+        contenu = data.readlines()
+    with open(path[:-8]+"score.txt",'w') as data:
+        for i in range(int(ligne,base=10)):
             if i==ligne:
                 data.write(contenu[0][:-3]+score)
             else:
                 data.write(contenu[0])
             contenu=contenu[1:]
-        while contenu !="":
+        while contenu !=[]:
             data.write(contenu[0])
             contenu=contenu[1:] 
 
@@ -142,7 +175,9 @@ def lecteur():
 #lit une ligne en particulier //INUTILISÉ
 def lecture_ligne(niveau):
     with open(path,'r') as data:
-        for i in range(niveau+1):
+        if niveau==1:
+            niveau =2
+        for i in range(niveau-1):
             data.readline(200)
         return data.readline(200).rstrip("\n")
     
@@ -189,7 +224,7 @@ def ecriture(num_lines,contenu,ancien_niv):
             cpt+=1
 
 #change le niveau en respectant les codes du fichier
-def augmente_niv(niv):
+def convertion(niv):
         niv=str(niv)
         if len(niv)==1:
             niv="0"+niv+"\n"
@@ -212,25 +247,26 @@ def victoire(matrice):
         if niv==22:
             return "vic"
         if niv==21:
-            niv=augmente_niv(niv)
+            niv=convertion(niv)
             contenu=[niv]+contenu[1:]
             ecriture(num_lines,contenu,ancien_niv)
             return "vic"
 
-        niv=augmente_niv(niv)
+        niv=convertion(niv)
         contenu=[niv]+contenu[1:]
 
         ecriture(num_lines,contenu,ancien_niv)
         return True
     
 def change_niveau(chiffre):
-    a = augmente_niv(chiffre)
+    a = convertion(chiffre)
+    
     with open(path,'r') as data:
         contenu = data.readlines()
     with open(path,'w') as data:
         data.write(a)
         contenu=contenu[1:]
-        while contenu!="":
+        while contenu!=[]:
             data.write(contenu[0])
             contenu=contenu[1:]
     

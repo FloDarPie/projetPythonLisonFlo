@@ -6,3 +6,7 @@ Attention ! Pour passer au niveau suivant, il faut terminer le niveau en cours.
 Bonne chance !
 
 Cliquer à l'avant de la voiture pour l'avancer et à l'arrière pour la reculer 
+
+BUT DU JEU : faire sortir, par la porte de droite, la voiture noire du parking.
+COMMENT JOUER : cliquer sur l'avant de la voiture pour la faire avancer et sur l'arrière pour la faire reculer.
+Franchissez les 20 niveaux pour gagner ! Bonne chance !
