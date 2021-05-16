@@ -142,27 +142,29 @@ def niveau():
 
 #mise à jour de la base de donnée des scores
 def enregistre_score(ligne,score):
-
+    score2=deepcopy(score)
     if score > 99:
         score = "XX"
     elif score <10:
         score = "0"+str(score)+"\n"
     else:
-        score=str(score)
+        score=str(score)+"\n"
 
     with open(path[:-8]+"score.txt",'r') as data:
         contenu = data.readlines()
-    print(contenu)
     with open(path[:-8]+"score.txt",'w') as data:
         ligne = int(ligne,base=10)
         
         for i in range(ligne):
-            print(i,ligne,type(ligne))
-            if i==ligne:
-                data.write(contenu[0][:-3]+score)
-            else:
-                data.write(contenu[0])
+            data.write(contenu[0])
             contenu=contenu[1:]
+    
+        if int(str(contenu[0][:2]), base=10)>score2:
+            data.write(score.rstrip("\n")+"/"+score)
+            contenu=contenu[1:]        
+        else:
+            data.write(contenu[0][:-3]+score)
+            contenu=contenu[1:]        
         while contenu !=[]:
             data.write(contenu[0])
             contenu=contenu[1:] 

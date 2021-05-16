@@ -543,7 +543,7 @@ class Partie(tk.Tk):
             canvas.grid(column=0, row=0, ipadx=0, ipady=0, sticky=tk.E+tk.N)
             canvas.create_image(240,200,image=chat)
             
-            tk.Button(popup, text="Ho Ho Ho", activebackground='IndianRed3', height=2, width=15, command=popup.destroy, font=f).place(x = 150, y = 400)
+            tk.Button(popup, text="Ho no...", activebackground='IndianRed3', height=2, width=15, command=popup.destroy, font=f).place(x = 150, y = 400)
             
             self.compteur_cacher=0
             

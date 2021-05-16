@@ -21,10 +21,11 @@ def trouver_fils(M):
 
 def remplir(M):   
     while M[2][5]!=1:
+        print(trouver_fils(M))
         for x in trouver_fils(M):
-            print("haha")
+            print("haha",M)
             return remplir(x)
-    print("victoire")
+    print("victoire",M)
         
 
 def bfs(visitées, graph, père):
