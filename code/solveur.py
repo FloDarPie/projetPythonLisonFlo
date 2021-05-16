@@ -4,35 +4,41 @@ M=[[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,1,1,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,
 
 graph = {}
 
-visited = []
-queue = []
+visitées = [] #Matrices visitées
+queue = []  #file en cours
 
-comp=0
-def remplir(M):
+
+def trouver_fils(M):
     global comp
+    comp=0
     L=[]
     comp+=1
     for i in range (6):
         for j in range(6):
             L.append(deplacement(M,[i,j]))
     graph['M'+str(comp)]=L
-    for x in L:
-        return remplir(x)
+    return L
+
+def remplir(M):   
+    while M[2][5]!=1:
+        for x in trouver_fils(M):
+            print("haha")
+            return remplir(x)
+    print("victoire")
         
 
-def bfs(visited, graph, node):
-  visited.append(node)
-  queue.append(node)
+def bfs(visitées, graph, père):
+  visitées.append(père)
+  queue.append(père)
 
   while queue:
     s = queue.pop(0) 
     print (s, end = " ") 
 
-    for neighbour in graph[s]:
-      if neighbour not in visited:
-        visited.append(neighbour)
-        queue.append(neighbour)
+    for fils in graph[s]:
+      if fils not in visitées:
+        visitées.append(fils)
+        queue.append(fils)
 
-# Driver Code
-#bfs(visited, graph, 'A')
+#bfs(visitées, graph, 'A')
 remplir(M)
