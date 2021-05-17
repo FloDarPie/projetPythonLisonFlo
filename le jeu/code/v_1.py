@@ -105,12 +105,12 @@ class Partie(tk.Tk):
         if numero() != 21:
             
             self.canv.create_rectangle(605,605,930,720,fill=self.information[2])
-            self.message = tk.Button(self, text="NIVEAU " + self.information[4] + " : " + self.information[3] + "\nMeilleur score possible :  "+self.information[0]+"\n\nScore du joueur : "+self.information[1], justify=tk.LEFT, bd = 0, font=8, bg = self.information[2], activebackground = self.information[2], highlightthickness = 0,command= self.cache, fg = "black").place(x = 610, y = 606) #on appelle ça une arnaque :)
+            self.message = tk.Button(self, text="NIVEAU " + self.information[4] + " : " + self.information[3] + "\nMeilleur score possible :  "+self.information[0]+"\n\nScore du joueur : "+self.information[1], justify=tk.LEFT, bd = 0, font=8, bg = self.information[2], activebackground = self.information[2], highlightthickness = 0,command=self.cache, fg = "black").place(x = 610, y = 606) #on appelle ça une arnaque :)
             self.canv.create_rectangle(295,625,490,690,fill=self.information[2])
   
         else:
             self.canv.create_rectangle(605,605,930,720,fill="cornflowerblue")
-            self.message = tk.Button(self, text="NIVEAU -ALÉATOIRE-" + "\nMeilleur score possible : XXXXX"+"\n\n Temps écoulé : "+str(self.temps), justify=tk.LEFT, bd = 0, font=8, bg = "cornflowerblue", activebackground = "cornflowerblue", highlightthickness = 0, fg = "black").place(x = 610, y = 606)
+            self.message = tk.Button(self, text="NIVEAU -ALÉATOIRE-" + "\nMeilleur score possible : XXXXX"+"\n\n Temps écoulé : "+str(self.temps), justify=tk.LEFT, bd = 0, font=8, bg = "cornflowerblue", activebackground = "cornflowerblue", highlightthickness = 0, command=self.cache, fg = "black").place(x = 610, y = 606)
             self.canv.create_rectangle(295,625,490,690,fill="cornflowerblue")
             self.controleur_temps=True
             
