@@ -429,9 +429,69 @@ def deplacement(matrice,pos):
     return matrice#,new_position
 
 
+#SOLVEUR ======================= SOLVEUR ======================= SOLVEUR ======================= SOLVEUR ======================= SOLVEUR
+#=======================================================================================================================================
+#=======================================================================================================================================
+
+# 1er étape, généré les fils de M (situation originale)
+#
+# 2nd étape, algo bread-first-search => parcours horizontal d'un arbre de possibilité avec mémorisation du passage
+#
+# 3ème étape, lecture du résultat à partir de l'arbre généré par l'étape 2
 
 
+def trouver_fils(M):
+    L=[]
+    comp+=1
+    for i in range (6):
+        for j in range(6):
+            A=deplacement(deepcopy(M),[i,j])
+            if A not in L and A!=M:
+                L.append(A)
+    try:
+        graph[str(M)]=L
+    except:
+        pass
+    return L
 
 
+def bfs(visitées, graph, père):
+    visitées.append(père)
+    queue.append(père)
 
+    while queue:
+        s = queue.pop(0)
+        trouver_fils(s)
+        #print(graph)
+        for fils in graph[str(s)]:
+            if fils not in visitées:
+                visitées.append(fils)
+                queue.append(fils)
+    return s,graph
 
+def remontée(M,s,graph):
+    chemin=[]
+    chemin.append(s)
+    
+    
+    del graph[str(s)]
+    liste_clef=list(graph.keys())
+
+    
+    while str(s)!=str(M) and len(chemin)<len(graph):
+        
+        
+        for x in liste_clef:
+            liste_val=graph.get(x)
+            
+            for j in liste_val: #j type list
+
+                if str(s) == str(j):
+                    s=deepcopy(x)
+                    chemin.append(s)
+                    
+    #bidouillage parce ça marche pas bien au dessus
+    while str(chemin[-1])!=str(M):
+        chemin=chemin[:-1]
+    print(type(chemin))
+    return chemin
