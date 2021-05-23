@@ -18,8 +18,9 @@ def initialisation(matrice):
 
 def transition(matrice,ensemble_pos,elem):
     for position in ensemble_pos:
-        x = int(position[1],base=10)
-        y = int(position[4],base=10)
+        position=position.split(",")
+        x = int(position[0],base=10)
+        y = int(position[1],base=10)
         matrice[x][y]=elem
     return matrice
 
@@ -35,36 +36,60 @@ def affiche(matrice):
 def detecte(matrice, ensemble_pos):
     ancien=deepcopy(ensemble_pos)
     for position in ancien:
-        x = int(position[1],base=10)
-        y = int(position[4],base=10)
-        if matrice[x-1][y]==matrice[x][y]:
-            if x>0:
-                ensemble_pos.add(str([x-1,y]))
-        elif matrice[x+1][y]==matrice[x][y]:
-            if x<14:
-                ensemble_pos.add(str([x+1,y]))
-        elif matrice[x][y-1]==matrice[x][y]:
-            if y>0:
-                ensemble_pos.add(str([x,y-1]))
-        elif matrice[x][y+1]==matrice[x][y]:
-            if y<14:
-                ensemble_pos.add(str([x,y+1]))
+        position=position.split(",")
+        x = int(position[0],base=10)
+        y = int(position[1],base=10)
+        
+        if x>0:
+            if matrice[x-1][y]==matrice[x][y]:
+                ensemble_pos.add(str(x-1)+","+str(y))
+        if x<13:
+            if matrice[x+1][y]==matrice[x][y]:
+                ensemble_pos.add(str(x+1)+","+str(y))
+        if y>0:
+            if matrice[x][y-1]==matrice[x][y]:
+                ensemble_pos.add(str(x)+","+str(y-1))
+        if y<13:
+            if matrice[x][y+1]==matrice[x][y]:
+                ensemble_pos.add(str(x)+","+str(y+1))
     return ensemble_pos
 
 matrice=[]
 
 ensemble_pos=set()
 
-ensemble_pos.add(str([0,0]))
+ensemble_pos.add("0,0")
 
 print(ensemble_pos)
+
 matrice=initialisation(matrice)
 affiche(matrice)
+'''
 ##tour
 ensemble_pos=detecte(matrice,ensemble_pos)
 elem=2
 affiche(transition(matrice,ensemble_pos,elem))
 
 ensemble_pos=detecte(matrice,ensemble_pos)
-elem=9
+elem=1
 affiche(transition(matrice,ensemble_pos,elem))
+
+ensemble_pos=detecte(matrice,ensemble_pos)
+elem=0
+affiche(transition(matrice,ensemble_pos,elem))
+
+ensemble_pos=detecte(matrice,ensemble_pos)
+elem=2
+affiche(transition(matrice,ensemble_pos,elem))
+'''
+
+
+i=0
+while len(ensemble_pos)!=196: # nombre de cases
+    i+=1
+    ensemble_pos = deepcopy(detecte(matrice,ensemble_pos))
+    elem=i%6
+    matrice = deepcopy(transition(matrice,ensemble_pos,elem))
+
+affiche(matrice)
+
