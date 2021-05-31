@@ -1,0 +1,16 @@
+J'attends beaucoup mieux de vous. Quelques remarques en vrac :
+
+    Pas de nombres magiques (comme 14)
+    Placer des docstring pour expliquer ce que fait chaque fonction. Pas compris ce que fait detecte.
+    Le mélange pourrait être fait de manière plus compacte
+    Beaucoup de choses inutilement compliquées 
+        int avec base=10
+        deepcopy (votre structure doit être mutable, pas besoin de mémoriser son étal précédent
+        pourquoi ajouter des chaînes dans ensmble_pos ? pas besoin de chaîne ici, il n'y a que des couleurs (utilisez des nombres)
+        seed(0) n'est pas utile
+        utiliser un set est-il utile ?
+    Pas compris ce que fait votre boucle while à la fin
+
+Il reste beaucoup de choses à faire. 
+
+Mettez à jour régulièrement votre dépôt. 
