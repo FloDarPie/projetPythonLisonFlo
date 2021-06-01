@@ -66,7 +66,7 @@ def detecte(matrice, ensemble_pos, taille):
             if matrice[x][y+1]==matrice[x][y]:
                 ensemble_pos.add(str(x)+","+str(y+1))
     return ensemble_pos
-
+'''
 matrice=[]
 
 ensemble_pos=set()
@@ -77,7 +77,7 @@ print(ensemble_pos)
 taille=14
 matrice=initialisation(taille)
 affiche(matrice,taille)
-'''
+
 ##tour
 ensemble_pos=detecte(matrice,ensemble_pos)
 elem=2
@@ -94,7 +94,7 @@ affiche(transition(matrice,ensemble_pos,elem))
 ensemble_pos=detecte(matrice,ensemble_pos)
 elem=2
 affiche(transition(matrice,ensemble_pos,elem))
-'''
+
 
 a=time()
 i=0
@@ -105,9 +105,9 @@ while len(ensemble_pos)!=196: # nombre de cases
     matrice = deepcopy(transition(matrice,ensemble_pos,elem))
 
 affiche(matrice,taille)
-print("Taille : 14 \nTemps de résolution :", time()-a)
+print("Taille : 14 ->", time()-a)
 
-
+'''
 taille=15
 matrice=initialisation(taille)
 #affiche(matrice,taille)
@@ -121,15 +121,15 @@ while len(ensemble_pos)!=taille*taille: # nombre de cases
     ensemble_pos = deepcopy(detecte(matrice,ensemble_pos,taille))
     elem=i%6
     matrice = deepcopy(transition(matrice,ensemble_pos,elem))
-    '''
+
     affiche(matrice,taille)
 
 affiche(matrice,taille)
-'''
-print("Taille : 15 \nTemps de résolution :", time()-a)
+
+print("Taille : 15 ->", time()-a)
 
 
-for j in range(16,35):
+for j in range(2,35):
     taille=j
     matrice=initialisation(taille)
     #affiche(matrice,taille)
@@ -148,7 +148,7 @@ for j in range(16,35):
 
     affiche(matrice,taille)
     '''
-    print("Taille :",taille,"\nTemps de résolution :", time()-a)
+    print("Taille :",taille,"->", time()-a)
     
     
     
@@ -171,4 +171,4 @@ while len(ensemble_pos)!=taille*taille: # nombre de cases
 
 affiche(matrice,taille)
 '''
-print("Taille : 100 \nTemps de résolution :", time()-a)
+print("Taille : 100 ->", time()-a)

@@ -48,16 +48,21 @@ def etude(matrice,voisins,position, taille):
     #test si la cellule est intéressante à conserver dans voisins
     g,d,h,b = False,False,False,False
     voisins2=voisins[:]
+    controle = len(voisins2)
     
     for test in range(len(voisins)):
         a=matrice[voisins[test]]
+        
+        
+        
+        ######### MODULE de contrôle d'UNE cellule
         
         #si c'est la première case
         if voisins[test]==0:
             #contrôle droite
             if matrice[voisins[test]+1]==a:
-                d=True
                 if voisins[test]+1 not in position:
+                    d=True
                     voisins.append(voisins[test]+1)
                     position.append(voisins[test]+1)
             
@@ -69,8 +74,8 @@ def etude(matrice,voisins,position, taille):
           
             #contrôle bas
             if matrice[voisins[test]+taille]==a:
-                b=True
                 if voisins[test]+taille not in position:
+                    b=True
                     voisins.append(voisins[test]+taille)
                     position.append(voisins[test]+taille)
         
@@ -82,15 +87,15 @@ def etude(matrice,voisins,position, taille):
             
             #contrôle gauche
             if matrice[voisins[test]-1]==a:
-                g=True
                 if voisins[test]-1 not in position:
+                    g=True
                     voisins.append(voisins[test]-1)
                     position.append(voisins[test]-1)
             
             #contrôle haut
             if matrice[voisins[test]-taille]==a:
-                h=True
                 if voisins[test]-taille not in position:
+                    h=True
                     voisins.append(voisins[test]-taille)
                     position.append(voisins[test]-taille)
             
@@ -101,16 +106,16 @@ def etude(matrice,voisins,position, taille):
         elif voisins[test] <= taille :   
             #contrôle droite
             if matrice[voisins[test]+1]==a:
-                d=True
                 if voisins[test]+1 not in position:
+                    d=True
                     voisins.append(voisins[test]+1)
                     position.append(voisins[test]+1)
             
+            
             #contrôle gauche
             if matrice[voisins[test]-1]==a:
-                g=True
-                
-                if voisins[test-1] not in position:
+                if voisins[test]-1 not in position:
+                    g=True
                     voisins.append(voisins[test]-1)
                     position.append(voisins[test]-1)
             
@@ -119,8 +124,8 @@ def etude(matrice,voisins,position, taille):
             
             #contrôle bas
             if matrice[voisins[test]+taille]==a:
-                b=True
                 if voisins[test]+taille not in position:
+                    b=True
                     voisins.append(voisins[test]+taille)
                     position.append(voisins[test]+taille)
         
@@ -128,67 +133,67 @@ def etude(matrice,voisins,position, taille):
         elif voisins[test] >= taille*taille - taille :
             #contrôle droite
             if matrice[voisins[test]+1]==a:
-                d=True
                 if voisins[test]+1 not in position:
+                    d=True
                     voisins.append(voisins[test]+1)
                     position.append(voisins[test]+1)
             
             #contrôle gauche
             if matrice[voisins[test]-1]==a:
-                g=True
                 if voisins[test]-1 not in position:
+                    g=True
                     voisins.append(voisins[test]-1)
                     position.append(voisins[test]-1)
             
             #contrôle haut
             if matrice[voisins[test]-taille]==a:
-                h=True
                 if voisins[test]-taille not in position:
+                    h=True
                     voisins.append(voisins[test]-taille)
                     position.append(voisins[test]-taille)
             
             #contrôle bas
             b=True
-            
         
         #ailleurs
         else:
             #contrôle droite
             if matrice[voisins[test]+1]==a:
-                d=True
                 if voisins[test]+1 not in position:
+                    d=True
                     voisins.append(voisins[test]+1)
                     position.append(voisins[test]+1)
             
             #contrôle gauche
             if matrice[voisins[test]-1]==a:
-                g=True
                 if voisins[test]-1 not in position:
+                    g=True
                     voisins.append(voisins[test]-1)
                     position.append(voisins[test]-1)
             
             #contrôle haut
             if matrice[voisins[test]-taille]==a:
-                h=True
                 if voisins[test]-taille not in position:
+                    h=True
                     voisins.append(voisins[test]-taille)
                     position.append(voisins[test]-taille)
             
             #contrôle bas
             if matrice[voisins[test]+taille]==a:
-                b=True
                 if voisins[test]+taille not in position:
+                    b=True
                     voisins.append(voisins[test]+taille)
                     position.append(voisins[test]+taille)
         
+        ################
         if g and d and h and b :
-            #print(g,d,h,b,voisins2[0])
             voisins2=voisins2[1:]
     
     #quand c'est finis, on mets à jours les cases qui seront contrôlé au prochain tour
-    #print(voisins2)
-    voisins=voisins[len(voisins2)-1:]
-    print(voisins,"\n",position)
+    if len(voisins2)!=controle:
+        voisins=voisins[len(voisins2)-1:]
+        return etude(matrice,voisins,position,taille)
+    print("v",voisins,"\n","pos",sorted(position))
     return voisins, position
 
 #affichage joli
@@ -203,29 +208,47 @@ def montre(t,m):
 
 
 ###zone de test###########################################################
+'''
 #les infos obligatoires
 matrice=[]
 nb_couleur=6
-taille=3
+taille=9
 voisins = [0] #stocke les numéros des cases à contrôler
 change = [0]
 
 
 matrice=initialisation(taille,nb_couleur)
 montre(taille,matrice)
-print()
 a=time()
 i=0
-while len(change)!=taille*taille-1 : # nombre de cases
+while len(change)!=taille*taille : # nombre de cases
     i+=1
-    montre(taille, matrice)
+    #montre(taille, matrice)
     voisins,change = etude(matrice,voisins,change,taille)
     elem=i%6
     matrice = transition(matrice,change,elem)
-    print()
+    
 
-montre(taille, matrice)
+#montre(taille, matrice)
 print("Taille :",taille,"\nTemps de résolution :", time()-a)
-
-
+'''
+for i in range(14,15):
+    a=time()
+    taille=i
+    nb_couleur=6
+    voisins = [0] #stocke les numéros des cases à contrôler
+    change = [0]
+    
+    matrice=initialisation(taille,nb_couleur)
+    
+    i=0
+    while len(change)!=taille*taille and i < 33: # nombre de cases
+        i+=1
+        print("n°",i)
+        montre(taille, matrice)
+        voisins,change = etude(matrice,voisins,change,taille)
+        elem=i%6
+        print()
+        matrice = transition(matrice,change,elem)
+    print("Taille :",taille,"->", time()-a)
 
