@@ -13,4 +13,16 @@ J'attends beaucoup mieux de vous. Quelques remarques en vrac :
 
 Il reste beaucoup de choses à faire. 
 
-Mettez à jour régulièrement votre dépôt. 
+Mettez à jour régulièrement votre dépôt.
+
+
+Vous devez réaliser un clone du jeu Flood-it comme il existait originellement, voir l’application Android
+Floodit qui restera le modèle graphique à répliquer. La nuance est que le choix des couleurs se fera sur le plateau de jeu et non pas dans une palette de couleurs séparée, comme dans cette version en ligne.
+L’application doit être pleinement jouable, sans bug et plaisante à utiliser.
+A la base, le plateau est de taille 14x14, il y a 6 couleurs et le remplissage doit se faire en au plus 22 coups (et pas 25). Il doit y avoir un compteur de coups et un bouton pour relancer le jeu.
+La difficulté algorithmique du jeu est l’algorithme de propagation de couleur. Cet algorithme devra être particulièrement soigné et bien maîtrisé. Il est attendu qu’il y ait une stricte séparation entre le
+modèle et la vue.
+Cette partie est le strict minimum attendu et sera notée au maximum sur 75% de la note, bonus inclus.
+
+Il est attendu, en complément, que soit réalisée une ou plusieurs IA minimalistes (des heuristiques) avec animation de résolution. Vous pouvez consulter ce blog.
+
