@@ -8,7 +8,6 @@ IMPROVE : Utiliser un second ensemble pour avoir uniquement les cases à contrô
 
 
 from random import randrange,seed
-from copy import deepcopy
 from time import time
 
 seed(0)
@@ -23,15 +22,13 @@ def initialisation(taille):
             liste.append(randrange(0,6))
         matrice.append(liste)
         liste=[]
-
     return matrice
 
 #changement entre la matrice et les elements connus
 def transition(matrice,ensemble_pos,elem):
     for position in ensemble_pos:
         position=position.split(",")
-        x = int(position[0],base=10)
-        y = int(position[1],base=10)
+        x,y = int(position[0],base=10),int(position[1],base=10)
         matrice[x][y]=elem
     return matrice
 
@@ -47,7 +44,7 @@ def affiche(matrice,t):
 
 #regarde si des cases connus, les voisins snt identiques
 def detecte(matrice, ensemble_pos, taille):
-    ancien=deepcopy(ensemble_pos)
+    ancien=ensemble_pos.copy()
     for position in ancien:
         position=position.split(",")
         x = int(position[0],base=10)
@@ -66,67 +63,6 @@ def detecte(matrice, ensemble_pos, taille):
             if matrice[x][y+1]==matrice[x][y]:
                 ensemble_pos.add(str(x)+","+str(y+1))
     return ensemble_pos
-'''
-matrice=[]
-
-ensemble_pos=set()
-
-ensemble_pos.add("0,0")
-
-print(ensemble_pos)
-taille=14
-matrice=initialisation(taille)
-affiche(matrice,taille)
-
-##tour
-ensemble_pos=detecte(matrice,ensemble_pos)
-elem=2
-affiche(transition(matrice,ensemble_pos,elem))
-
-ensemble_pos=detecte(matrice,ensemble_pos)
-elem=1
-affiche(transition(matrice,ensemble_pos,elem))
-
-ensemble_pos=detecte(matrice,ensemble_pos)
-elem=0
-affiche(transition(matrice,ensemble_pos,elem))
-
-ensemble_pos=detecte(matrice,ensemble_pos)
-elem=2
-affiche(transition(matrice,ensemble_pos,elem))
-
-
-a=time()
-i=0
-while len(ensemble_pos)!=196: # nombre de cases
-    i+=1
-    ensemble_pos = deepcopy(detecte(matrice,ensemble_pos,taille))
-    elem=i%6
-    matrice = deepcopy(transition(matrice,ensemble_pos,elem))
-
-affiche(matrice,taille)
-print("Taille : 14 ->", time()-a)
-
-'''
-taille=15
-matrice=initialisation(taille)
-#affiche(matrice,taille)
-ensemble_pos=set()
-ensemble_pos.add("0,0")
-#print(ensemble_pos)
-a=time()
-i=0
-while len(ensemble_pos)!=taille*taille: # nombre de cases
-    i+=1
-    ensemble_pos = deepcopy(detecte(matrice,ensemble_pos,taille))
-    elem=i%6
-    matrice = deepcopy(transition(matrice,ensemble_pos,elem))
-
-    affiche(matrice,taille)
-
-affiche(matrice,taille)
-
-print("Taille : 15 ->", time()-a)
 
 
 for j in range(2,35):
@@ -140,9 +76,9 @@ for j in range(2,35):
     i=0
     while len(ensemble_pos)!=taille*taille: # nombre de cases
         i+=1
-        ensemble_pos = deepcopy(detecte(matrice,ensemble_pos,taille))
+        ensemble_pos = detecte(matrice,ensemble_pos,taille)
         elem=i%6
-        matrice = deepcopy(transition(matrice,ensemble_pos,elem))
+        matrice = transition(matrice,ensemble_pos,elem)
         '''
         affiche(matrice,taille)
 
@@ -163,9 +99,9 @@ a=time()
 i=0
 while len(ensemble_pos)!=taille*taille: # nombre de cases
     i+=1
-    ensemble_pos = deepcopy(detecte(matrice,ensemble_pos,taille))
+    ensemble_pos = detecte(matrice,ensemble_pos,taille)
     elem=i%6
-    matrice = deepcopy(transition(matrice,ensemble_pos,elem))
+    matrice = transition(matrice,ensemble_pos,elem)
     '''
     affiche(matrice,taille)
 

@@ -73,11 +73,11 @@ def etude(matrice,voisins,position, taille):
             h=True
           
             #contrôle bas
-            if matrice[voisins[test]+taille]==a:
-                if voisins[test]+taille not in position:
+            if matrice[voisins[test]+taille-1]==a:
+                if voisins[test]+taille-1 not in position:
                     b=True
-                    voisins.append(voisins[test]+taille)
-                    position.append(voisins[test]+taille)
+                    voisins.append(voisins[test]+taille-1)
+                    position.append(voisins[test]+taille-1)
         
         
         #si c'est la dernière case
@@ -123,11 +123,11 @@ def etude(matrice,voisins,position, taille):
             h=True
             
             #contrôle bas
-            if matrice[voisins[test]+taille]==a:
-                if voisins[test]+taille not in position:
+            if matrice[voisins[test]+taille-1]==a:
+                if voisins[test]+taille-1 not in position:
                     b=True
-                    voisins.append(voisins[test]+taille)
-                    position.append(voisins[test]+taille)
+                    voisins.append(voisins[test]+taille-1)
+                    position.append(voisins[test]+taille-1)
         
         #si c'est la dernière ligne 
         elif voisins[test] >= taille*taille - taille :
@@ -179,11 +179,11 @@ def etude(matrice,voisins,position, taille):
                     position.append(voisins[test]-taille)
             
             #contrôle bas
-            if matrice[voisins[test]+taille]==a:
-                if voisins[test]+taille not in position:
+            if matrice[voisins[test]+taille-1]==a:
+                if voisins[test]+taille-1 not in position:
                     b=True
-                    voisins.append(voisins[test]+taille)
-                    position.append(voisins[test]+taille)
+                    voisins.append(voisins[test]+taille-1)
+                    position.append(voisins[test]+taille-1)
         
         ################
         if g and d and h and b :
@@ -193,7 +193,7 @@ def etude(matrice,voisins,position, taille):
     if len(voisins2)!=controle:
         voisins=voisins[len(voisins2)-1:]
         return etude(matrice,voisins,position,taille)
-    print("v",voisins,"\n","pos",sorted(position))
+    print("v",voisins,"\n","pos",sorted(position),len(position))
     return voisins, position
 
 #affichage joli
@@ -206,13 +206,18 @@ def montre(t,m):
         if i%t == 0:
             print()
 
-
+#verif si une matrice est pleine
+def controlage(matrice):
+    for i in matrice:
+        if matrice[0]!=i:
+            return False
+    return True
 ###zone de test###########################################################
-'''
+
 #les infos obligatoires
 matrice=[]
 nb_couleur=6
-taille=9
+taille=12
 voisins = [0] #stocke les numéros des cases à contrôler
 change = [0]
 
@@ -221,18 +226,21 @@ matrice=initialisation(taille,nb_couleur)
 montre(taille,matrice)
 a=time()
 i=0
-while len(change)!=taille*taille : # nombre de cases
+while len(change)!=taille*taille and i<10: # nombre de cases
     i+=1
-    #montre(taille, matrice)
+    montre(taille, matrice)
     voisins,change = etude(matrice,voisins,change,taille)
     elem=i%6
     matrice = transition(matrice,change,elem)
+    print()
     
 
 #montre(taille, matrice)
 print("Taille :",taille,"\nTemps de résolution :", time()-a)
-'''
-for i in range(14,15):
+
+
+#calcul des capacités du calculateur
+for i in range(2,12):
     a=time()
     taille=i
     nb_couleur=6
@@ -242,13 +250,14 @@ for i in range(14,15):
     matrice=initialisation(taille,nb_couleur)
     
     i=0
-    while len(change)!=taille*taille and i < 33: # nombre de cases
+    while len(change)!=taille*taille : # nombre de cases
         i+=1
-        print("n°",i)
-        montre(taille, matrice)
+        #print("n°",i)
+        #montre(taille, matrice)
         voisins,change = etude(matrice,voisins,change,taille)
         elem=i%6
-        print()
+        #print()
         matrice = transition(matrice,change,elem)
+    #montre(taille,matrice)
     print("Taille :",taille,"->", time()-a)
 
