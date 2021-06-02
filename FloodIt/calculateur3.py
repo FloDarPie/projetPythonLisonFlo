@@ -140,7 +140,7 @@ def generation(matrice, ensemble_pos, liste_voisins):
         if controleVoisin(cell, ensemble_pos, taille):
             nouveau_voisins=nouveau_voisins[1:]
         
-    return position,voisins[len(nouveau_voisins):]
+    return ensemble_pos,liste_voisins[len(nouveau_voisins)-1:]
 
 
 #on change la matrice avec un nouveau chiffre
@@ -152,7 +152,7 @@ def transform(matrice, ensemble_pos, couleur):
 if __name__=='__main__': 
     #les infos obligatoires
     nb_couleur=6
-    taille=7
+    taille=3
     position = {0}    #stocke les numéros à changer
     voisins = [0]   #stocke les cell à examiner
 
@@ -167,95 +167,21 @@ if __name__=='__main__':
     matrice =  transform(matrice, position, couleur)
     
     montre(taille, matrice)
-    ###########################
     print()
-    couleur = 4
-    position, voisins = generation(matrice, position, voisins)
-    
-    matrice =  transform(matrice, position, couleur)
-    
-    montre(taille, matrice)
-    
-    print()
-    couleur = 1
-    position, voisins = generation(matrice, position, voisins)
-    
-    matrice =  transform(matrice, position, couleur)
-    
-    montre(taille, matrice)
-    print()
-    couleur = 2
-    position, voisins = generation(matrice, position, voisins)
-    
-    matrice =  transform(matrice, position, couleur)
-    
-    montre(taille, matrice)
-    print()
-    couleur = 4
-    position, voisins = generation(matrice, position, voisins)
-    
-    matrice =  transform(matrice, position, couleur)
-    
-    montre(taille, matrice)
-    
-    print()
-    couleur = 5
-    position, voisins = generation(matrice, position, voisins)
-    
-    matrice =  transform(matrice, position, couleur)
-    
-    montre(taille, matrice)
-    print()
-    couleur = 2
-    position, voisins = generation(matrice, position, voisins)
-    
-    matrice =  transform(matrice, position, couleur)
-    
-    montre(taille, matrice)
-    print()
-    couleur = 3
-    position, voisins = generation(matrice, position, voisins)
-    
-    matrice =  transform(matrice, position, couleur)
-    
-    montre(taille, matrice)
-    print()
-    couleur = 0
-    position, voisins = generation(matrice, position, voisins)
-    
-    matrice =  transform(matrice, position, couleur)
-    
-    montre(taille, matrice)
-    print()
-    couleur = 4
-    position, voisins = generation(matrice, position, voisins)
-    
-    matrice =  transform(matrice, position, couleur)
-    
-    montre(taille, matrice)
-    print()
-    couleur = 5
-    position, voisins = generation(matrice, position, voisins)
-    
-    matrice =  transform(matrice, position, couleur)
-    
-    montre(taille, matrice)
-    print()
-    couleur = 3
-    position, voisins = generation(matrice, position, voisins)
-    
-    matrice =  transform(matrice, position, couleur)
-    
-    montre(taille, matrice)
-    print()
-    couleur = 1
-    position, voisins = generation(matrice, position, voisins)
-    
-    matrice =  transform(matrice, position, couleur)
-    
-    montre(taille, matrice)
+    print("Lancement calcul temps")
     ###########################
     '''
+   for k in [4,1,2,4,5,2,3,0,4,5,3,1]:
+        print()
+        couleur = k
+        position, voisins = generation(matrice, position, voisins)
+        
+        matrice =  transform(matrice, position, couleur)
+        
+        montre(taille, matrice)
+    '''
+    ###########################
+    
     for taille in range(2,35):
         temps=time()
         nb_couleur=6
@@ -264,13 +190,14 @@ if __name__=='__main__':
         voisins = [0]   #stocke les cell à examiner
         
         matrice = initialisation(taille,nb_couleur)
-        
+        #montre(taille,matrice)
         i=0
         while len(position)!=taille*taille:
+            #print(generation(matrice, position, voisins))
             position, voisins = generation(matrice, position, voisins)
             
             matrice =  transform(matrice, position, i%6)
             i+=1
-        montre(taille,matrice)
+        #montre(taille,matrice)
         print("Taille :",taille,"->",time()-temps)
-    '''
+    
