@@ -44,34 +44,131 @@ def montre(t,m):
             print()
 
 
-#construit la nouvelle génération
-#renvoie les nouveaux voisins et ajoute des positions
-#couleur : correspond à la couleur du tour
-def generation(matrice, ensemble_pos, liste_voisins, couleur):
-    
-    
-    
-    #
-    #travail
-    #
-    return position,voisins
 
+#on regarde si la cellule à encore besoin d'être mémorisé pour étudier les générations
+#on regarde si les cellules sont connus
+def controleVoisin(cell, ensemble_pos, taille):
+    l = taille*taille
+    
+    #contrôle droite
+    if cell != l-1:
+        a = cell+1 in ensemble_pos
+    else:
+        a = True
+        
+    #contrôle gauche
+    if cell!=0:
+        b = cell-1 in ensemble_pos
+    else:
+        b = True
+    
+    #contrôle bas
+    if cell< l-taille:
+        c = cell+taille in ensemble_pos
+    else:
+        c = True
+        
+    #contrôle haut
+    if cell> taille-1:
+        d = cell-taille in ensemble_pos
+    else:
+        d = True
+        
+    return a and b and c and d
 
 #prend une cellule, regarde ses voisins et renvoie une liste des cellules identiques
-def observe(coordo, matrice, ensemble_pos):
-    #
-    #travail
-    #
-    return une_liste
+def observe(cell, matrice, liste):
+    print(cell)
+    try : #check droite 
+        print("check droite",matrice[cell] == matrice[cell+1] and cell+1 not in liste)
+        if matrice[cell] == matrice[cell+1] and cell+1 not in liste:
+            liste.append(cell+1)
+            a = observe(cell+1,matrice,liste)
+            for k in a:
+                liste.append(k)
+    except:
+        pass
+    
+    try : #check gauche
+        print("check gauche",matrice[cell] == matrice[cell-1] and cell-1 not in liste)
+        if matrice[cell] == matrice[cell-1] and cell-1 not in liste:
+            liste.append(cell-1)
+            a = observe(cell-1,matrice,liste)
+            for k in a:
+                liste.append(k)
+    except:
+        pass
+    
+    try : #check bas
+        print("check bas",matrice[cell] == matrice[cell+taille] and cell+taille not in liste)
+        if matrice[cell] == matrice[cell+taille] and cell+taille not in liste:
+            liste.append(cell+taille)
+            a = observe(cell+taille,matrice,liste)
+            for k in a:
+                liste.append(k)
+    except:
+        pass
+    
+    try : #check haut
+        print("check haut",matrice[cell] == matrice[cell-taille] and cell-taille not in liste)
+        if matrice[cell] == matrice[cell-taille] and cell-taille not in liste:
+            liste.append(cell-taille)
+            a = observe(cell-taille,matrice,liste)
+            for k in a:
+                liste.append(k)
+    except:
+        pass
+    print("fin ?")
+    print(liste)
+    return liste
+
+#construit la nouvelle génération
+#renvoie les nouveaux voisins et ajoute des positions
+def generation(matrice, ensemble_pos, liste_voisins):
+    nouveau_voisins=liste_voisins[:]
+    
+    for cell in liste_voisins:
+        print("Début observation")
+        liste = observe(cell, matrice, [cell])
+        print(liste)
+        if liste != [] :
+            
+            for nouveau in liste:
+                if nouveau not in liste_voisins:
+                    liste_voisins.append(nouveau)
+
+                if nouveau not in ensemble_pos:
+                    ensemble_pos.add(nouveau)
+            
+        #module de voisinage
+        if controleVoisin(cell, ensemble_pos, taille):
+            nouveau_voisins=nouveau_voisins[1:]
+        
+    return position,voisins[len(nouveau_voisins):]
+
+
+#on change la matrice avec un nouveau chiffre
+def transform(matrice, ensemble_pos, couleur):
+    for i in ensemble_pos:
+        matrice[i]=couleur
+    return matrice
 
 if __name__=='__main__': 
     #les infos obligatoires
     nb_couleur=6
     taille=7
-    voisins = {0} #stocke les numéros des cases à contrôler
-    change = [0]
+    position = {0}    #stocke les numéros à changer
+    voisins = [0]   #stocke les cell à examiner
 
-    seed(0)#pour avoir tout le temps la même matrice
+    seed(0)         #pour avoir tout le temps la même matrice
     
     matrice = initialisation(taille,nb_couleur)
     montre(taille,matrice)
+    print()
+    couleur = 2
+    position, voisins = generation(matrice, position, voisins)
+    
+    matrice =  transform(matrice, position, couleur)
+    
+    montre(taille, matrice)
+    
