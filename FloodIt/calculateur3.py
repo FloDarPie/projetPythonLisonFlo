@@ -78,48 +78,46 @@ def controleVoisin(cell, ensemble_pos, taille):
 
 #prend une cellule, regarde ses voisins et renvoie une liste des cellules identiques
 def observe(cell, matrice, liste):
-    print(cell)
     try : #check droite 
-        print("check droite",matrice[cell] == matrice[cell+1] and cell+1 not in liste)
+        #print("check droite",matrice[cell] == matrice[cell+1] and cell+1 not in liste)
         if matrice[cell] == matrice[cell+1] and cell+1 not in liste:
             liste.append(cell+1)
-            a = observe(cell+1,matrice,liste)
+            a = observe(cell+1,matrice,liste[:])
             for k in a:
                 liste.append(k)
     except:
         pass
     
     try : #check gauche
-        print("check gauche",matrice[cell] == matrice[cell-1] and cell-1 not in liste)
-        if matrice[cell] == matrice[cell-1] and cell-1 not in liste:
+        #print("check gauche",matrice[cell] == matrice[cell-1] and cell-1 not in liste)
+        if matrice[cell] == matrice[cell-1] and cell-1 not in liste and cell!=0:
             liste.append(cell-1)
-            a = observe(cell-1,matrice,liste)
+            a = observe(cell-1,matrice,liste[:])
             for k in a:
                 liste.append(k)
     except:
         pass
     
     try : #check bas
-        print("check bas",matrice[cell] == matrice[cell+taille] and cell+taille not in liste)
+        #print("check bas",matrice[cell] == matrice[cell+taille] and cell+taille not in liste)
         if matrice[cell] == matrice[cell+taille] and cell+taille not in liste:
             liste.append(cell+taille)
-            a = observe(cell+taille,matrice,liste)
+            a = observe(cell+taille,matrice,liste[:])
             for k in a:
                 liste.append(k)
     except:
         pass
     
     try : #check haut
-        print("check haut",matrice[cell] == matrice[cell-taille] and cell-taille not in liste)
-        if matrice[cell] == matrice[cell-taille] and cell-taille not in liste:
+        #print("check haut",matrice[cell] == matrice[cell-taille] and cell-taille not in liste)
+        if matrice[cell] == matrice[cell-taille] and cell-taille not in liste and cell>taille:
             liste.append(cell-taille)
-            a = observe(cell-taille,matrice,liste)
+            a = observe(cell-taille,matrice,liste[:])
             for k in a:
                 liste.append(k)
     except:
         pass
-    print("fin ?")
-    print(liste)
+
     return liste
 
 #construit la nouvelle génération
@@ -128,9 +126,7 @@ def generation(matrice, ensemble_pos, liste_voisins):
     nouveau_voisins=liste_voisins[:]
     
     for cell in liste_voisins:
-        print("Début observation")
         liste = observe(cell, matrice, [cell])
-        print(liste)
         if liste != [] :
             
             for nouveau in liste:
@@ -171,4 +167,110 @@ if __name__=='__main__':
     matrice =  transform(matrice, position, couleur)
     
     montre(taille, matrice)
+    ###########################
+    print()
+    couleur = 4
+    position, voisins = generation(matrice, position, voisins)
     
+    matrice =  transform(matrice, position, couleur)
+    
+    montre(taille, matrice)
+    
+    print()
+    couleur = 1
+    position, voisins = generation(matrice, position, voisins)
+    
+    matrice =  transform(matrice, position, couleur)
+    
+    montre(taille, matrice)
+    print()
+    couleur = 2
+    position, voisins = generation(matrice, position, voisins)
+    
+    matrice =  transform(matrice, position, couleur)
+    
+    montre(taille, matrice)
+    print()
+    couleur = 4
+    position, voisins = generation(matrice, position, voisins)
+    
+    matrice =  transform(matrice, position, couleur)
+    
+    montre(taille, matrice)
+    
+    print()
+    couleur = 5
+    position, voisins = generation(matrice, position, voisins)
+    
+    matrice =  transform(matrice, position, couleur)
+    
+    montre(taille, matrice)
+    print()
+    couleur = 2
+    position, voisins = generation(matrice, position, voisins)
+    
+    matrice =  transform(matrice, position, couleur)
+    
+    montre(taille, matrice)
+    print()
+    couleur = 3
+    position, voisins = generation(matrice, position, voisins)
+    
+    matrice =  transform(matrice, position, couleur)
+    
+    montre(taille, matrice)
+    print()
+    couleur = 0
+    position, voisins = generation(matrice, position, voisins)
+    
+    matrice =  transform(matrice, position, couleur)
+    
+    montre(taille, matrice)
+    print()
+    couleur = 4
+    position, voisins = generation(matrice, position, voisins)
+    
+    matrice =  transform(matrice, position, couleur)
+    
+    montre(taille, matrice)
+    print()
+    couleur = 5
+    position, voisins = generation(matrice, position, voisins)
+    
+    matrice =  transform(matrice, position, couleur)
+    
+    montre(taille, matrice)
+    print()
+    couleur = 3
+    position, voisins = generation(matrice, position, voisins)
+    
+    matrice =  transform(matrice, position, couleur)
+    
+    montre(taille, matrice)
+    print()
+    couleur = 1
+    position, voisins = generation(matrice, position, voisins)
+    
+    matrice =  transform(matrice, position, couleur)
+    
+    montre(taille, matrice)
+    ###########################
+    '''
+    for taille in range(2,35):
+        temps=time()
+        nb_couleur=6
+        
+        position = {0}    #stocke les numéros à changer
+        voisins = [0]   #stocke les cell à examiner
+        
+        matrice = initialisation(taille,nb_couleur)
+        
+        i=0
+        while len(position)!=taille*taille:
+            position, voisins = generation(matrice, position, voisins)
+            
+            matrice =  transform(matrice, position, i%6)
+            i+=1
+        montre(taille,matrice)
+        print("Taille :",taille,"->",time()-temps)
+    '''
