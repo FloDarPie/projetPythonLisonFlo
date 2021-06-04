@@ -203,3 +203,20 @@ if __name__=='__main__':
         #montre(taille,matrice)
         print("Taille :",taille,"->",time()-temps)
 
+    temps=time()
+    nb_couleur=6
+    taille=100
+    position = {0}    #stocke les numéros à changer
+    voisins = [0]   #stocke les cell à examiner
+    
+    matrice = initialisation(taille,nb_couleur)
+    #montre(taille,matrice)
+    i=0
+    while len(position)!=taille*taille:
+        #print(generation(matrice, position, voisins))
+        position, voisins = generation(matrice, position, voisins, taille)
+        
+        matrice =  transform(matrice, position, i%6)
+        i+=1
+    #montre(taille,matrice)
+    print("Taille :",taille,"->",time()-temps)
