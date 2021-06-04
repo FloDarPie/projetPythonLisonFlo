@@ -152,7 +152,7 @@ def transform(matrice, ensemble_pos, couleur):
 if __name__=='__main__': 
     #les infos obligatoires
     nb_couleur=6
-    taille=3
+    taille=7
     position = {0}    #stocke les numéros à changer
     voisins = [0]   #stocke les cell à examiner
 
@@ -167,21 +167,23 @@ if __name__=='__main__':
     matrice =  transform(matrice, position, couleur)
     
     montre(taille, matrice)
-    print()
-    print("Lancement calcul temps")
+    
     ###########################
-    '''
-   for k in [4,1,2,4,5,2,3,0,4,5,3,1]:
+    
+    for k in [4,1,2,4,5,2,3,0,4,5,3,1]:
         print()
         couleur = k
         position, voisins = generation(matrice, position, voisins)
+        print(position,end="\n")
+        print(voisins,end="\n")
         
         matrice =  transform(matrice, position, couleur)
         
         montre(taille, matrice)
     '''
     ###########################
-    
+    print()
+    print("Lancement calcul temps")
     for taille in range(2,35):
         temps=time()
         nb_couleur=6
@@ -200,4 +202,4 @@ if __name__=='__main__':
             i+=1
         #montre(taille,matrice)
         print("Taille :",taille,"->",time()-temps)
-    
+    '''
