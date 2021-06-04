@@ -77,7 +77,7 @@ def controleVoisin(cell, ensemble_pos, taille):
     return a and b and c and d
 
 #prend une cellule, regarde ses voisins et renvoie une liste des cellules identiques
-def observe(cell, matrice, liste):
+def observe(cell, matrice, liste, taille):
     try : #check droite 
         #print("check droite",matrice[cell] == matrice[cell+1] and cell+1 not in liste)
         if matrice[cell] == matrice[cell+1] and cell+1 not in liste:
@@ -122,11 +122,11 @@ def observe(cell, matrice, liste):
 
 #construit la nouvelle génération
 #renvoie les nouveaux voisins et ajoute des positions
-def generation(matrice, ensemble_pos, liste_voisins):
+def generation(matrice, ensemble_pos, liste_voisins, taille):
     nouveau_voisins=liste_voisins[:]
     
     for cell in liste_voisins:
-        liste = observe(cell, matrice, [cell])
+        liste = observe(cell, matrice, [cell], taille)
         if liste != [] :
             
             for nouveau in liste:
@@ -162,7 +162,7 @@ if __name__=='__main__':
     montre(taille,matrice)
     print()
     couleur = 2
-    position, voisins = generation(matrice, position, voisins)
+    position, voisins = generation(matrice, position, voisins, taille)
     
     matrice =  transform(matrice, position, couleur)
     
@@ -173,14 +173,14 @@ if __name__=='__main__':
     for k in [4,1,2,4,5,2,3,0,4,5,3,1]:
         print()
         couleur = k
-        position, voisins = generation(matrice, position, voisins)
+        position, voisins = generation(matrice, position, voisins, taille)
         print(position,end="\n")
         print(voisins,end="\n")
         
         matrice =  transform(matrice, position, couleur)
         
         montre(taille, matrice)
-    '''
+
     ###########################
     print()
     print("Lancement calcul temps")
@@ -196,10 +196,10 @@ if __name__=='__main__':
         i=0
         while len(position)!=taille*taille:
             #print(generation(matrice, position, voisins))
-            position, voisins = generation(matrice, position, voisins)
+            position, voisins = generation(matrice, position, voisins, taille)
             
             matrice =  transform(matrice, position, i%6)
             i+=1
         #montre(taille,matrice)
         print("Taille :",taille,"->",time()-temps)
-    '''
+
