@@ -152,12 +152,12 @@ def transform(matrice, ensemble_pos, couleur):
 if __name__=='__main__': 
     #les infos obligatoires
     nb_couleur=6
-    taille=7
+    taille=14
     position = {0}    #stocke les numéros à changer
     voisins = [0]   #stocke les cell à examiner
 
     seed(0)         #pour avoir tout le temps la même matrice
-    
+    '''
     matrice = initialisation(taille,nb_couleur)
     montre(taille,matrice)
     print()
@@ -182,6 +182,7 @@ if __name__=='__main__':
         montre(taille, matrice)
 
     ###########################
+    '''
     print()
     print("Lancement calcul temps")
     for taille in range(2,35):
@@ -203,6 +204,7 @@ if __name__=='__main__':
         #montre(taille,matrice)
         print("Taille :",taille,"->",time()-temps)
 
+    #taille 100
     temps=time()
     nb_couleur=6
     taille=100
