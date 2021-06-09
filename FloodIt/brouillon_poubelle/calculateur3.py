@@ -198,7 +198,7 @@ if __name__=='__main__':
         while len(position)!=taille*taille:
             #print(generation(matrice, position, voisins))
             position, voisins = generation(matrice, position, voisins, taille)
-            
+            #print(position,voisins)
             matrice =  transform(matrice, position, i%6)
             i+=1
         #montre(taille,matrice)
@@ -217,7 +217,7 @@ if __name__=='__main__':
     while len(position)!=taille*taille:
         #print(generation(matrice, position, voisins))
         position, voisins = generation(matrice, position, voisins, taille)
-        
+
         matrice =  transform(matrice, position, i%6)
         i+=1
     #montre(taille,matrice)

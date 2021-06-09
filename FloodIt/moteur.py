@@ -84,7 +84,7 @@ class Moteur(object):
     def observe(self,cell,liste):
         try : #check droite 
             #print("check droite",matrice[cell] == matrice[cell+1] and cell+1 not in liste)
-            if self.matrice[cell] == self.matrice[cell+1] and cell+1 not in liste and cell%self.taille!=self.nbc-1:
+            if self.matrice[cell] == self.matrice[cell+1] and cell+1 not in liste and cell%self.taille!=self.taille-1:
                 liste.append(cell+1)
                 a = self.observe(cell+1,self.matrice,liste[:])
                 for k in a:
@@ -144,21 +144,20 @@ class Moteur(object):
             if self.controleVoisin(cell):
                 nouveau_voisins=nouveau_voisins[1:]
             
-        self.voisins[len(nouveau_voisins)-1:]    
+        self.voisins=self.voisins[len(nouveau_voisins)-1:]    
     
 if __name__ == '__main__':
     test = Moteur()
     
     test.transform(test.matrice[0])
-    
-    test.transform(2)
-    print(test.position,test.voisins)
-    test.transform(0)
-    print(test.position,test.voisins)
-    test.transform(4)
-    test.transform(2)
-    test.transform(4)
-    print(test.position,test.voisins)
+    i=0
+    a=test.taille
+    b=a*a
+    while len(test.position)!=b:
+        test.transform(i%test.nbc)
+        print(test.position,test.voisins)
+        test.montre()
+        i+=1
     test.montre()
     
     
