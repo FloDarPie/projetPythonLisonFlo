@@ -6,7 +6,7 @@ seed(0) #à supprimer
 class Moteur(object):
     
     def __init__(self):
-        self.taille = 5
+        self.taille = 14
         self.nbc = 6
         
         self.position = {0}
@@ -152,7 +152,9 @@ if __name__ == '__main__':
     test.transform(test.matrice[0])
     
     test.transform(2)
+    print(test.position,test.voisins)
     test.transform(0)
+    print(test.position,test.voisins)
     test.transform(4)
     test.transform(2)
     test.transform(4)

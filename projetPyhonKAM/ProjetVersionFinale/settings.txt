@@ -1,0 +1,3 @@
+VolumeMusique 0.05
+VolumeBouton 0.05
+VolumeVictoire 0.05
