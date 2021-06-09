@@ -1,11 +1,12 @@
 #liste des import
 from random import randrange,seed
-seed(0)
+
+seed(0) #à supprimer
 
 class Moteur(object):
     
     def __init__(self):
-        self.taille = 14
+        self.taille = 5
         self.nbc = 6
         
         self.position = {0}

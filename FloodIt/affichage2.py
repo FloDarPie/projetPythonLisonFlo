@@ -48,6 +48,7 @@ def quitter():
     fen.destroy()
 
 def recommencer():
+    print("recommencer")
     pass
 
 
