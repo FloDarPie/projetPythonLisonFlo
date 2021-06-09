@@ -3,35 +3,19 @@ import tkinter as tk
 from time import time,sleep
 
 class Partie():
-    def __init__(self):
-        tk.Tk.__init__(self)
-        self.btn1=tk.Button(self, text="Quitter",height=3,width=15,command=lambda: self.quitter()).place(padx=10,pady=10)
-        self.btn2=tk.Button(self,text="Recommencer",height=3,width=15,command=lambda: self.recommencer()).place(padx=10,pady=10)
-
+    def __init__(self,LARG=800,HAUT=800):
         #PARAMETRES_FENETRE_TAILLE
 
-        difficulté="facile"
-        def diffi():
-            global TAILLE
-            if difficulté=="facile":
-                TAILLE=10
-            elif difficulté=="moyen":
-                TAILLE=12
-            elif difficulté=="difficile":
-                TAILLE=14
+        self.LARG=LARG
+        self.HAUT=HAUT
 
-        self.diffi()
-        self.LARG=TAILLE*40
-        self.HAUT=TAILLE*40
-
-        M=[
-        [3,3,0,2,4,3,3],
-        [2,3,2,4,1,4,1],
-        [2,1,0,4,2,4,5],
-        [4,1,2,0,5,0,5],
-        [2,3,4,0,2,3,2],
-        [4,5,1,4,3,3,4],
-        [2,0,4,0,0,5,3]]
+        self.M=[3,3,0,2,4,3,3,
+        2,3,2,4,1,4,1,
+        2,1,0,4,2,4,5,
+        4,1,2,0,5,0,5,
+        2,3,4,0,2,3,2,
+        4,5,1,4,3,3,4,
+        2,0,4,0,0,5,3]
 
         #PARAMETRES_FENETRE
 
@@ -51,7 +35,10 @@ class Partie():
     def recommencer(self):
         pass
 
-
+    def coord(event,self):
+        self.xc=event.x
+        self.yc=event.y
+        return self.xc,self.yc
 
 
     def init(self,M):
@@ -61,6 +48,10 @@ class Partie():
                 self.canv.create_rectangle((40*j,40*i),(40*j+40,40*i+40),fill=self.color[M[i][j]])
 
 if __name__=="__main__":
-    jeu=Partie()
+    fen=Tk()
+    jeu=Partie(fen)
     jeu.title("Flood it")
-    jeu.mainloop()
+    jeu.fen.mainloop()
+
+
+#clic détecte couleur grace à la case
