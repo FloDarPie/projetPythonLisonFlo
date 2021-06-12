@@ -1,7 +1,7 @@
 #liste des import
 from random import randrange,seed
 
-seed(0)     #____à supprimer
+#seed(0)     #____à supprimer
 
 class Moteur(object):
     
@@ -27,6 +27,10 @@ class Moteur(object):
     
     #fonction de démarrage
     def initialisation(self):
+        
+        self.position = {0}
+        self.voisins = [0]
+        
         matrice=[]
         for i in range(self.taille*self.taille):
             matrice.append(randrange(0,self.nbc))
