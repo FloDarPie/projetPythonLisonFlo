@@ -13,19 +13,25 @@ class Affichage:
         self.couleur = ["green","pink","red","orange","yellow","blue","purple"]
         
         self.cpt_coup = 0
-        self.cl_blanc= "#d9d2b8"
-        
-        self.memoire = self.moteur.matrice[:]
-        
-        self.root.bind("<Escape>",self.quitterEchap)
-        self.root.title("Flood It")
-        #self.root.background("black")
         
         #prendre les infos de la fenêtre
         self.ecranLargeur = 1000
         self.ecranHauteur = 700
         
-        self.canvas=tk.Canvas(root,width=self.ecranLargeur,height=self.ecranHauteur,borderwidth=0, bg="#1c1b17")
+        #thème d'apparence
+        self.cl_blanc= "#d9d2b8"
+        self.cl_noir = "#1c1b17"
+        
+        #point d'angle droit haut de l'espace de jeu
+        self.departY = self.ecranHauteur//5
+        self.departX = int(self.ecranLargeur//2-self.ecranHauteur*3/8)
+        
+        self.memoire = self.moteur.matrice[:]
+        
+        self.root.bind("<Escape>",self.quitterEchap)
+        self.root.title("Flood It - The Game")
+        
+        self.canvas=tk.Canvas(root,width=self.ecranLargeur,height=self.ecranHauteur,borderwidth=0, bg=self.cl_noir)
         
         self.canvas.grid(column=0, row=0, ipadx=0, ipady=0, sticky=tk.E+tk.N)
         
@@ -54,13 +60,13 @@ class Affichage:
         X = self.ecranHauteur * 3/4
         '''
         #zone de jeu
-        angleDroitY = self.ecranHauteur//5
+        angleDroitY = self.departY
         self.cote = int(self.ecranHauteur * 3/4 / self.moteur.taille) # format de la fenêtre de jeu
         
         i = 0 #indice de la cellule de la matrice
-
+        
         for ligne in range(self.moteur.taille):
-            angleDroitX = self.ecranLargeur//2-self.ecranHauteur*3/8
+            angleDroitX = self.departX
             for cell in range(self.moteur.taille):
                 self.canvas.create_rectangle((angleDroitX,angleDroitY), (angleDroitX+self.cote,angleDroitY+self.cote), fill = self.couleur[self.moteur.matrice[i]], width=0)
                 angleDroitX+=self.cote
@@ -83,7 +89,6 @@ class Affichage:
         self.victoire = None
         
     def affiche_coup(self):
-        
         self.canvas.delete(self.affiche_cpt)
         self.affiche_cpt = self.canvas.create_text(self.ecranLargeur-120, self.ecranHauteur-40 , text=str(self.cpt_coup), fill=self.cl_blanc, font="Arial 42 roman")
         self.affiche_max_coup = self.canvas.create_text(self.ecranLargeur-50, self.ecranHauteur -40,text="/22", fill=self.cl_blanc, font="Arial 42 roman")
@@ -98,16 +103,19 @@ class Affichage:
         
         
     def clic(self,event):
-        x, y = event.x, event.y
         
-        if self.victoire==None:
+        self.canvas.delete(self.info2)
+        
+        if self.victoire==None: #pas encore la victoire
             
-            self.canvas.delete(self.info2)
+            x = (event.x - self.departX) // self.cote 
+            y = (event.y - self.departY) // self.cote
             
-            X = int((x-self.ecranLargeur//2-self.ecranHauteur*3/8) // self.cote)+self.moteur.taille
-            Y = int((y-157) // self.cote)
+            self.valide_coup(x,y)
             
-            if 0 <= X <= self.moteur.taille-1 and 0 <= Y <= self.moteur.taille-1:
+            '''
+            t = self.moteur.taille-1
+            if 0 <= x <= t and 0 <= y <= t :
                 cell = X+Y*self.moteur.taille
                 if self.moteur.matrice[cell]!=self.moteur.matrice[0]:
                     self.moteur.transform(self.moteur.matrice[cell])
@@ -116,7 +124,18 @@ class Affichage:
                     self.canvas.delete(self.affiche_coup)
                     self.cpt_coup+=1
                     self.affiche_coup()
-                else:
+            '''
+        else:
+            self.relance()
+    
+    
+    #controle si les cases cliqué sont ok et si il faut effectuer un changement
+    def valide_coup(self,x,y):
+        pass
+    
+    
+    #balance une nouvelle partie
+    def relance(self):
             self.moteur.matrice = self.moteur.initialisation()
             self.afficheJeu(self.moteur.matrice)
             self.victoire = None
