@@ -2,12 +2,15 @@ import tkinter as tk
 import tkinter.font as font
 
 from moteur import Moteur
+from ia import *
 
 #Dans ce jeu, il est possible de terminer la matrice même si le nombre maximum de coups est atteint
 class Affichage:
     def __init__(self,root=None):
 
         self.moteur = Moteur()
+        
+        self.disco = Disco(self.moteur.matrice, self.moteur.position, self.moteur.voisins, self.moteur.taille, self.moteur.nbc)
         
         self.root = root
         
@@ -168,13 +171,20 @@ class Affichage:
         if 0 <= x <= t and 0 <= y <= t :
             cell = x+y*self.moteur.taille
             if self.moteur.matrice[cell]!=self.moteur.matrice[0]:
+                
                 self.moteur.transform(self.moteur.matrice[cell])
+                
                 self.pileRetour.append(self.moteur.matrice[:])
+                self.pileAvancer = []
+                
                 self.afficheJeu(self.moteur.matrice)
                 
-                self.canvas.delete(self.affiche_coup)
+                print("click",self.pileRetour,self.pileAvancer)
+                print(self.moteur.matrice)
+                
                 self.cpt_coup+=1
                 self.affiche_coup()
+                
             self.victory()
             
 
@@ -217,19 +227,42 @@ class Affichage:
         self.pileAvancer = []
 
     def retour(self):
-        if len(self.pileRetour) > 0 :
+        taillePile = len(self.pileRetour)
+        self.ok = False
+        self.victoire = None
+        if taillePile > 1 :
+            #stockage de la dernière matrice dans avancer
             self.pileAvancer.append(self.moteur.matrice[:])
+            #on la retire de la pile
+            self.pileRetour.pop()
+            #self.pileRetour = self.pileRetour[:-1]
+            
+            #la matrice courante deviens la nouvelle dernière de la pile
             self.moteur.matrice = self.pileRetour[-1][:]
-            self.pileRetour = self.pileRetour[:-1]
+            #affichage
             self.afficheJeu(self.moteur.matrice)
+            
+            print("retour",self.pileRetour,self.pileAvancer)
+            print(self.moteur.matrice)
+            
 
     def avancer(self):
         if len(self.pileAvancer) > 0 :
-            self.pileRetour.append(self.moteur.matrice[:])
+            #stockage de la dernière matrice dans avancer
+            self.pileRetour.append(self.pileAvancer[-1][:])
+            
+            #la matrice courante deviens la nouvelle dernière de la pile
             self.moteur.matrice = self.pileAvancer[-1][:]
-            self.pileAvancer = self.pileAvancer[:-1]
+            
+            #on la retire de la pile
+            self.pileAvancer.pop()
+            #self.pileAvancer = self.pileAvancer[:-1]
+            
             self.afficheJeu(self.moteur.matrice)
-
+            
+            print("avancer",self.pileRetour,self.pileAvancer)
+            print(self.moteur.matrice)
+            
     def quitterEchap(self,event):
         self.quitter()
     def quitter(self):

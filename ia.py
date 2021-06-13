@@ -2,7 +2,7 @@ from moteur import Moteur
 
 from random import seed
 
-seed(0)
+#seed(0)
 
 class Intell_artifi(Moteur):
     '''
