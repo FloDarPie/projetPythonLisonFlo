@@ -15,13 +15,8 @@ class Affichage:
         self.font = "Arial 25 roman"
 
         #Paramètres menus déroulants
-        self.listeTaille = ["2","3","4","5","6","7","8","9","10","11","12","13","14","20","40","50","80","100","150","200"]
-        self.listeCouleurs = ["2","3","4","5","6","7","8","9"]
-
-        self.menuIA = tk.StringVar(self.root)
-        self.menuTaille = tk.StringVar(self.root)
-        self.menuCouleur = tk.StringVar(self.root)
-
+        self.listeTaille = [2,3,4,5,6,7,8,9,10,11,12,13,14,20,40,50,80,100,150,200]
+        self.listeCouleurs = [2,3,4,5,6,7,8,9]
 
         #piles de backtracking
         self.pile_setup = [self.moteur.matrice[:], self.moteur.position.copy(), self.moteur.voisins[:]]
@@ -143,39 +138,9 @@ class Affichage:
         self.info = self.canvas.create_text(self.positionX_info,self.positionY_info, text="Cliquez sur une case\npour sélectionner une couleur.\n\nVous commencez en \nhaut à gauche.\n\nAppuyez sur 'Echap' pour\nquitter", font="Arial 14 roman")        
         
         self.affiche_coup()
-        #self.menuDeroulant()
         self.victoire = None
         self.defaite = None
         
-
-    def menuDeroulant(self):
-        #Menu deroulant taille/couleur
-        ###########################
-        
-        self.tail = tk.StringVar(self.root)
-        self.tail.set(int(self.listeTaille[12]))
-
-        self.tailleMat=tk.OptionMenu(self.root,self.tail,self.listeTaille)
-        self.tailleMat.config(font=('Arial',20))
-        self.tailleMat.place(x=self.MeDX,y=self.MeDY)
-
-        self.textTaille = tk.Label(text="Taille",bg='lightblue')
-        self.textTaille.place(x=self.MeDX,y=self.MeDY-10)
-
-
-        ###########################
-       
-        self.coul = tk.StringVar(self.root)
-        self.coul.set(int(self.listeCouleurs[4]))
-
-        self.couleur=tk.OptionMenu(self.root,self.coul,self.listeCouleurs)
-        self.couleur.config(font=('Arial',20))
-        self.couleur.place(x=self.MeD2X,y=self.MeD2Y)
-
-        self.textCoul = tk.Label(text="Couleurs",bg='lightblue')
-        self.textCoul.place(x=self.MeD2X,y=self.MeD2Y-10)
-
-        #############################
 
     def affiche_coup(self):
         self.canvas.delete(self.affiche_cpt)
