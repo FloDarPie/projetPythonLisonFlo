@@ -12,7 +12,11 @@ class Affichage:
         self.root = root
         
         self.couleur = ["green","pink","red","orange","yellow","blue","purple"]
-        
+
+        #piles de backtracking
+        self.pileRetour = [self.moteur.matrice[:]]
+        self.pileAvancer = []
+
         #pour relancer apres défaite
         self.ok = False
 
@@ -36,7 +40,7 @@ class Affichage:
         self.positionX_echec = self.positionX_info
         self.positionY_echec = self.positionY_info
 
-        self.posiCPTX = self.ecranLargeur-120
+        self.posiCPTX = self.ecranLargeur-140
         self.posiCPTY = self.ecranHauteur-40
 
         self.pbrX = self.posiCPTX-125
@@ -44,6 +48,12 @@ class Affichage:
 
         self.nvpX = self.pbrX
         self.nvpY = self.pbrY - 100
+
+        self.retX = self.nvpX
+        self.retY = self.nvpY -100
+
+        self.avX = self.retX+ 130
+        self.avY = self.retY
 
         self.departY=0
         self.departX=0
@@ -105,10 +115,15 @@ class Affichage:
         self.bouton_NVP = None
         self.bouton_NVP = tk.Button(self.canvas, borderwidth=0, text="Nouvelle Partie",bg='pink',font="Arial 25 roman", command=self.relance).place(x=self.nvpX,y=self.nvpY)
         
-
-        self.info = self.canvas.create_text(self.positionX_info,self.positionY_info, text="Cliquez sur une case\npour sélectionner une couleur.\n\nVous commencez en \nhaut à gauche.\n\nAppuyez sur 'Echap' pour\nquitter", font="Arial 14 roman")
-        #modifier position de self.info2
+        #BOUTON Retour/Avance
+        self.bouton_retour = None
+        self.bouton_retour = tk.Button(self.canvas, borderwidth=0, text="Retour",bg='blue',font="Arial 25 roman", command=self.retour).place(x=self.retX,y=self.retY)
         
+        self.bouton_avance = None
+        self.bouton_avance = tk.Button(self.canvas, borderwidth=0, text="Avance",bg='blue',font="Arial 25 roman", command=self.avancer).place(x=self.avX,y=self.avY)
+        
+
+        self.info = self.canvas.create_text(self.positionX_info,self.positionY_info, text="Cliquez sur une case\npour sélectionner une couleur.\n\nVous commencez en \nhaut à gauche.\n\nAppuyez sur 'Echap' pour\nquitter", font="Arial 14 roman")        
         
         self.affiche_coup()
         self.victoire = None
@@ -154,6 +169,7 @@ class Affichage:
             cell = x+y*self.moteur.taille
             if self.moteur.matrice[cell]!=self.moteur.matrice[0]:
                 self.moteur.transform(self.moteur.matrice[cell])
+                self.pileRetour.append(self.moteur.matrice[:])
                 self.afficheJeu(self.moteur.matrice)
                 
                 self.canvas.delete(self.affiche_coup)
@@ -172,6 +188,7 @@ class Affichage:
             self.victoire = None
             self.cpt_coup=0
             self.affiche_coup()
+            self.vide_pile()
             
             
     def victory(self):
@@ -195,7 +212,24 @@ class Affichage:
                 return False
         return True
     
-    
+    def vide_pile(self):
+        self.pileRetour = [self.moteur.matrice[:]]
+        self.pileAvancer = []
+
+    def retour(self):
+        if len(self.pileRetour) > 1 :
+            self.pileAvancer.append(self.moteur.matrice[:])
+            self.moteur.matrice = self.pileRetour[-1][:]
+            self.pileRetour = self.pileRetour[:-1]
+            self.afficheJeu(self.moteur.matrice)
+
+    def avancer(self):
+        if len(self.pileAvancer) > 0 :
+            self.pileRetour.append(self.moteur.matrice[:])
+            self.moteur.matrice = self.pileAvancer[-1][:]
+            self.pileAvancer = self.pileAvancer[:-1]
+            self.afficheJeu(self.moteur.matrice)
+
     def quitterEchap(self,event):
         self.quitter()
     def quitter(self):

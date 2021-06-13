@@ -6,7 +6,7 @@ from random import randrange,seed
 class Moteur(object):
     
     def __init__(self):
-        self.taille = 14
+        self.taille = 2
         self.nbc = 6
         
         self.position = {0}
