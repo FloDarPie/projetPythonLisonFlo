@@ -17,7 +17,7 @@ class Affichage:
         self.couleur = ["green","pink","red","orange","yellow","blue","purple"]
 
         #piles de backtracking
-        self.pileRetour = [self.moteur.matrice[:]]
+        self.pileRetour = [[self.moteur.matrice[:], self.moteur.position.copy(), self.moteur.voisins[:]]]
         self.pileAvancer = []
 
         #pour relancer apres défaite
@@ -74,12 +74,12 @@ class Affichage:
         self.canvas.grid(column=0, row=0, ipadx=0, ipady=0, sticky=tk.E+tk.N)
         
         #affichage respectif
-        self.afficheJeu(self.moteur.matrice)
+        self.afficheJeu()
         self.afficheAutre()
         self.canvas.bind("<Button-1>",self.clic)
         
         
-    def afficheJeu(self,matrice):
+    def afficheJeu(self):
         '''
         depart | 0                                        depart+X | 0
         
@@ -144,7 +144,7 @@ class Affichage:
         self.defaite = None
         self.victoire = None
         self.moteur.matrice=self.memoire[:]
-        self.afficheJeu(self.moteur.matrice)
+        self.afficheJeu()
         self.cpt_coup = 0
         self.affiche_coup()
         self.vide_pile()
@@ -174,10 +174,10 @@ class Affichage:
                 
                 self.moteur.transform(self.moteur.matrice[cell])
                 
-                self.pileRetour.append(self.moteur.matrice[:])
+                self.pileRetour.append([self.moteur.matrice[:], self.moteur.position.copy(), self.moteur.voisins[:]])
                 self.pileAvancer = []
                 
-                self.afficheJeu(self.moteur.matrice)
+                self.afficheJeu()
                 
                 print("click",self.pileRetour,self.pileAvancer)
                 print(self.moteur.matrice)
@@ -194,7 +194,7 @@ class Affichage:
             self.memoire = self.moteur.matrice[:]
             self.canvas.delete(self.defaite)
             self.canvas.delete(self.victoire)
-            self.afficheJeu(self.moteur.matrice)
+            self.afficheJeu()
             self.victoire = None
             self.cpt_coup=0
             self.affiche_coup()
@@ -223,7 +223,7 @@ class Affichage:
         return True
     
     def vide_pile(self):
-        self.pileRetour = [self.moteur.matrice[:]]
+        self.pileRetour = [[self.moteur.matrice[:], self.moteur.position.copy(), self.moteur.voisins[:]]]
         self.pileAvancer = []
 
     def retour(self):
@@ -232,18 +232,18 @@ class Affichage:
         self.victoire = None
         if taillePile > 1 :
             #stockage de la dernière matrice dans avancer
-            self.pileAvancer.append(self.moteur.matrice[:])
+            self.pileAvancer.append(self.pileRetour[-1][:])
             #on la retire de la pile
             self.pileRetour.pop()
             #self.pileRetour = self.pileRetour[:-1]
             
             #la matrice courante deviens la nouvelle dernière de la pile
-            self.moteur.matrice = self.pileRetour[-1][:]
-            #affichage
-            self.afficheJeu(self.moteur.matrice)
+            self.moteur.matrice = self.pileRetour[-1][0][:]
+            self.moteur.position = self.pileRetour[-1][1].copy()
+            self.moteur.voisins = self.pileRetour[-1][2][:]
             
-            print("retour",self.pileRetour,self.pileAvancer)
-            print(self.moteur.matrice)
+            #affichage
+            self.afficheJeu()
             
 
     def avancer(self):
@@ -252,16 +252,17 @@ class Affichage:
             self.pileRetour.append(self.pileAvancer[-1][:])
             
             #la matrice courante deviens la nouvelle dernière de la pile
-            self.moteur.matrice = self.pileAvancer[-1][:]
+            self.moteur.matrice = self.pileAvancer[-1][0][:]
+            self.moteur.position = self.pileAvancer[-1][1].copy()
+            self.moteur.voisins = self.pileAvancer[-1][2][:]
             
             #on la retire de la pile
             self.pileAvancer.pop()
             #self.pileAvancer = self.pileAvancer[:-1]
             
-            self.afficheJeu(self.moteur.matrice)
+            self.afficheJeu()
             
-            print("avancer",self.pileRetour,self.pileAvancer)
-            print(self.moteur.matrice)
+            self.victory()
             
     def quitterEchap(self,event):
         self.quitter()
