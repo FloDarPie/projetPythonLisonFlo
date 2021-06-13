@@ -55,6 +55,12 @@ class Affichage:
         self.avX = self.retX+ 130
         self.avY = self.retY
 
+        self.MeDX = self.pbrX
+        self.MeDY = self.avY-100
+
+        self.MeD2X = self.MeDX+130
+        self.MeD2Y = self.MeDY
+
         self.departY=0
         self.departX=0
        
@@ -122,6 +128,44 @@ class Affichage:
         self.bouton_avance = None
         self.bouton_avance = tk.Button(self.canvas, borderwidth=0, text="Avance",bg='blue',font="Arial 25 roman", command=self.avancer).place(x=self.avX,y=self.avY)
         
+    
+        #Menu deroulant taille/couleur
+        ###########################
+        self.listeTaille=["9x9","10x10","11x11","12x12","13x13","14x14"]
+        self.variable = tk.StringVar(self.root)
+        self.variable.set(self.listeTaille[0])
+
+        self.taille=tk.OptionMenu(self.root,self.variable,*self.listeTaille)
+        self.taille.config(font=('Arial',20))
+        self.taille.place(x=self.MeDX,y=self.MeDY)
+
+        self.labelTest = tk.Label(text="Taille",bg='lightblue')
+        self.labelTest.place(x=self.MeDX,y=self.MeDY)
+
+        def callback(self):
+            self.moteur.modif_taille(9)
+            #self.labelTest.configure(text="La taille est de : ".format(self.variable.get()))
+
+        self.variable.trace("w",callback)
+
+                ###########################
+        self.listeCouleurs=["Vert","Rose","Rouge","Orange","Jaune","Bleu","Violet"]
+        self.coul = tk.StringVar(self.root)
+        self.coul.set(self.listeCouleurs[0])
+
+        self.couleur=tk.OptionMenu(self.root,self.coul,*self.listeCouleurs)
+        self.couleur.config(font=('Arial',20))
+        self.couleur.place(x=self.MeD2X,y=self.MeD2Y)
+
+        self.labelCoul = tk.Label(text="Couleur",bg='lightblue')
+        self.labelCoul.place(x=self.MeD2X,y=self.MeD2Y)
+
+        def callback2(self):
+            self.moteur.modif_taille(9)
+            #self.labelTest.configure(text="La taille est de : ".format(self.variable.get()))
+
+        self.coul.trace("w",callback2)
+        #############################
 
         self.info = self.canvas.create_text(self.positionX_info,self.positionY_info, text="Cliquez sur une case\npour sélectionner une couleur.\n\nVous commencez en \nhaut à gauche.\n\nAppuyez sur 'Echap' pour\nquitter", font="Arial 14 roman")        
         
