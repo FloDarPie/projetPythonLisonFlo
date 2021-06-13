@@ -3,6 +3,7 @@ import tkinter.font as font
 
 from moteur import Moteur
 
+#Dans ce jeu, il est possible de terminer la matrice même si le nombre maximum de coups est atteint
 class Affichage:
     def __init__(self,root=None):
 
@@ -12,56 +13,75 @@ class Affichage:
         
         self.couleur = ["green","pink","red","orange","yellow","blue","purple"]
         
+        #pour relancer apres défaite
+        self.ok = False
+
+        #nb de coups en cours et nb de coups max
         self.cpt_coup = 0
-        
+        self.max_coup = 22
+
         #prendre les infos de la fenêtre
         self.ecranLargeur = 1000
         self.ecranHauteur = 700
         
-        #thème d'apparence
-        self.cl_blanc= "#d9d2b8"
-        self.cl_noir = "#1c1b17"
-        
-        #point d'angle droit haut de l'espace de jeu
-        self.departY = self.ecranHauteur//5
-        self.departX = int(self.ecranLargeur//2-self.ecranHauteur*3/8)
-        
+        ######################################################################################
+        ##################### LISTE DES POSITIONS DES ELEMENTS ###############################
+
+        self.positionX_info = self.ecranLargeur-150
+        self.positionY_info = 100
+
+        self.positionX_victoire = self.ecranHauteur//2
+        self.positionY_victoire = self.ecranHauteur//2
+
+        self.positionX_echec = self.positionX_info
+        self.positionY_echec = self.positionY_info
+
+        self.posiCPTX = self.ecranLargeur-120
+        self.posiCPTY = self.ecranHauteur-40
+
+        self.pbrX = self.posiCPTX-125
+        self.pbrY = self.posiCPTY-125
+
+        self.nvpX = self.pbrX
+        self.nvpY = self.pbrY - 100
+
+        self.departY=0
+        self.departX=0
+       
+        ######################################################################################
+
+        #memorisation de la matrice de depart
         self.memoire = self.moteur.matrice[:]
         
         self.root.bind("<Escape>",self.quitterEchap)
         self.root.title("Flood It - The Game")
         
-        self.canvas=tk.Canvas(root,width=self.ecranLargeur,height=self.ecranHauteur,borderwidth=0, bg=self.cl_noir)
+        self.canvas=tk.Canvas(root,width=self.ecranLargeur,height=self.ecranHauteur,borderwidth=0)
         
         self.canvas.grid(column=0, row=0, ipadx=0, ipady=0, sticky=tk.E+tk.N)
         
-        self.titre = tk.PhotoImage(file="titre.png")
-        self.canvas.create_image((self.ecranLargeur//2,80),image=self.titre) #fixer le titre au milieu de l'écran
-        
         #affichage respectif
-        self.afficheAutre()
         self.afficheJeu(self.moteur.matrice)
+        self.afficheAutre()
         self.canvas.bind("<Button-1>",self.clic)
         
         
     def afficheJeu(self,matrice):
         '''
-        depart | ecranHauteur//5                        depart+X | ecranHauteur//5
+        depart | 0                                        depart+X | 0
         
         
                                 (zone de jeu)
         
         
-        depart | ecranHauteur//5 + X                    depart+X | ecranHauteur//5+X
+        depart | X                                          depart+X | X
         
-        
-        depart = self.ecranLargeur//2-self.ecranHauteur*3/8
-        
+            
         X = self.ecranHauteur * 3/4
         '''
         #zone de jeu
         angleDroitY = self.departY
-        self.cote = int(self.ecranHauteur * 3/4 / self.moteur.taille) # format de la fenêtre de jeu
+        self.cote = int(self.ecranHauteur/ self.moteur.taille) # format de la fenêtre de jeu
         
         i = 0 #indice de la cellule de la matrice
         
@@ -75,83 +95,98 @@ class Affichage:
         
         
     def afficheAutre(self):
-        
+        self.affiche_cpt = None #on créé affiche_cpt pour pouvoir le supprimer
+
         #BOUTON Recommencer
-        self.boutton_recommencer=None
-        self.affiche_cpt = None
-        self.boutton_recommencer = tk.Button(self.canvas, borderwidth=0, text="Recommencer",font="Arial 25 roman", command=lambda:[self.afficheJeu(self.memoire),self.change()] ).place(x=10,y=10)
+        self.bouton_r = None
+        self.bouton_r = tk.Button(self.canvas, borderwidth=0, text="Recommencer",bg='pink',font="Arial 25 roman", command=self.reinitialiser).place(x=self.pbrX,y=self.pbrY)
         
-        self.info2 = self.canvas.create_text(130,self.ecranHauteur//2+250, text="Click on case to select a color.\nYou begin on top left.", fill=self.cl_blanc, font="Arial 14 roman")
+        #BOUTON Nouvelle Partie
+        self.bouton_NVP = None
+        self.bouton_NVP = tk.Button(self.canvas, borderwidth=0, text="Nouvelle Partie",bg='pink',font="Arial 25 roman", command=self.relance).place(x=self.nvpX,y=self.nvpY)
         
+
+        self.info = self.canvas.create_text(self.positionX_info,self.positionY_info, text="Cliquez sur une case\npour sélectionner une couleur.\n\nVous commencez en \nhaut à gauche.\n\nAppuyez sur 'Echap' pour\nquitter", font="Arial 14 roman")
+        #modifier position de self.info2
         
         
         self.affiche_coup()
         self.victoire = None
+        self.defaite = None
         
     def affiche_coup(self):
         self.canvas.delete(self.affiche_cpt)
-        self.affiche_cpt = self.canvas.create_text(self.ecranLargeur-120, self.ecranHauteur-40 , text=str(self.cpt_coup), fill=self.cl_blanc, font="Arial 42 roman")
-        self.affiche_max_coup = self.canvas.create_text(self.ecranLargeur-50, self.ecranHauteur -40,text="/22", fill=self.cl_blanc, font="Arial 42 roman")
+        self.affiche_cpt = self.canvas.create_text(self.posiCPTX,self.posiCPTY, text=str(self.cpt_coup)+"/"+str(self.max_coup), font="Arial 42 roman")
+           
         
-        
-        
-        
-    def change(self):
+    def reinitialiser(self):
         self.moteur.initialisation()
+        self.canvas.delete(self.defaite)
+        self.canvas.delete(self.victoire)
+        self.defaite = None
+        self.victoire = None
         self.moteur.matrice=self.memoire[:]
+        self.afficheJeu(self.moteur.matrice)
         self.cpt_coup = 0
+        self.affiche_coup()
         
         
     def clic(self,event):
         
-        self.canvas.delete(self.info2)
+        self.canvas.delete(self.info)
         
-        if self.victoire==None: #pas encore la victoire
+        if self.victoire==None or self.ok: #pas encore la victoire
             
+            #conversion des coordonnées en indices
             x = (event.x - self.departX) // self.cote 
             y = (event.y - self.departY) // self.cote
             
             self.valide_coup(x,y)
             
-            '''
-            t = self.moteur.taille-1
-            if 0 <= x <= t and 0 <= y <= t :
-                cell = X+Y*self.moteur.taille
-                if self.moteur.matrice[cell]!=self.moteur.matrice[0]:
-                    self.moteur.transform(self.moteur.matrice[cell])
-                    self.afficheJeu(self.moteur.matrice)
-                    
-                    self.canvas.delete(self.affiche_coup)
-                    self.cpt_coup+=1
-                    self.affiche_coup()
-            '''
         else:
             self.relance()
     
     
     #controle si les cases cliqué sont ok et si il faut effectuer un changement
     def valide_coup(self,x,y):
-        pass
-    
-    
-    #balance une nouvelle partie
-    def relance(self):
-            self.moteur.matrice = self.moteur.initialisation()
-            self.afficheJeu(self.moteur.matrice)
-            self.victoire = None
-            self.cpt_coup=-1
-            
-    
-            
-    def victory(self):
-        if cpt_coup>19:
-            if self.controle_victoire():
-                self.victoire = self.canvas.create_text(self.ecranLargeur//2,self.ecranHauteur//2, text= "Victoire !", fill=self.cl_blanc, font="Arial 80 bold roman")
+        t = self.moteur.taille-1
+        if 0 <= x <= t and 0 <= y <= t :
+            cell = x+y*self.moteur.taille
+            if self.moteur.matrice[cell]!=self.moteur.matrice[0]:
+                self.moteur.transform(self.moteur.matrice[cell])
+                self.afficheJeu(self.moteur.matrice)
                 
-            elif self.cpt_coup>22:
-                self.defaite = self.canvas.create_text(175 ,self.ecranHauteur//2, text="C'est raté !", fill= self.cl_blanc, font="Arial 50 bold roman")
+                self.canvas.delete(self.affiche_coup)
+                self.cpt_coup+=1
+                self.affiche_coup()
+            self.victory()
             
 
+    #lance une nouvelle partie
+    def relance(self):
+            self.moteur.matrice = self.moteur.initialisation()
+            self.memoire = self.moteur.matrice[:]
+            self.canvas.delete(self.defaite)
+            self.canvas.delete(self.victoire)
+            self.afficheJeu(self.moteur.matrice)
+            self.victoire = None
+            self.cpt_coup=0
+            self.affiche_coup()
+            
+            
+    def victory(self):
+        boolean_victoire = self.controle_victoire()
+        if self.cpt_coup==self.max_coup and not(boolean_victoire):
+            self.defaite = self.canvas.create_text(self.positionX_echec,self.positionY_echec, text="Dommage !", font="Arial 40 bold roman")
+        
+        elif boolean_victoire :
+            if self.defaite!= None:
+                self.canvas.delete(self.defaite)
+                self.ok = True
+                self.defaite = self.canvas.create_text(self.positionX_echec,self.positionY_echec, text="Courage !", font="Arial 40 bold roman")
+            else:
+                self.victoire = self.canvas.create_text(self.positionX_victoire,self.positionY_victoire, text= "Victoire !",  font="Arial 80 bold roman")
+            
     
     def controle_victoire(self):
         verif = self.moteur.matrice[0]
