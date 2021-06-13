@@ -144,10 +144,10 @@ class Affichage:
         self.afficheJeu(self.moteur.matrice)
         self.cpt_coup = 0
         self.affiche_coup()
+        self.vide_pile()
         
         
     def clic(self,event):
-        
         self.canvas.delete(self.info)
         
         if self.victoire==None or self.ok: #pas encore la victoire
@@ -217,7 +217,7 @@ class Affichage:
         self.pileAvancer = []
 
     def retour(self):
-        if len(self.pileRetour) > 1 :
+        if len(self.pileRetour) > 0 :
             self.pileAvancer.append(self.moteur.matrice[:])
             self.moteur.matrice = self.pileRetour[-1][:]
             self.pileRetour = self.pileRetour[:-1]
