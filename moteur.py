@@ -27,7 +27,6 @@ class Moteur(object):
     
     #fonction de démarrage
     def initialisation(self):
-        
         self.position = {0}
         self.voisins = [0]
         
